@@ -1,29 +1,31 @@
 // Data-driven content. Every die has exactly one effect; rolled values supply its magnitude.
 export const DICE = {
-  strike: { name: 'Iron Strike', family: 'attack', icon: '⚔', cooldown: 0, description: 'Deal damage equal to the result.', flavor: 'A dependable edge.' },
-  quick: { name: 'Quick Cut', family: 'attack', icon: '⚔', cooldown: 0, description: 'Deal damage equal to the result.', flavor: 'Speed is its own weapon.' },
-  guard: { name: 'Stone Guard', family: 'block', icon: '⬡', cooldown: 0, description: 'Gain block equal to the result.', flavor: 'Weather the next blow.' },
-  venom: { name: 'Viper Venom', family: 'poison', icon: '☣', cooldown: 1, description: 'Apply poison equal to the result. Poison damages at enemy turn start, then decays by 1.', flavor: 'The wound keeps working.' },
-  hex: { name: 'Binding Hex', family: 'weaken', icon: '✧', cooldown: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Even giants can stumble.' },
-  rally: { name: 'Battle Hymn', family: 'strength', icon: '✷', cooldown: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'Make every strike count.' },
-  plus: { name: 'Gilded Plus', family: 'add', icon: '+', cooldown: 1, description: 'Attach to an effect die. Add the rolled value to its result.', flavor: 'A little more of everything.' },
-  multiply: { name: 'Echo Prism', family: 'multiply', icon: '×', cooldown: 2, description: 'Attach to an effect die. Multiply its result by ceil(roll ÷ 2).', flavor: 'Make a whisper thunder.' },
-  channel: { name: 'Mana Well', family: 'mana', icon: '✺', cooldown: 1, description: 'Restore mana equal to the result (up to max mana).', flavor: 'Bottle a spark of magic.' },
-  mend: { name: 'Restoration', family: 'heal', icon: '✚', cooldown: 2, description: 'Heal HP equal to the result (up to max HP).', flavor: 'An ember of warmth.' },
-  saber: { name: 'Silver Saber', family: 'attack', icon: '⚔', cooldown: 1, description: 'Deal damage equal to the result.', flavor: 'Sharper than it looks.' },
-  bastion: { name: 'Iron Bastion', family: 'block', icon: '⬡', cooldown: 1, description: 'Gain block equal to the result.', flavor: 'A fortress in your palm.' },
-  blight: { name: 'Black Spores', family: 'poison', icon: '☣', cooldown: 2, description: 'Apply poison equal to the result.', flavor: 'The forest remembers.' },
-  fracture: { name: 'Fracture Sigil', family: 'weaken', icon: '✧', cooldown: 0, description: 'Reduce the next enemy attack by the result.', flavor: 'Ruin their momentum.' },
-  amplify: { name: 'Amber Amplifier', family: 'add', icon: '+', cooldown: 2, description: 'Attach to an effect die. Add the rolled value.', flavor: 'Power with a price.' },
-  prism: { name: 'Crimson Prism', family: 'multiply', icon: '×', cooldown: 2, description: 'Attach to an effect die. Multiply by ceil(roll ÷ 2).', flavor: 'Strength through refraction.' },
-  anthem: { name: 'War Anthem', family: 'strength', icon: '✷', cooldown: 1, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'A rhythm for battle.' },
-  spring: { name: 'Bright Spring', family: 'heal', icon: '✚', cooldown: 1, description: 'Heal HP equal to the result.', flavor: 'A sip of tomorrow.' },
+  strike: { name: 'Iron Strike', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'A dependable edge.' },
+  quick: { name: 'Quick Cut', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 0, description: 'Deal damage equal to the result.', flavor: 'Speed is its own weapon.' },
+  guard: { name: 'Stone Guard', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'Weather the next blow.' },
+  venom: { name: 'Viper Venom', family: 'poison', icon: '☣', cooldown: 1, manaCost: 2, description: 'Apply poison equal to the result. Poison damages at enemy turn start, then decays by 1.', flavor: 'The wound keeps working.' },
+  hex: { name: 'Binding Hex', family: 'weaken', icon: '✧', cooldown: 1, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Even giants can stumble.' },
+  rally: { name: 'Battle Hymn', family: 'strength', icon: '✷', cooldown: 2, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'Make every strike count.' },
+  plus: { name: 'Gilded Plus', family: 'add', icon: '+', cooldown: 1, manaCost: 1, description: 'Attach to an effect die. Add the rolled value to its result.', flavor: 'A little more of everything.' },
+  multiply: { name: 'Echo Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply its result by ceil(roll ÷ 2).', flavor: 'Make a whisper thunder.' },
+  channel: { name: 'Mana Well', family: 'mana', icon: '✺', cooldown: 1, manaCost: 0, description: 'Restore mana equal to the result (up to max mana).', flavor: 'Bottle a spark of magic.' },
+  mend: { name: 'Restoration', family: 'heal', icon: '✚', cooldown: 2, manaCost: 2, description: 'Heal HP equal to the result (up to max HP).', flavor: 'An ember of warmth.' },
+  saber: { name: 'Silver Saber', family: 'attack', icon: '⚔', cooldown: 1, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'Sharper than it looks.' },
+  bastion: { name: 'Iron Bastion', family: 'block', icon: '⬡', cooldown: 1, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'A fortress in your palm.' },
+  blight: { name: 'Black Spores', family: 'poison', icon: '☣', cooldown: 2, manaCost: 2, description: 'Apply poison equal to the result.', flavor: 'The forest remembers.' },
+  fracture: { name: 'Fracture Sigil', family: 'weaken', icon: '✧', cooldown: 0, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Ruin their momentum.' },
+  amplify: { name: 'Amber Amplifier', family: 'add', icon: '+', cooldown: 2, manaCost: 2, description: 'Attach to an effect die. Add the rolled value.', flavor: 'Power with a price.' },
+  prism: { name: 'Crimson Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply by ceil(roll ÷ 2).', flavor: 'Strength through refraction.' },
+  anthem: { name: 'War Anthem', family: 'strength', icon: '✷', cooldown: 1, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'A rhythm for battle.' },
+  spring: { name: 'Bright Spring', family: 'heal', icon: '✚', cooldown: 1, manaCost: 2, description: 'Heal HP equal to the result.', flavor: 'A sip of tomorrow.' },
+  sunder: { name: 'Platebreaker', family: 'sunder', icon: '⚒', cooldown: 1, manaCost: 1, description: 'Permanently remove armor equal to the result. Armor reduces each physical hit.', flavor: 'Crack the iron shell.' },
+  stagger: { name: 'Disruptor', family: 'stagger', icon: '⚡', cooldown: 1, manaCost: 1, description: 'Apply stagger equal to the result. Meet a charged attack threshold to interrupt it.', flavor: 'Stop the blow before it falls.' },
 };
 
 export const STARTING_DICE = [
-  'strike', 'quick', 'guard', 'venom', 'hex', 'rally', 'plus', 'multiply', 'channel', 'mend'
+  'strike', 'quick', 'guard', 'venom', 'hex', 'rally', 'plus', 'multiply', 'channel', 'mend', 'sunder', 'stagger'
 ];
-export const REWARD_POOL = ['saber','bastion','blight','fracture','amplify','prism','anthem','spring','venom','guard','plus','multiply','channel','rally'];
+export const REWARD_POOL = ['saber','bastion','blight','fracture','amplify','prism','anthem','spring','venom','guard','plus','multiply','channel','rally','sunder','stagger'];
 
 export const ENCOUNTERS = [
   {
@@ -31,7 +33,7 @@ export const ENCOUNTERS = [
     moves: [
       { name: 'Heavy Swing', attack: 7 },
       { name: 'Brace & Bash', attack: 4, guard: 5 },
-      { name: 'Overhead Slam', attack: 11 },
+      { name: 'Overhead Slam', attack: 14, interruptAt: 5 },
     ],
   },
   {
@@ -43,7 +45,7 @@ export const ENCOUNTERS = [
     ],
   },
   {
-    name: 'Hollow Sentinel', subtitle: 'THE SILENT CITADEL', icon: '♜', hp: 66, gold: 36,
+    name: 'Hollow Sentinel', subtitle: 'THE SILENT CITADEL', icon: '♜', hp: 66, gold: 36, armor: 3, mechanic: 'Plated: each physical hit loses 3 damage. Sunder removes armor; poison bypasses it.',
     moves: [
       { name: 'Shield March', guard: 7, attack: 5 },
       { name: 'Iron Cleave', attack: 11 },
@@ -56,7 +58,7 @@ export const ENCOUNTERS = [
       { name: 'Shatter', attack: 10 },
       { name: 'Glass Fortress', guard: 9, attack: 6 },
       { name: 'Corrupting Blow', attack: 8, poison: 3 },
-      { name: 'Crushing Finale', attack: 17 },
+      { name: 'Crushing Finale', attack: 21, interruptAt: 7 },
     ],
   },
 ];
@@ -67,6 +69,8 @@ export const FAMILY = {
   poison: { label: 'Debuff', accent: 'verdant', desc: 'Poison' },
   weaken: { label: 'Debuff', accent: 'verdant', desc: 'Weaken' },
   strength: { label: 'Buff', accent: 'gold', desc: 'Empower' },
+  sunder: { label: 'Disruption', accent: 'gold', desc: 'Strip armor' },
+  stagger: { label: 'Disruption', accent: 'gold', desc: 'Stagger' },
   mana: { label: 'Utility', accent: 'cyan', desc: 'Mana' },
   heal: { label: 'Utility', accent: 'cyan', desc: 'Heal' },
   add: { label: 'Modifier', accent: 'violet', desc: 'Add' },
@@ -74,7 +78,9 @@ export const FAMILY = {
 };
 
 export const MAX_JAR = 5;
-export const MAX_MANA = 5;
+export const MAX_MANA = 7;
+export const MANA_REGEN = 4;
+export const FREE_RECOLLECTIONS = 1;
 export const REROLL_COST = 1;
 export const NUDGE_COST = 2;
 export const SHOP_DIE_COST = 22;
