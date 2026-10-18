@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#10121c" />
+  <meta name="description" content="Jarbound is a playable dice-building roguelike prototype. Roll your dice, attach modifiers, and spend mana to bend fate." />
+  <title>JARBOUND — A Dice-Building Roguelike</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="masthead">
+      <div class="brand-wrap" aria-label="Jarbound">
+        <div class="brand-symbol" aria-hidden="true">✧<span>✦</span></div>
+        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 01</span></div>
+      </div>
+      <div class="header-actions">
+        <span class="version-pill"><i></i> PLAYABLE ALPHA</span>
+        <button class="ghost-button" data-action="help" type="button"><span aria-hidden="true">?</span> How to play</button>
+        <button class="ghost-button new-run" data-action="new-run" type="button"><span aria-hidden="true">↻</span> New run</button>
+      </div>
+    </header>
+    <main id="app" aria-live="off"></main>
+    <footer class="site-footer"><span>✦ THE FATE IS IN YOUR HANDS</span><span>NO ACCOUNT · NO DOWNLOAD · PURE STRATEGY</span></footer>
+  </div>
+  <dialog id="how-to-play" class="help-modal" aria-labelledby="help-title">
+    <div class="dialog-head"><span class="eyebrow">FIELD GUIDE / 01</span><button class="icon-button" type="button" data-action="close-help" aria-label="Close instructions">✕</button></div>
+    <h2 id="help-title">Bend the roll. <em>Build the combo.</em></h2>
+    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its rolled face determines how powerful that function is.</p>
+    <ol>
+      <li><strong>Prepare.</strong> Choose up to five ready dice from your collection. Dice on cooldown must wait.</li>
+      <li><strong>Roll.</strong> All selected dice roll together. Inspect the enemy's telegraphed move.</li>
+      <li><strong>Manipulate.</strong> Spend <strong>1 mana</strong> to reroll any die, or <strong>2 mana</strong> to nudge a result by +1. Recover 2 mana each turn, up to 5.</li>
+      <li><strong>Attach.</strong> Select a purple modifier die, then select any effect die to attach it. Drag-and-drop works on desktop. Stack multiple modifiers on one target; additions resolve before multipliers.</li>
+      <li><strong>Order.</strong> Shift dice left or right to choose activation order. Put buffs before attacks, or add block to survive the enemy's next move.</li>
+      <li><strong>Progress.</strong> Win fights, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
+    </ol>
+    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A 4-damage attack with a +3 rune and a ×2 prism becomes <strong>(4 + 3) × 2 = 14 damage</strong>.</p></div>
+    <button type="button" class="primary-button" data-action="close-help">ENTER THE JAR <span>→</span></button>
+  </dialog>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
