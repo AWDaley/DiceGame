@@ -1,11 +1,11 @@
 import {
-  DICE, ENCOUNTERS, FAMILY, MAX_JAR, MAX_MANA, NUDGE_COST,
+  DICE, ENCOUNTERS, FAMILY, FREE_RECOLLECTIONS, MANA_REGEN, MAX_JAR, MAX_MANA, NUDGE_COST,
   REROLL_COST, REWARD_POOL, SHOP_DIE_COST, SHOP_FORGE_COST,
   SHOP_HEAL_COST, STARTING_DICE,
 } from './content.js';
 
 const DEFAULT_FACES = [1, 2, 3, 4, 5, 6];
-const EFFECT_FAMILIES = new Set(['attack', 'block', 'poison', 'weaken', 'strength', 'mana', 'heal']);
+const EFFECT_FAMILIES = new Set(['attack', 'block', 'poison', 'weaken', 'strength', 'mana', 'heal', 'sunder', 'stagger']);
 const clone = value => structuredClone(value);
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const randomIndex = (length, random) => Math.min(length - 1, Math.floor(clamp(random(), 0, 0.999999999) * length));
@@ -36,7 +36,7 @@ function pickOffers(rng, count = 3) {
 }
 function initializeEnemy(index) {
   const e = ENCOUNTERS[index];
-  return { name: e.name, hp: e.hp, maxHp: e.hp, block: 0, poison: 0, weak: 0, moveIndex: 0 };
+  return { name: e.name, hp: e.hp, maxHp: e.hp, block: 0, armor: e.armor || 0, stagger: 0, poison: 0, weak: 0, moveIndex: 0 };
 }
 function addLog(state, message, type = 'neutral') {
   state.log.unshift({ id: ++state.logCounter, message, type });
@@ -62,6 +62,8 @@ function startBattle(state, index) {
   state.hero.strength = 0;
   state.hero.strengthCharges = 0;
   state.hero.mana = MAX_MANA;
+  state.hero.freeRecollections = FREE_RECOLLECTIONS;
+  state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = 0; });
   state.log = [];
   state.logCounter = 0;
@@ -71,8 +73,8 @@ function startBattle(state, index) {
 export function newGame() {
   const state = {
     phase: 'select', encounter: 0, turn: 1, nextId: 1,
-    dice: [], selected: [], rolls: {}, links: {}, order: [], activeDie: null,
-    hero: { hp: 60, maxHp: 60, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, poison: 0, strength: 0, strengthCharges: 0 },
+    dice: [], selected: [], rolls: {}, links: {}, order: [], activeDie: null, lastJarCost: 0,
+    hero: { hp: 60, maxHp: 60, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
     enemy: null, gold: 0, rewardOffers: [], shopOffers: [], shopSold: [],
     forgeReturn: 'shop', forgeCost: 0, notice: '', log: [], logCounter: 0,
   };
@@ -81,6 +83,9 @@ export function newGame() {
   return state;
 }
 
+export function jarManaCost(state) {
+  return state.selected.reduce((total, id) => total + (findDie(state, id) ? definition(findDie(state, id)).manaCost : 0), 0);
+}
 function findRoll(state, id) {
   return state.rolls[id] === undefined ? null : state.rolls[id];
 }
@@ -101,10 +106,13 @@ export function canCommit(state) {
   return state.phase === 'cast' && pendingModifiers(state).length === 0;
 }
 function hurtEnemy(state, amount) {
-  const soaked = Math.min(state.enemy.block, amount);
+  // Armor is permanent until sundered and reduces every physical hit before block.
+  const armored = Math.min(state.enemy.armor, amount);
+  const incoming = amount - armored;
+  const soaked = Math.min(state.enemy.block, incoming);
   state.enemy.block -= soaked;
-  state.enemy.hp = Math.max(0, state.enemy.hp - (amount - soaked));
-  return { soaked, damage: amount - soaked };
+  state.enemy.hp = Math.max(0, state.enemy.hp - (incoming - soaked));
+  return { armored, soaked, damage: incoming - soaked };
 }
 function hurtHero(state, amount) {
   const blocked = Math.min(state.hero.block, amount);
@@ -121,6 +129,7 @@ function victory(state, rng) {
   state.links = {};
   state.order = [];
   state.activeDie = null;
+  state.lastJarCost = 0;
   addLog(state, `Victory! ${state.enemy.name} is defeated.`, 'good');
   if (state.encounter === ENCOUNTERS.length - 1) {
     state.phase = 'won';
@@ -140,8 +149,10 @@ function nextTurn(state) {
   state.links = {};
   state.order = [];
   state.activeDie = null;
+  state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = Math.max(0, d.remaining - 1); });
-  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + 2);
+  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + MANA_REGEN);
+  state.hero.freeRecollections = FREE_RECOLLECTIONS;
   // Enemy poison is applied before an enemy attacks; hero poison ticks on the next turn.
   if (state.hero.poison > 0) {
     const poison = state.hero.poison;
@@ -163,7 +174,7 @@ function commitTurn(state, rng) {
       const bonus = state.hero.strengthCharges > 0 ? state.hero.strength : 0;
       const result = hurtEnemy(state, value + bonus);
       if (state.hero.strengthCharges > 0 && --state.hero.strengthCharges === 0) state.hero.strength = 0;
-      addLog(state, `${type.name} hits for ${result.damage}${result.soaked ? ` (${result.soaked} blocked)` : ''}.`, 'good');
+      addLog(state, `${type.name} hits for ${result.damage}${result.armored ? ` (${result.armored} armor)` : ''}${result.soaked ? ` (${result.soaked} blocked)` : ''}.`, 'good');
     } else if (type.family === 'block') {
       state.hero.block += value;
       addLog(state, `${type.name} grants ${value} block.`, 'good');
@@ -177,6 +188,13 @@ function commitTurn(state, rng) {
       state.hero.strength = Math.ceil(value / 2);
       state.hero.strengthCharges = 2;
       addLog(state, `${type.name} empowers your next two attacks (+${state.hero.strength}).`, 'good');
+    } else if (type.family === 'sunder') {
+      const removed = Math.min(state.enemy.armor, value);
+      state.enemy.armor -= removed;
+      addLog(state, `${type.name} strips ${removed} armor.`, 'good');
+    } else if (type.family === 'stagger') {
+      state.enemy.stagger += value;
+      addLog(state, `${type.name} applies ${value} stagger.`, 'good');
     } else if (type.family === 'mana') {
       const restored = Math.min(state.hero.maxMana - state.hero.mana, value);
       state.hero.mana += restored;
@@ -205,18 +223,25 @@ function commitTurn(state, rng) {
   // Shield is retained through one player attack phase, then expires.
   state.enemy.block = 0;
   const move = nextIntent(state);
-  let inflicted = 0;
-  if (move.attack) {
-    const attack = Math.max(0, move.attack - state.enemy.weak);
-    const { damage } = hurtHero(state, attack);
-    inflicted = damage;
-    state.enemy.weak = 0;
+  const interrupted = !!(move.interruptAt && state.enemy.stagger >= move.interruptAt);
+  if (interrupted) {
+    addLog(state, `${state.enemy.name}'s ${move.name} was interrupted!`, 'good');
+  } else {
+    let inflicted = 0;
+    if (move.attack) {
+      const attack = Math.max(0, move.attack - state.enemy.weak);
+      const { damage } = hurtHero(state, attack);
+      inflicted = damage;
+      state.enemy.weak = 0;
+    }
+    if (move.guard) state.enemy.block += move.guard;
+    if (move.poison) state.hero.poison += move.poison;
+    const outcomes = [move.attack ? `${inflicted} damage dealt` : null, move.guard ? `${move.guard} block gained` : null, move.poison ? `${move.poison} poison applied` : null].filter(Boolean).join(', ');
+    addLog(state, `${state.enemy.name} uses ${move.name}: ${outcomes}.`, 'bad');
   }
-  if (move.guard) state.enemy.block += move.guard;
-  if (move.poison) state.hero.poison += move.poison;
+  // Stagger is tactical: it resolves against the current intent, not future turns.
+  state.enemy.stagger = 0;
   state.enemy.moveIndex = (state.enemy.moveIndex + 1) % ENCOUNTERS[state.encounter].moves.length;
-  const outcomes = [move.attack ? `${inflicted} damage dealt` : null, move.guard ? `${move.guard} block gained` : null, move.poison ? `${move.poison} poison applied` : null].filter(Boolean).join(', ');
-  addLog(state, `${state.enemy.name} uses ${move.name}: ${outcomes}.`, 'bad');
   if (state.hero.hp <= 0) {
     state.phase = 'lost';
     addLog(state, 'Your journey ends here.', 'bad');
@@ -238,20 +263,28 @@ export function reduceGame(original, action, rng = Math.random) {
     case 'TOGGLE_DIE': {
       if (!validateDice(state,id,'select')) return reject(original, 'That die is still recovering.');
       if (state.selected.includes(id)) state.selected = state.selected.filter(item => item !== id);
-      else if (state.selected.length < MAX_JAR) state.selected.push(id);
+      else if (state.selected.length < MAX_JAR) {
+        const cost = definition(findDie(state, id)).manaCost;
+        if (jarManaCost(state) + cost > state.hero.mana) return reject(original, `Not enough mana for ${definition(findDie(state, id)).name}; remove a die or save mana.`);
+        state.selected.push(id);
+      }
       else return reject(original, `Your jar can only hold ${MAX_JAR} dice.`);
       return state;
     }
     case 'ROLL': {
       if (state.phase !== 'select' || state.selected.length === 0) return reject(original, 'Choose at least one ready die.');
       if (!state.selected.some(item => !isModifier(findDie(state, item)))) return reject(original, 'Include at least one effect die so modifiers have a target.');
+      const castCost = jarManaCost(state);
+      if (castCost > state.hero.mana) return reject(original, 'Not enough mana to roll the chosen dice.');
+      state.hero.mana -= castCost;
+      state.lastJarCost = castCost;
       state.rolls = {};
       state.selected.forEach(item => { state.rolls[item] = rollValue(findDie(state,item), rng); });
       state.links = {};
       state.order = state.selected.filter(item => !isModifier(findDie(state,item)));
       state.activeDie = null;
       state.phase = 'cast';
-      addLog(state, `Turn ${state.turn}: you rolled ${state.selected.length} dice.`, 'story');
+      addLog(state, `Turn ${state.turn}: you spent ${castCost} mana to roll ${state.selected.length} dice.`, 'story');
       return state;
     }
     case 'SELECT_ROLL': {
@@ -278,10 +311,12 @@ export function reduceGame(original, action, rng = Math.random) {
     }
     case 'REROLL': {
       if (!validateDice(state,id,'cast')) return original;
-      if (state.hero.mana < REROLL_COST) return reject(original,'Not enough mana to reroll.');
-      state.hero.mana -= REROLL_COST;
+      const cost = state.hero.freeRecollections > 0 ? 0 : REROLL_COST;
+      if (state.hero.mana < cost) return reject(original,'Not enough mana to reroll.');
+      state.hero.mana -= cost;
+      if (cost === 0) state.hero.freeRecollections--;
       state.rolls[id] = rollValue(findDie(state,id),rng);
-      addLog(state, `Rerolled ${definition(findDie(state,id)).name} for ${REROLL_COST} mana.`, 'neutral');
+      addLog(state, `Rerolled ${definition(findDie(state,id)).name}${cost ? ` for ${cost} mana` : ' with free Recollection'}.`, 'neutral');
       return state;
     }
     case 'NUDGE': {
