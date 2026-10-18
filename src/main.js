@@ -1,5 +1,5 @@
-import { DICE, ENCOUNTERS, FAMILY, MAX_JAR, NUDGE_COST, REROLL_COST, SHOP_DIE_COST, SHOP_FORGE_COST, SHOP_HEAL_COST } from './content.js';
-import { canCommit, definition, dieStateInfo, isModifier, modifiedValue, newGame, nextIntent, pendingModifiers, reduceGame, rolledLabel } from './game.js';
+import { DICE, ENCOUNTERS, FAMILY, MANA_REGEN, MAX_JAR, NUDGE_COST, REROLL_COST, SHOP_DIE_COST, SHOP_FORGE_COST, SHOP_HEAL_COST } from './content.js';
+import { canCommit, definition, dieStateInfo, isModifier, jarManaCost, modifiedValue, newGame, nextIntent, pendingModifiers, reduceGame, rolledLabel } from './game.js';
 
 let game = newGame();
 const root = document.querySelector('#app');
@@ -15,7 +15,7 @@ const stat = (label,value,kind='') => `<span class="status-chip ${kind}"><span c
 
 function bar(value,max,kind){return `<div class="statbar ${kind}"><div style="width:${percent(value,max)}"></div></div>`;}
 function printIntent(move) {
-  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : ''].filter(Boolean).join('');
+  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : ''].filter(Boolean).join('');
 }
 function resourceCards() {
   const h=game.hero, e=game.enemy, en=ENCOUNTERS[game.encounter];
@@ -28,7 +28,7 @@ function resourceCards() {
         <span class="eyebrow">THE PLAYER <span class="eyebrow-sep">/</span> RUN 01</span>
         <div class="combatant__line"><h2>The Wanderer</h2><span class="stat-number"><span class="red-heart">${icon.heart}</span> ${h.hp}<small>/${h.maxHp}</small></span></div>
         ${bar(h.hp,h.maxHp,'hp')}
-        <div class="status-line">${stat('Mana',`${h.mana}/${h.maxMana}`,'mana-chip')}${h.block ? stat('Block',h.block,'block-chip') : ''}${h.poison ? stat('Poison',h.poison,'poison-chip') : ''}${h.strengthCharges ? stat(`Power · ${h.strengthCharges} hits`,`+${h.strength}`,'power-chip') : ''}</div>
+        <div class="status-line">${stat('Mana',`${h.mana}/${h.maxMana}`,'mana-chip')}${h.freeRecollections ? stat('Free reroll', h.freeRecollections, 'mana-chip') : ''}${h.block ? stat('Block',h.block,'block-chip') : ''}${h.poison ? stat('Poison',h.poison,'poison-chip') : ''}${h.strengthCharges ? stat(`Power · ${h.strengthCharges} hits`,`+${h.strength}`,'power-chip') : ''}</div>
       </div>
     </div>
     <div class="arena-center"><span class="arcane-mark">✳</span><span class="encounter-number">${game.encounter+1} / ${ENCOUNTERS.length}</span><span class="arena-dash">ENCOUNTER</span></div>
@@ -38,10 +38,10 @@ function resourceCards() {
         <span class="eyebrow">${esc(en.subtitle)}</span>
         <div class="combatant__line"><h2>${esc(en.name)}</h2><span class="stat-number"><span class="red-heart">${icon.heart}</span> ${e.hp}<small>/${e.maxHp}</small></span></div>
         ${bar(e.hp,e.maxHp,'enemy-hp')}
-        <div class="status-line">${e.block ? stat('Block',e.block,'block-chip') : ''}${e.poison ? stat('Poison',e.poison,'poison-chip') : ''}${e.weak ? stat('Weakened',e.weak,'poison-chip') : ''}${!e.block && !e.poison && !e.weak ? '<span class="quiet-status">No active effects</span>' : ''}</div>
+        <div class="status-line">${e.armor ? stat('Armor / hit',e.armor,'armor-chip') : ''}${e.block ? stat('Block',e.block,'block-chip') : ''}${e.poison ? stat('Poison',e.poison,'poison-chip') : ''}${e.weak ? stat('Weakened',e.weak,'poison-chip') : ''}${move?.interruptAt ? stat('Stagger',`${e.stagger}/${move.interruptAt}`,'stagger-chip') : ''}${!e.armor && !e.block && !e.poison && !e.weak && !move?.interruptAt ? '<span class="quiet-status">No active effects</span>' : ''}</div>
       </div>
     </div>
-    ${!isBetween && move ? `<div class="intent-strip"><span class="intent-caption">⌁ ENEMY INTENT</span><strong>${esc(move.name)}</strong><div class="intent-effects">${printIntent(move)}</div></div>` : ''}
+    ${!isBetween && move ? `<div class="intent-strip"><span class="intent-caption">⌁ ENEMY INTENT</span><strong>${esc(move.name)}</strong><div class="intent-effects">${printIntent(move)}</div>${en.mechanic ? `<small class="encounter-rule">${esc(en.mechanic)}</small>` : ''}</div>` : ''}
   </section>`;
 }
 function phaseHeader(marker,title,copy,extra='') {
@@ -52,27 +52,30 @@ function faceElement(value, die, compact=false) {
 }
 function dieCard(die, opts={}) {
   const d=definition(die),data=info(die), selected=game.selected.includes(die.id), unavailable=die.remaining>0;
+  const unaffordable = !selected && !unavailable && jarManaCost(game) + d.manaCost > game.hero.mana;
   const label=selected ? 'Remove from jar' : 'Add to jar';
-  return `<button class="inventory-die ${data.accent} ${selected?'chosen':''} ${unavailable?'cooling':''}" data-action="toggle-die" data-id="${esc(die.id)}" type="button" aria-pressed="${selected}" ${unavailable?'disabled':''} aria-label="${esc(label)}: ${esc(d.name)}${unavailable?', cooldown '+die.remaining:''}">
+  return `<button class="inventory-die ${data.accent} ${selected?'chosen':''} ${unavailable?'cooling':''} ${unaffordable?'unaffordable':''}" data-action="toggle-die" data-id="${esc(die.id)}" type="button" aria-pressed="${selected}" ${unavailable?'disabled':''} aria-label="${esc(label)}: ${esc(d.name)}${unavailable?', cooldown '+die.remaining:''}, costs ${d.manaCost} mana">
     <div class="die-top"><span class="die-symbol">${esc(d.icon)}</span><span class="die-top-right">${unavailable?`${icon.clock} ${die.remaining} TURN${die.remaining!==1?'S':''}`:selected?'✓ IN JAR':`D6 · CD ${d.cooldown}`}</span></div>
     <div class="die-identity"><h3>${esc(d.name)}</h3><span class="family-tag">${esc(data.label)}</span></div>
     <div class="die-detail">${esc(d.description)}</div>
     <div class="mini-faces" aria-label="Die faces: ${die.faces.join(', ')}">${die.faces.map(n=>`<span>${n}</span>`).join('')}</div>
-    <div class="inventory-die__foot">${unavailable?'RECOVERING':selected?'REMOVE FROM JAR':'SELECT DIE'} <span>${unavailable?'◷':selected?'−':'+'}</span></div>
+    <div class="inventory-die__foot"><span>${unavailable?'RECOVERING':selected?'REMOVE FROM JAR':unaffordable?'TOO EXPENSIVE':'SELECT DIE'}</span><span class="die-mana-cost">✦ ${d.manaCost} MANA</span></div>
   </button>`;
 }
 function jarSlot(id, index) {
   if (!id) return `<div class="jar-slot jar-slot--empty"><span class="jar-slot__index">0${index+1}</span><span class="jar-slot__plus">+</span><span class="jar-slot__caption">EMPTY</span></div>`;
-  const die=dieById(id);const f=definition(die);return `<div class="jar-slot ${FAMILY[f.family].accent}"><span class="jar-slot__index">0${index+1}</span><span class="jar-slot__glyph">${esc(f.icon)}</span><span class="jar-slot__name">${esc(f.name)}</span><button class="jar-slot__remove" data-action="toggle-die" data-id="${esc(id)}" type="button" aria-label="Remove ${esc(f.name)} from jar">×</button></div>`;
+  const die=dieById(id);const f=definition(die);return `<div class="jar-slot ${FAMILY[f.family].accent}"><span class="jar-slot__index">0${index+1}</span><span class="jar-slot__glyph">${esc(f.icon)}</span><span class="jar-slot__name">${esc(f.name)}</span><span class="jar-slot__cost">✦ ${f.manaCost}</span><button class="jar-slot__remove" data-action="toggle-die" data-id="${esc(id)}" type="button" aria-label="Remove ${esc(f.name)} from jar">×</button></div>`;
 }
 function selectionPanel() {
   const eligible=game.dice.filter(d=>d.remaining===0).length;
-  const canRoll=game.selected.some(id=>!isModifier(dieById(id)));
-  return `${phaseHeader('01 / PREPARE THE JAR','Choose your <em>dice.</em>','Read the enemy intent, then select up to five ready dice. Watch cooldowns and assemble a combination worth rolling.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>${eligible} dice ready</span></div>`)}
+  const cost=jarManaCost(game), manaLeft=game.hero.mana-cost;
+  const canRoll=game.selected.some(id=>!isModifier(dieById(id))) && cost<=game.hero.mana;
+  return `${phaseHeader('01 / PREPARE THE JAR','Choose your <em>dice.</em>','Each die costs mana to roll. Spend big now, or save mana for manipulating your results and preparing future turns.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>${eligible} dice ready</span></div>`)}
   <div class="jar-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> YOUR JAR <span class="subtle-inline">${game.selected.length} / ${MAX_JAR} SLOTS FILLED</span></div>
     <div class="jar-slots">${Array.from({length:MAX_JAR},(_,i)=>jarSlot(game.selected[i],i)).join('')}</div>
-    <div class="jar-actions"><div class="jar-helper"><span class="helper-sigil">◈</span> Dice stay on cooldown after use. Ready dice can be saved for later turns.</div><button class="primary-button" type="button" data-action="roll" ${canRoll?'':'disabled'}>ROLL THE JAR <span>➜</span></button></div>
+    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${MANA_REGEN} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
+    <div class="jar-actions"><div class="jar-helper"><span class="helper-sigil">◈</span> Your first Recollection is free each turn. Extra rerolls cost mana, and dice used enter cooldown.</div><button class="primary-button" type="button" data-action="roll" ${canRoll?'':'disabled'}>ROLL THE JAR <span>➜</span></button></div>
   </div>
   <div class="collection-heading"><div><span class="eyebrow">YOUR COLLECTION</span><h2>The dice satchel <small>${game.dice.length} dice</small></h2></div><span class="collection-helper">CLICK A DIE TO ${game.selected.length?'ADD OR REMOVE':'SELECT'}</span></div>
   <div class="dice-inventory">${[...game.dice].sort((a,b)=>a.remaining-b.remaining).map(d=>dieCard(d)).join('')}</div>`;
@@ -84,7 +87,9 @@ function effectText(die, value) {
   if (t==='poison') return `${value} POISON`;
   if (t==='weaken') return `−${value} NEXT ATTACK`;
   if (t==='strength') return `+${Math.ceil(value/2)} POWER / 2 HITS`;
-  if (t==='mana') return `+${value} MANA (CAP 5)`;
+  if (t==='sunder') return `REMOVE UP TO ${value} ARMOR`;
+  if (t==='stagger') return `${value} STAGGER`;
+  if (t==='mana') return `+${value} MANA (CAP ${game.hero.maxMana})`;
   if (t==='heal') return `+${value} HP`;
   return '';
 }
@@ -108,14 +113,15 @@ function rollTile(id,index) {
 function rollTools() {
   const d=selectedDie(),value=d?game.rolls[d.id]:null;
   const canNudge=!!d && value<Math.max(...d.faces) && game.hero.mana>=NUDGE_COST;
+  const rerollCost=game.hero.freeRecollections>0?0:REROLL_COST;
   return `<section class="control-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> ARCANE CONTROL <span class="panel-trailing">${game.hero.mana}/${game.hero.maxMana} MANA</span></div>
     <div class="mana-meter">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="mana-crystal ${i<game.hero.mana?'filled':''}" aria-hidden="true">◆</span>`).join('')}</div>
     ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3><p>Rolled <strong>${esc(rolledLabel(d,value))}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
-    <div class="tool-actions"><button class="tool-button" data-action="reroll" data-id="${esc(d.id)}" type="button" ${game.hero.mana<REROLL_COST?'disabled':''}><span>↻</span><span>Reroll<small>TRY YOUR LUCK</small></span><b>1 ✦</b></button>
+    <div class="tool-actions"><button class="tool-button" data-action="reroll" data-id="${esc(d.id)}" type="button" ${game.hero.mana<rerollCost?'disabled':''}><span>↻</span><span>Recollection<small>${rerollCost?'ADDITIONAL REROLL':'FIRST REROLL FREE'}</small></span><b>${rerollCost?`${rerollCost} ✦`:'FREE'}</b></button>
     <button class="tool-button" data-action="nudge" data-id="${esc(d.id)}" type="button" ${!canNudge?'disabled':''}><span>↑</span><span>Nudge +1<small>CHANGE THE RESULT</small></span><b>2 ✦</b></button></div>
     ${game.links[d.id]?`<button class="text-button" data-action="detach" data-id="${esc(d.id)}" type="button">⤫ Detach from ${esc(definition(dieById(game.links[d.id])).name)}</button>`:''}` : `<div class="no-selected"><div class="no-selected__icon">✧</div><h3>Take control of fate.</h3><p>Tap a rolled die to reroll or nudge it. Select a purple modifier, then tap an effect die to attach.</p></div>`}
-    <div class="control-note"><span>⟡</span><p>Recover <b>2 mana</b> each turn. Unused mana carries over (max 5). Attaching and arranging dice is free.</p></div>
+    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${MANA_REGEN} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
   </section>`;
 }
 function resolutionTrack() {
@@ -128,7 +134,7 @@ function resolutionTrack() {
 }
 function castPanel() {
   const unattached=pendingModifiers(game).length;
-  return `${phaseHeader('02 / BEND THE OUTCOME','Make the roll <em>matter.</em>','Attach purple modifiers to any effect die. Reroll or nudge your results with mana, then choose your activation order.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>ROLL COMPLETE</span></div>`)}
+  return `${phaseHeader('02 / BEND THE OUTCOME','Make the roll <em>matter.</em>','Your jar has already consumed its mana. Use free Recollection or spend remaining mana to refine your results, then arrange attachments and resolve.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>ROLL COMPLETE</span></div>`)}
   <div class="rolled-header"><span class="eyebrow">DICE ON THE TABLE</span><span class="roll-hint">${unattached ? `${unattached} MODIFIER${unattached>1?'S':''} UNATTACHED`: '✓ ALL MODIFIERS CONNECTED'}</span></div>
   <div class="rolled-grid">${game.selected.map(rollTile).join('')}</div>
   <div class="control-grid">${rollTools()}${resolutionTrack()}</div>
@@ -136,7 +142,7 @@ function castPanel() {
 }
 function offerCard(type,purchase=false,sold=false) {
   const d=DICE[type],f=FAMILY[d.family];
-  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3><p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span></div></div>
+  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3><p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
     <button type="button" class="offer-buy" data-action="${purchase?'shop-buy-die':'claim-die'}" data-die-type="${esc(type)}" ${sold||purchase&&game.gold<SHOP_DIE_COST?'disabled':''}>${sold?'SOLD':purchase?`BUY FOR ${SHOP_DIE_COST} ◈`:'CLAIM DIE  →'}</button></div>`;
 }
 function rewardPanel(){return `${phaseHeader('03 / VICTORY REWARD','Claim your <em>fortune.</em>','One battle behind you. Choose a free die, improve a face, or rest before visiting the traveling merchant.',`<div class="phase-meta"><span class="phase-meta__big">+${ENCOUNTERS[game.encounter].gold} GOLD</span><span>ENCOUNTER CLEARED</span></div>`)}
@@ -159,7 +165,7 @@ function sidebar() {
   return `<aside class="sidebar"><section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
     <div class="divider"></div><div class="sidebar-subtitle">COOLDOWN STATUS</div><div class="cooldown-count"><span><i class="count-ready"></i> ${ready} ready</span><span><i class="count-wait"></i> ${game.dice.length-ready} recovering</span></div></section>
     <section class="sidebar-card log-card"><div class="panel-label"><span class="dot-ornament">✧</span> CHRONICLE <span class="panel-trailing">LIVE</span></div><div class="log-feed" aria-label="Battle log" aria-live="polite">${game.log.slice(0,9).map(l=>`<div class="log-line ${l.type}"><span>›</span>${esc(l.message)}</div>`).join('')}</div></section>
-    ${active ? `<section class="hint-card"><span class="hint-card__icon">✦</span><span class="eyebrow">THE ART OF THE JAR</span><h3>${game.phase==='select'?'Choose with intention.':'Attach. Arrange. Commit.'}</h3><p>${game.phase==='select'?'Big effects have longer cooldowns. Sometimes the best move is saving a rare die for next turn.':'Additive modifiers apply first, then multipliers. A buff die activates only when its place in the order is reached.'}</p><button type="button" data-action="help">READ THE FIELD GUIDE →</button></section>`:''}</aside>`;
+    ${active ? `<section class="hint-card"><span class="hint-card__icon">✦</span><span class="eyebrow">THE ART OF THE JAR</span><h3>${game.phase==='select'?'Choose with intention.':'Attach. Arrange. Commit.'}</h3><p>${game.phase==='select'?'Loading dice costs mana. Cheap dice leave more energy to manipulate the roll; save expensive combinations for dangerous turns.':'Additive modifiers apply first, then multipliers. A buff die activates only when its place in the order is reached.'}</p><button type="button" data-action="help">READ THE FIELD GUIDE →</button></section>`:''}</aside>`;
 }
 function render() {
   let main;
