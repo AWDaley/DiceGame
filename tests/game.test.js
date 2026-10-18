@@ -4,7 +4,7 @@ import {
   newGame, makeDie, rollValue, reduceGame, modifiedValue,
   pendingModifiers, canCommit, nextIntent,
 } from '../src/game.js';
-import { ENCOUNTERS, MAX_JAR, SHOP_DIE_COST, SHOP_FORGE_COST } from '../src/content.js';
+import { ENCOUNTERS, MAX_JAR, MAX_MANA, SHOP_DIE_COST, SHOP_FORGE_COST } from '../src/content.js';
 
 const rng = () => 0.5; // rolling the fourth face of a standard d6 -> 4
 const first = (s, type) => s.dice.find(d => d.type === type).id;
@@ -18,8 +18,9 @@ test('new runs initialize the campaign, mana, dice, and telegraphed intent', () 
   const s = newGame();
   assert.equal(s.phase, 'select');
   assert.equal(s.hero.hp, 60);
-  assert.equal(s.hero.mana, 5);
-  assert.equal(s.dice.length, 10);
+  assert.equal(s.hero.mana, MAX_MANA);
+  assert.equal(s.hero.freeRecollections, 1);
+  assert.equal(s.dice.length, 12);
   assert.equal(nextIntent(s).name, 'Heavy Swing');
 });
 
@@ -75,7 +76,7 @@ test('modifier attachments may be moved and detached without consuming mana', ()
   assert.equal(modifiedValue(s, first(s, 'guard')), 8);
   s = act(s, 'DETACH', { id: plus });
   assert.equal(modifiedValue(s, first(s, 'guard')), 4);
-  assert.equal(s.hero.mana, 5);
+  assert.equal(s.hero.mana, 4);
   assert.equal(canCommit(s), false);
 });
 
@@ -85,15 +86,21 @@ test('modifiers cannot target other modifiers or dice that were not rolled', () 
   assert.match(act(s, 'ATTACH', { modId: first(s, 'plus'), targetId: first(s, 'guard') }).notice, /rolled dice/);
 });
 
-test('mana rerolls and nudges change a rolled value and enforce a maximum face', () => {
-  let s = roll(newGame(), 'strike');
+test('free Recollection comes before paid rerolls; nudges and extra rerolls cost mana', () => {
+  let s = roll(newGame(), 'strike'); // 1 mana casting cost
+  assert.equal(s.hero.mana, 6);
   s = act(s, 'REROLL', { id: first(s, 'strike') }, () => 0);
   assert.equal(s.rolls[first(s, 'strike')], 1);
-  assert.equal(s.hero.mana, 4);
+  assert.equal(s.hero.mana, 6);
+  assert.equal(s.hero.freeRecollections, 0);
   s = act(s, 'NUDGE', { id: first(s, 'strike') });
   assert.equal(s.rolls[first(s, 'strike')], 2);
-  assert.equal(s.hero.mana, 2);
+  assert.equal(s.hero.mana, 4);
   s = act(s, 'NUDGE', { id: first(s, 'strike') });
+  assert.equal(s.hero.mana, 2);
+  s = act(s, 'REROLL', { id: first(s, 'strike') });
+  assert.equal(s.hero.mana, 1);
+  s = act(s, 'REROLL', { id: first(s, 'strike') });
   assert.equal(s.hero.mana, 0);
   const denied = act(s, 'REROLL', { id: first(s, 'strike') });
   assert.equal(denied.hero.mana, 0);
@@ -111,10 +118,11 @@ test('nudging the highest face does not spend mana', () => {
 test('shield absorbs damage; mana regenerates; zero-cooldown dice are ready immediately', () => {
   let s = roll(newGame(), 'guard');
   s = act(s, 'REROLL', { id: first(s, 'guard') }, () => 0);
-  assert.equal(s.hero.mana, 4);
+  assert.equal(s.hero.mana, 6);
   s = act(s, 'COMMIT');
   assert.equal(s.hero.hp, 54); // guard 1 absorbs one of 7
-  assert.equal(s.hero.mana, 5);
+  assert.equal(s.hero.mana, MAX_MANA);
+  assert.equal(s.hero.freeRecollections, 1);
   assert.equal(s.hero.block, 0);
   assert.equal(s.turn, 2);
   assert.equal(s.dice.find(d => d.type === 'guard').remaining, 0);
@@ -176,7 +184,7 @@ test('winning an encounter offers three free dice and gold', () => {
   const type = s.rewardOffers[0];
   s = act(s, 'CLAIM_DIE', { dieType: type });
   assert.equal(s.phase, 'shop');
-  assert.equal(s.dice.length, 11);
+  assert.equal(s.dice.length, 13);
 });
 
 test('rest, shop heal, purchasing, and the next encounter work', () => {
@@ -190,7 +198,7 @@ test('rest, shop heal, purchasing, and the next encounter work', () => {
   const offered = s.shopOffers[0];
   s = act(s, 'SHOP_BUY_DIE', { dieType: offered });
   assert.equal(s.gold, ENCOUNTERS[0].gold - SHOP_DIE_COST);
-  assert.equal(s.dice.length, 11);
+  assert.equal(s.dice.length, 13);
   s = act(s, 'NEXT_ENCOUNTER');
   assert.equal(s.encounter, 1);
   assert.equal(s.turn, 1);
