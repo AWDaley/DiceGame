@@ -4,23 +4,26 @@ A playable browser prototype of a *Slay the Spire*-inspired dice-building roguel
 
 **Working title:** Jarbound. **Status:** Playable combat overhaul (v0.2), four encounters. **Platform:** Browser (desktop and mobile). **Runtime dependencies:** None.
 
-## Run locally
+## Play from the ZIP — no installation needed
 
-Requires Node.js 20+ for the included development server and test runner.
+1. Download the latest release ZIP (or the updated folder from this repository).
+2. **Extract all files** to a folder.
+3. Open **`DiceGame/index.html`** in Chrome, Firefox, or Edge. The game appears immediately; click a die in **The dice satchel** to add it to the jar, then choose **ROLL THE JAR**.
+
+`index.html` is a self-contained, offline HTML game: JavaScript and styles are embedded and do not depend on `file://`-restricted module loading, a web server, or an internet connection. **Do not use the older `Jarbound-combat-overhaul-v02.zip`: that version cannot run when opened directly as a local file.**
+
+### Development
+
+Node.js 20+ is required only for editing, rebuilding, and running tests—not for playing the downloaded game.
 
 ```bash
-npm run dev
+npm run dev       # Builds the standalone file and starts a local server
 # Open http://localhost:5173
+npm run build     # Regenerate the offline-playable index.html after changing src/ or styles.css
+npm run check     # Check the generated file, run syntax checks and tests
 ```
 
-Or serve the repository root with any static HTTP server, for example:
-
-```bash
-python3 -m http.server 8000
-# Open http://localhost:8000
-```
-
-Because the app uses ES modules, **do not double-click `index.html`** and expect it to work from a `file://` URL: serve the files over HTTP instead. No npm installation or build step is required.
+`src/` retains normal ES modules for development and unit testing. `src/index.template.html` is the editable page shell. `scripts/build-standalone.js` regenerates `index.html`, bundling the game into one file without installing dependencies. Do not manually edit the generated `index.html` because the next build will replace it.
 
 ## How to play
 
@@ -69,8 +72,10 @@ This is deliberately a combat and progression **prototype**, not a content-compl
 ## Code layout
 
 ```text
-index.html              Main HTML and help dialog
-styles.css              Responsive game presentation
+index.html              Generated standalone offline game (open directly to play)
+styles.css              Editable responsive styles
+src/index.template.html  Editable page shell
+scripts/build-standalone.js Zero-dependency offline exporter
 src/content.js          Die definitions, enemy moves, starting loadout, balance constants
 src/game.js             Pure game reducer, combat rules, progression logic
 src/main.js             Browser UI rendering and pointer interactions
