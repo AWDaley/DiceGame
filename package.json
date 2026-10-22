@@ -5,9 +5,12 @@
   "type": "module",
   "description": "Zero-dependency browser prototype of a dice-building roguelike with attachable modifier dice and mana-based roll manipulation.",
   "scripts": {
-    "dev": "node scripts/server.js",
+    "dev": "npm run build && node scripts/server.js",
     "test": "node --test",
-    "check": "node --check src/content.js && node --check src/game.js && node --check src/main.js && npm test"
+    "check": "node --check src/content.js && node --check src/game.js && node --check src/main.js && node scripts/build-standalone.js --check && npm test",
+    "build": "node scripts/build-standalone.js"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }
