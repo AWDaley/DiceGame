@@ -1,10 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  newGame, makeDie, rollValue, reduceGame, modifiedValue,
+  newGame as createCharacter, makeDie, rollValue, reduceGame, modifiedValue,
   pendingModifiers, canCommit, nextIntent,
 } from '../src/game.js';
 import { ENCOUNTERS, MAX_JAR, MAX_MANA, SHOP_DIE_COST, SHOP_FORGE_COST } from '../src/content.js';
+
+// Isolate legacy combat rules from the separately tested character creation flow.
+function newGame() {
+  const state = createCharacter();
+  state.phase = 'select';
+  state.hero.attributePoints = 0;
+  return state;
+}
+function claimAttribute(state) {
+  if (state.phase !== 'levelup') return state;
+  state = reduceGame(state, { type: 'ALLOCATE_ATTRIBUTE', attribute: 'might', delta: 1 });
+  return reduceGame(state, { type: 'CONFIRM_ATTRIBUTES' });
+}
 
 const rng = () => 0.5; // rolling the fourth face of a standard d6 -> 4
 const first = (s, type) => s.dice.find(d => d.type === type).id;
@@ -178,6 +191,8 @@ test('winning an encounter offers three free dice and gold', () => {
   s.enemy.hp = 1;
   s = roll(s, 'strike');
   s = act(s, 'COMMIT');
+  assert.equal(s.phase, 'levelup');
+  s = claimAttribute(s);
   assert.equal(s.phase, 'reward');
   assert.equal(s.rewardOffers.length, 3);
   assert.equal(s.gold, ENCOUNTERS[0].gold);
@@ -191,7 +206,7 @@ test('rest, shop heal, purchasing, and the next encounter work', () => {
   let s = newGame();
   s.enemy.hp = 1;
   s.hero.hp = 20;
-  s = act(roll(s, 'strike'), 'COMMIT');
+  s = claimAttribute(act(roll(s, 'strike'), 'COMMIT'));
   s = act(s, 'REST');
   assert.equal(s.hero.hp, 34);
   assert.equal(s.phase, 'shop');
@@ -208,7 +223,7 @@ test('rest, shop heal, purchasing, and the next encounter work', () => {
 test('face forging increases a single face and charges shop gold', () => {
   let s = newGame();
   s.enemy.hp = 1;
-  s = act(roll(s, 'strike'), 'COMMIT');
+  s = claimAttribute(act(roll(s, 'strike'), 'COMMIT'));
   s = act(s, 'CLAIM_DIE', { dieType: s.rewardOffers[0] });
   const before = s.gold;
   s = act(s, 'FORGE_START');
@@ -222,7 +237,7 @@ test('face forging increases a single face and charges shop gold', () => {
 test('forging can be selected instead of free die reward', () => {
   let s = newGame();
   s.enemy.hp = 1;
-  s = act(roll(s, 'strike'), 'COMMIT');
+  s = claimAttribute(act(roll(s, 'strike'), 'COMMIT'));
   s = act(s, 'FORGE_START');
   assert.equal(s.forgeCost, 0);
   s = act(s, 'UPGRADE_FACE', { id: first(s, 'guard'), faceIndex: 5 });

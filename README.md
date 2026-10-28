@@ -1,114 +1,109 @@
-# Jarbound — Dice-Building Roguelike (Prototype)
+# Jarbound — Character Stats Prototype v0.3
 
-A playable browser prototype of a *Slay the Spire*-inspired dice-building roguelike, where you select dice for a jar, roll them, attach modifiers to other dice, spend mana to manipulate their faces, manage mana and cooldowns across combat turns, and adapt to enemy armor and interruptible attacks.
+An offline, single-player dice-building roguelike with four encounters. Choose a character build, load a five-die jar, roll, attach modifiers, manipulate outcomes, and manage mana and cooldowns.
 
-**Working title:** Jarbound. **Status:** Playable combat overhaul (v0.2), four encounters. **Platform:** Browser (desktop and mobile). **Runtime dependencies:** None.
+## Play immediately
 
-## Play from the ZIP — no installation needed
+**Double-click `index.html`.** It contains all game code and styles; no installation, account, server, network, or build step is needed for players. Extract the ZIP first. New Run returns to character creation.
 
-1. Download the latest release ZIP (or the updated folder from this repository).
-2. **Extract all files** to a folder.
-3. Open **`DiceGame/index.html`** in Chrome, Firefox, or Edge. The game appears immediately; click a die in **The dice satchel** to add it to the jar, then choose **ROLL THE JAR**.
+There is no save system yet. Refreshing the page or starting a new run discards the current run.
 
-`index.html` is a self-contained, offline HTML game: JavaScript and styles are embedded and do not depend on `file://`-restricted module loading, a web server, or an internet connection. **Do not use the older `Jarbound-combat-overhaul-v02.zip`: that version cannot run when opened directly as a local file.**
+## Build a character
 
-### Development
+Start with **3 attribute points**, allocating at most **2** to one attribute. Each non-final victory grants **1 additional point**, up to **4** per attribute. Allocate the earned point before choosing the normal victory reward. Points can be moved only during the current allocation screen; established investments cannot be refunded.
 
-Node.js 20+ is required only for editing, rebuilding, and running tests—not for playing the downloaded game.
+Every die has exactly one associated attribute, shown on its card. The association belongs to the die, not its effect family: Stone Guard uses Vitality, Duelist Parry uses Finesse, and Arcane Barrier uses Arcana, although all three generate block.
 
-```bash
-npm run dev       # Builds the standalone file and starts a local server
-# Open http://localhost:5173
-npm run build     # Regenerate the offline-playable index.html after changing src/ or styles.css
-npm run check     # Check the generated file, run syntax checks and tests
+| Attribute | Examples | Character effect |
+|---|---|---|
+| Might | Iron Strike, Platebreaker, Disruptor | Add to the associated die's roll |
+| Finesse | Quick Cut, Venom, Gilded Plus, Duelist Parry | Add to the associated die's roll |
+| Arcana | Hex, Echo Prism, Black Spores, Arcane Barrier | Add to the associated die's roll |
+| Vitality | Guard, Restoration, Iron Bastion | +6 maximum and current HP per permanent point |
+| Spirit | Mana Well, Battle Hymn, Amber Amplifier | +1 maximum mana per permanent point |
+
+Base HP is 60. Base maximum mana is 7. Regeneration is 4 per turn unless the Meditation talent raises it to 5. Permanent resource-capacity increases preserve missing HP/mana; they do not fully heal the character. Temporary attribute bonuses never change capacities, regeneration, resistances, or talent eligibility.
+
+### Talents and resistances
+
+At **2 Vitality**, choose Iron Skin (resist 1 physical damage per hit) or Antitoxin (resist 2 poison damage per tick).
+
+At **2 Spirit**, choose Meditation (+1 mana regenerated per turn) or Arcane Warding (resist 2 arcane damage per hit).
+
+Choose a newly unlocked talent before confirming allocation. A confirmed talent is locked for the run. Refunding a newly allocated threshold point removes its unconfirmed talent. Physical/arcane resistance is applied before block; poison bypasses block but is reduced by poison resistance. Resistance never produces healing or negative damage.
+
+## How rolls work
+
+```text
+Adjusted roll = max(0, raw face + permanent attribute + temporary bonuses/penalties)
+Final effect = (adjusted roll + adjusted additive modifiers) × multiplier modifiers
 ```
 
-`src/` retains normal ES modules for development and unit testing. `src/index.template.html` is the editable page shell. `scripts/build-standalone.js` regenerates `index.html`, bundling the game into one file without installing dependencies. Do not manually edit the generated `index.html` because the next build will replace it.
+Each modifier uses its own attribute. Apply the target's attribute only once. A multiplier converts its adjusted roll using `ceil(adjusted / 2)`, bounded to **×1–×3**. Multiple multipliers can still stack. Effects have a numerical safety ceiling of 999.
 
-## How to play
+Example: Iron Strike face 4 + Might 2 = 6; Gilded Plus face 4 + Finesse 1 = +5; Echo Prism face 4 + Arcana 0 = ×2. The final attack is `(6 + 5) × 2 = 22` before Battle Hymn power and enemy defenses.
 
-1. **Choose** 1–5 available dice, including at least one non-modifier die. Every die has a displayed **mana cost**. Preparing the jar reserves a budget without spending it; mana is deducted when you roll. A zero-cost Quick Cut stays available on zero cooldown.
-2. **Roll** the jar. Each die has a fixed job (attack, defend, poison, weaken, buff, heal, restore mana, add, or multiply). Its rolled number determines that effect's magnitude.
-3. **Manipulate** results using **one free Recollection (reroll) per turn**, further rerolls for **1 mana** each, or +1 nudges for **2 mana**. Mana starts at 7, regenerates 4 after a turn, and carries over up to 7. This is the same mana used to load the jar.
-4. **Attach** purple modifier dice to any effect die after rolling. Click/tap the modifier, then the target; drag-and-drop also works on desktop. Adding and attaching costs no mana. Every rolled modifier must have a target before you can commit.
-5. **Reorder** effect dice to control when buffs, attacks, heals, blocks, and debuffs activate. Modifiers activate with their target; additive effects apply before multipliers.
-6. **Commit** your cast. Dice resolve in order, the enemy performs its telegraphed action, then used dice enter cooldown. Each die's cooldown number is how many *future* turns it must skip.
-7. **Counter enemies.** The Hollow Sentinel has permanent armor that reduces **every physical hit**, which Platebreaker removes; poison bypasses armor. The Scrap Brute and Jarbreaker have **interruptible charged attacks**—apply stagger with Disruptor to reach the visible threshold *on that turn*. Stagger is cleared after each enemy action.
-8. **Progress** through four fights. After each victory, choose a free die, rest, or forge one face. Spend earned gold in the merchant's shop to acquire dice, improve individual faces, or heal.
+The UI shows raw face, permanent attribute, temporary effects, and attachment arithmetic. Rerolls replace only the raw face. Nudge adds 1 to the raw face up to its highest engraved face; an attribute-adjusted result may exceed that maximum. A stat-adjusted six is not a natural six.
 
-### Example attachment
+**Quick Cut is a free emergency attack capped at 3 total damage**, including attributes, attachments, and Battle Hymn power. Mana Well costs 1 mana and skips 2 future turns, so scaling it is not a free resource engine.
 
-An Attack die rolls **4**, an Add die rolls **3**, and a Multiply die rolls **4** (which becomes ×2). Attach both modifiers to Attack:
+## Combat loop
 
-`(4 + 3) × 2 = 14 damage`
+1. Select up to five ready dice within the mana budget. Selection reserves mana; rolling pays it. Include at least one effect die.
+2. Roll all selected dice. One Recollection is free each turn; further rerolls cost 1 mana and Nudge costs 2.
+3. Attach each purple modifier to one effect die, freely. Modifiers can be moved or detached. Modifier-to-modifier chaining is not supported.
+4. Reorder effect dice, then commit. Battle Hymn power applies to the next two attacks; Platebreaker strips armor before later physical hits. Poison bypasses enemy armor and block.
+5. The enemy acts unless killed or interrupted. Meet a charged move's stagger threshold to interrupt the whole move, including penalties. Used dice skip the stated number of future turns.
+6. After a non-final victory, allocate a stat point, choose a die/rest/forge reward, then visit the shop. HP persists; battle statuses and cooldowns reset between fights.
 
-The same two modifiers could instead be attached to a Block die, a Poison die, or a mana-generation die. Ordinary modifiers can target one effect die each; you can stack multiple modifiers onto one target. Modifier-to-modifier chaining is not part of the initial prototype.
+### Focus and enemy counterplay
 
-### Design decisions for the first build
+**Focus** costs 2 mana and adds +2 to a chosen attribute **for the current turn only**. Use it before or after rolling through the character sidebar. It skips two future turns after use. Focus cannot spend mana already reserved for the jar.
 
-| Rule | Prototype choice |
-|---|---|
-| Die shapes | All six-sided (d6) |
-| Roles | One job per die; face value determines magnitude |
-| Jar size | 5 dice |
-| Modifiers | Additive and multiplicative, attach after rolling |
-| Mana | Each die has a roll cost; 7 maximum, +4/turn, 1 free reroll/turn |
-| Enemy counters | Per-hit armor, permanent sunder, charged moves and stagger interrupts |
-| Manipulations | Reroll (1 mana), +1 nudge (2 mana) |
-| Cooldowns | Per-die, 0–2 skipped turns |
-| Enemies | 4 encounters with telegraphed attacks, defensive moves, poison, armor, and charged moves |
-| Progression | Reward dice, a shop, face-by-face upgrades, healing |
+The Mire Alchemist's Numbing Vines telegraphs **−2 Finesse for your next turn** and is interruptible with 5 stagger. The Jarbreaker's Corrupting Blow telegraphs **−2 Arcana for your next turn** and can be interrupted with 6 stagger. These penalties are additive, expire after that one player turn, and do not permanently alter the character. Focus can offset a penalty without deleting it.
 
-This is deliberately a combat and progression **prototype**, not a content-complete roguelike. It does not yet include random routes, artifacts/jar variants, multiple die shapes, sound, long-term save files, or full balance tuning.
+The Jarbreaker's Arcane Shatter and Corrupting Blow deal arcane damage. Other current attacks are physical. Intents show damage type, penalty, and interrupt threshold before commitment.
 
-## Combat-overhaul design notes (v0.2)
+## Develop and test
 
-- **One resource, two uses.** Loading dice into the jar costs mana when you roll; remaining mana can be used to repair a poor roll. A free Recollection retains post-roll player agency even after spending all available mana on dice.
-- **Never hard-lock the player.** Quick Cut is a free, zero-cooldown attack die, so even at zero mana the next turn can still be played. Mana Well is also free, but has cooldown and restores mana only when the cast resolves, not in the manipulation phase.
-- **Armor is not block.** Armor reduces each direct attack *before* ordinary shield block, remains for the whole encounter until sundered, and does not reduce poison damage. Prioritizing Platebreaker before Strike is now a real sequencing choice.
-- **Interrupts reward timing.** Charged attacks show a stagger threshold. Stagger must reach that threshold on the same turn; it cannot be banked. Interrupting skips the charged enemy move entirely, but other attacks are still countered by defending, weakening, or killing the enemy.
-- **For testing rather than final balance.** Costs, regeneration, stagger thresholds, and enemy defenses are data-driven. The existing die types still use d6 faces; adding damage types, active abilities, and more enemy archetypes remains future work.
+Node.js 20+ is required only for development. There are no npm/runtime dependencies.
+
+```sh
+npm run dev       # rebuild the standalone game and serve localhost:5173
+npm run build     # regenerate index.html after source changes
+npm run check     # syntax, exact generated-file verification, and automated tests
+npm test          # deterministic engine, UI, and offline packaging tests
+```
+
+Edit the modules and `src/index.template.html`, not the generated `index.html`. Always rebuild and commit the generated file so downloaded repository ZIPs remain playable directly.
+
+An optional graphical smoke test is in `tests/browser-smoke.py`. It requires Python, Playwright, and Chromium (or `CHROMIUM_PATH`) and is not part of the game's runtime. It exercises the exact standalone HTML in an isolated browser document with networking blocked, at desktop and mobile sizes. Screenshots/results are written to ignored `test-results/`. This environment blocks `file://` navigation; the smoke test therefore loads the HTML directly, while Node tests independently verify self-contained packaging and startup/reset behavior.
 
 ## Code layout
 
 ```text
-index.html              Generated standalone offline game (open directly to play)
-styles.css              Editable responsive styles
-src/index.template.html  Editable page shell
-scripts/build-standalone.js Zero-dependency offline exporter
-src/content.js          Die definitions, enemy moves, starting loadout, balance constants
-src/game.js             Pure game reducer, combat rules, progression logic
-src/main.js             Browser UI rendering and pointer interactions
-scripts/server.js       Minimal zero-dependency development HTTP server
-tests/game.test.js      Deterministic Node.js unit tests
-.github/workflows/ci.yml CI and GitHub Pages deployment
+src/content.js              Dice, encounters, attributes, talents, balance constants
+src/attributes.js           Pure attribute and derived-resource calculations
+src/game.js                 Immutable reducer, roll breakdowns, combat, progression
+src/character-ui.js          Allocation screen, stat sidebar, visible roll arithmetic
+src/main.js                 Combat/progression UI and pointer/keyboard interactions
+src/index.template.html     Editable HTML and field guide
+styles.css                  Shared responsive presentation
+scripts/build-standalone.js  Dependency-ordered, zero-dependency offline exporter
+scripts/server.js           Optional local HTTP server
+index.html                  Generated standalone player-facing game
 ```
 
-The combat rules are pure and deterministic if the caller passes an RNG to `reduceGame(state, action, rng)`. State transitions return a fresh state, which makes mechanics easy to test and extend.
+The reducer accepts an RNG for deterministic tests. Character creation and level-up use explicit phases, validated point allocation, and required talent choices. The legacy combat suites use zero-stat fixtures so old combat behavior and new character behavior are tested separately.
 
-## Test
+## Deployment
 
-```bash
-npm run check   # syntax checks + unit tests
-npm test        # node:test suite only
-```
+The existing GitHub Actions workflow runs `npm run check` and deploys when GitHub Pages has been enabled. In repository Settings → Pages, select GitHub Actions as the deployment source. The standalone HTML can also be uploaded to any static host.
 
-## Deploy to GitHub Pages
+## Current scope
 
-The included GitHub Actions workflow runs the Node.js tests, then publishes the static site from the repository root when code is pushed to `main`.
-
-To activate deployment for the first time, go to the GitHub repository **Settings → Pages → Build and deployment → Source → GitHub Actions**. Once the workflow completes, your site can be visited at the Pages URL shown in the repository's Pages settings. The workflow may require Pages to be enabled in repository settings and Actions permission granted by the repository owner.
-
-For any other static host, upload `index.html`, `styles.css`, and `src/` without changing the directory layout.
-
-## Next iteration candidates
-
-- Multiple die sizes, probability-shaping upgrades, and die-specific faces.
-- Jar equipment, passive relics, alternate player classes, and more enemy patterns.
-- Active character abilities (e.g. Recall from cooldown / Overcharge), elemental damage types, and advanced modifier chaining.
-- A branching map, shop tuning, persistence, animations, accessibility enhancements, and audio feedback.
-- Automated browser regression tests and telemetry-free local balancing tools.
+This is a playable prototype, not final balance. All dice remain six-sided. No saves, branching route map, equipment inventory, audio, permanent account progression, or full damage-type ecosystem yet. Stats, poison, stacking modifiers, mana generation, and enemy difficulty need further playtesting as a combined economy.
 
 ## License
 
-MIT (see `LICENSE`).
+MIT; see LICENSE.

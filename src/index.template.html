@@ -14,7 +14,7 @@
     <header class="masthead">
       <div class="brand-wrap" aria-label="Jarbound">
         <div class="brand-symbol" aria-hidden="true">✧<span>✦</span></div>
-        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 02</span></div>
+        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 03</span></div>
       </div>
       <div class="header-actions">
         <span class="version-pill"><i></i> PLAYABLE ALPHA</span>
@@ -23,21 +23,23 @@
       </div>
     </header>
     <main id="app" aria-live="off"></main>
-    <footer class="site-footer"><span>✦ THE FATE IS IN YOUR HANDS</span><span>NO ACCOUNT · NO DOWNLOAD · PURE STRATEGY</span></footer>
+    <footer class="site-footer"><span>✦ THE FATE IS IN YOUR HANDS</span><span>NO ACCOUNT · WORKS OFFLINE · PURE STRATEGY</span></footer>
   </div>
   <dialog id="how-to-play" class="help-modal" aria-labelledby="help-title">
     <div class="dialog-head"><span class="eyebrow">FIELD GUIDE / 01</span><button class="icon-button" type="button" data-action="close-help" aria-label="Close instructions">✕</button></div>
     <h2 id="help-title">Bend the roll. <em>Build the combo.</em></h2>
-    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its rolled face determines how powerful that function is.</p>
+    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its raw face plus the associated attribute determines its power. Temporary buffs and penalties affect rolls, never maximum HP or mana.</p>
     <ol>
+      <li><strong>Build your character.</strong> Allocate 3 points across Might, Finesse, Arcana, Vitality, and Spirit (maximum 2 each at creation). Every die shows its scaling attribute. Vitality adds 6 HP per point; Spirit adds 1 maximum mana. At 2 Vitality or Spirit, choose a talent.</li>
       <li><strong>Prepare.</strong> Choose up to five ready dice. Each die has a mana cost, paid when you roll. Budget mana for your dice <em>and</em> manipulation; cooldowns still apply.</li>
       <li><strong>Roll.</strong> All selected dice roll together. Inspect the enemy's telegraphed move.</li>
-      <li><strong>Manipulate.</strong> You get one <strong>free Recollection (reroll)</strong> per turn. Further rerolls cost <strong>1 mana</strong>, and nudging +1 costs <strong>2 mana</strong>. Regenerate 4 mana per turn, up to 7.</li>
+      <li><strong>Manipulate.</strong> You get one <strong>free Recollection (reroll)</strong> per turn. Further rerolls cost <strong>1 mana</strong>, and nudging +1 costs <strong>2 mana</strong>. Regenerate 4 mana per turn (5 with Meditation), up to your character’s maximum.</li>
       <li><strong>Attach.</strong> Select a purple modifier die, then select any effect die to attach it. Drag-and-drop works on desktop. Stack multiple modifiers on one target; additions resolve before multipliers.</li>
       <li><strong>Order and counter.</strong> Move dice left or right to choose activation order. Against armor, use Platebreaker before attacks or poison to bypass armor. Roll Disruptor on charged turns and meet the displayed stagger threshold to interrupt the move.</li>
-      <li><strong>Progress.</strong> Win fights, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
+      <li><strong>Focus.</strong> Spend 2 mana before or after rolling for +2 to one attribute this turn. Focus skips two future turns. Enemy attribute penalties last for your next turn and can be interrupted when indicated.</li>
+      <li><strong>Progress.</strong> Each non-final victory grants 1 attribute point (maximum 4 per attribute). Allocate it, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
     </ol>
-    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A 4-damage attack with a +3 rune and a ×2 prism becomes <strong>(4 + 3) × 2 = 14 damage</strong>.</p></div>
+    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A face-4 attack with Might 2, a +3 rune, and a ×2 prism becomes <strong>(4 + 2 + 3) × 2 = 18 damage</strong>. Each modifier uses its own attribute. Multipliers are bounded from ×1 to ×3. Quick Cut is a free fallback capped at 3 damage including Battle Hymn power.</p></div>
     <button type="button" class="primary-button" data-action="close-help">ENTER THE JAR <span>→</span></button>
   </dialog>
   <script type="module" src="./src/main.js"></script>

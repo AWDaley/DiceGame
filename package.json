@@ -1,14 +1,14 @@
 {
   "name": "jarbound-dice-roguelike",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "Zero-dependency browser prototype of a dice-building roguelike with attachable modifier dice and mana-based roll manipulation.",
   "scripts": {
     "dev": "npm run build && node scripts/server.js",
+    "build": "node scripts/build-standalone.js",
     "test": "node --test",
-    "check": "node --check src/content.js && node --check src/game.js && node --check src/main.js && node scripts/build-standalone.js --check && npm test",
-    "build": "node scripts/build-standalone.js"
+    "check": "node --check src/content.js && node --check src/attributes.js && node --check src/game.js && node --check src/character-ui.js && node --check src/main.js && node scripts/build-standalone.js --check && npm test"
   },
   "engines": {
     "node": ">=20"

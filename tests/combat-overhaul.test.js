@@ -1,7 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { newGame, reduceGame, modifiedValue, nextIntent, jarManaCost } from '../src/game.js';
+import { newGame as createCharacter, reduceGame, modifiedValue, nextIntent, jarManaCost } from '../src/game.js';
 import { DICE, MAX_MANA, MANA_REGEN } from '../src/content.js';
+// Isolate legacy combat rules from the separately tested character creation flow.
+function newGame() {
+  const state = createCharacter();
+  state.phase = 'select';
+  state.hero.attributePoints = 0;
+  return state;
+}
 const rng = () => 0.5;
 const first = (s, type) => s.dice.find(d => d.type === type).id;
 const act = (s, type, fields = {}, random = rng) => reduceGame(s, { type, ...fields }, random);

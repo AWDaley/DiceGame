@@ -1,11 +1,13 @@
 import {
   DICE, ENCOUNTERS, FAMILY, FREE_RECOLLECTIONS, MANA_REGEN, MAX_JAR, MAX_MANA, NUDGE_COST,
   REROLL_COST, REWARD_POOL, SHOP_DIE_COST, SHOP_FORGE_COST,
-  SHOP_HEAL_COST, STARTING_DICE,
+  SHOP_HEAL_COST, STARTING_DICE, ATTRIBUTES, TALENTS, BASE_HP, STARTING_ATTRIBUTE_POINTS,
+  STARTING_ATTRIBUTE_CAP, ATTRIBUTE_CAP, FOCUS_COST, FOCUS_BONUS, FOCUS_COOLDOWN,
 } from './content.js';
+import { emptyAttributes, attributeBonus, temporaryAttributeBonus, syncDerivedStats,
+  canConfirmAttributes, canFocus, multiplierFromRoll } from './attributes.js';
 
 const DEFAULT_FACES = [1, 2, 3, 4, 5, 6];
-const EFFECT_FAMILIES = new Set(['attack', 'block', 'poison', 'weaken', 'strength', 'mana', 'heal', 'sunder', 'stagger']);
 const clone = value => structuredClone(value);
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const randomIndex = (length, random) => Math.min(length - 1, Math.floor(clamp(random(), 0, 0.999999999) * length));
@@ -18,7 +20,7 @@ export function definition(die) { return DICE[die.type]; }
 export function isModifier(die) { return ['add', 'multiply'].includes(definition(die).family); }
 export function rolledLabel(die, value) {
   const family = definition(die).family;
-  return family === 'add' ? `+${value}` : family === 'multiply' ? `×${Math.ceil(value / 2)}` : String(value);
+  return family === 'add' ? `+${value}` : family === 'multiply' ? `×${multiplierFromRoll(value)}` : String(value);
 }
 export function nextIntent(state) {
   if (!state.enemy) return null;
@@ -61,7 +63,9 @@ function startBattle(state, index) {
   state.hero.poison = 0;
   state.hero.strength = 0;
   state.hero.strengthCharges = 0;
-  state.hero.mana = MAX_MANA;
+  state.hero.mana = state.hero.maxMana;
+  state.hero.statEffects = [];
+  state.hero.focusRemaining = 0;
   state.hero.freeRecollections = FREE_RECOLLECTIONS;
   state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = 0; });
@@ -74,12 +78,15 @@ export function newGame() {
   const state = {
     phase: 'select', encounter: 0, turn: 1, nextId: 1,
     dice: [], selected: [], rolls: {}, links: {}, order: [], activeDie: null, lastJarCost: 0,
-    hero: { hp: 60, maxHp: 60, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
+    hero: { attributes: emptyAttributes(), attributePoints: STARTING_ATTRIBUTE_POINTS, talents: {}, statEffects: [], focusRemaining: 0,
+      manaRegen: MANA_REGEN, resistances: { physical: 0, poison: 0, arcane: 0 }, hp: BASE_HP, maxHp: BASE_HP, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
     enemy: null, gold: 0, rewardOffers: [], shopOffers: [], shopSold: [],
+    allocationBase: emptyAttributes(), level: 1,
     forgeReturn: 'shop', forgeCost: 0, notice: '', log: [], logCounter: 0,
   };
   STARTING_DICE.forEach(type => addOwned(state, type));
   startBattle(state, 0);
+  state.phase = 'character';
   return state;
 }
 
@@ -89,16 +96,31 @@ export function jarManaCost(state) {
 function findRoll(state, id) {
   return state.rolls[id] === undefined ? null : state.rolls[id];
 }
-export function modifiedValue(state, dieId) {
-  const die = findDie(state, dieId);
-  const raw = findRoll(state, dieId);
-  if (!die || raw === null) return 0;
-  if (!EFFECT_FAMILIES.has(definition(die).family)) return raw;
-  const entries = Object.entries(state.links).filter(([, target]) => target === dieId);
-  const additive = entries.reduce((n, [id]) => n + (definition(findDie(state, id)).family === 'add' ? state.rolls[id] : 0), 0);
-  const multiplier = entries.reduce((n, [id]) => n * (definition(findDie(state, id)).family === 'multiply' ? Math.ceil(state.rolls[id] / 2) : 1), 1);
-  return clamp((raw + additive) * multiplier, 0, 999);
+// Raw faces stay in state.rolls. Bonuses are computed, never baked into rerolls.
+export function adjustedRoll(state, dieId) {
+  const die = findDie(state, dieId), raw = findRoll(state, dieId);
+  return !die || raw === null ? 0 : Math.max(0, raw + attributeBonus(state, definition(die).attribute));
 }
+export function rollBreakdown(state, dieId) {
+  const die = findDie(state, dieId), raw = findRoll(state, dieId);
+  if (!die || raw === null) return null;
+  const def = definition(die), attribute = def.attribute;
+  const adjusted = adjustedRoll(state, dieId);
+  let additive = 0, multiplier = 1;
+  if (!isModifier(die)) {
+    for (const [id, target] of Object.entries(state.links)) {
+      const modifier = findDie(state, id);
+      if (target !== dieId || !modifier || !state.selected.includes(id) || findRoll(state, id) === null) continue;
+      if (definition(modifier).family === 'add') additive += adjustedRoll(state, id);
+      if (definition(modifier).family === 'multiply') multiplier *= multiplierFromRoll(adjustedRoll(state, id));
+    }
+  }
+  const uncapped = def.family === 'multiply' ? multiplierFromRoll(adjusted) : (adjusted + additive) * multiplier;
+  const final = Math.min(def.outputCap ?? 999, uncapped);
+  return { raw, attribute, permanent: state.hero.attributes[attribute],
+    temporary: temporaryAttributeBonus(state, attribute), adjusted, additive, multiplier, final, capped: final !== uncapped };
+}
+export function modifiedValue(state, dieId) { return rollBreakdown(state, dieId)?.final ?? 0; }
 export function pendingModifiers(state) {
   return state.selected.filter(id => isModifier(findDie(state,id)) && !state.links[id]);
 }
@@ -114,12 +136,14 @@ function hurtEnemy(state, amount) {
   state.enemy.hp = Math.max(0, state.enemy.hp - (incoming - soaked));
   return { armored, soaked, damage: incoming - soaked };
 }
-function hurtHero(state, amount) {
+function hurtHero(state, amount, damageType = 'physical') {
+  const resisted = Math.min(amount, state.hero.resistances[damageType] || 0);
+  amount -= resisted;
   const blocked = Math.min(state.hero.block, amount);
   state.hero.block -= blocked;
   const damage = Math.max(0, amount - blocked);
   state.hero.hp = Math.max(0, state.hero.hp - damage);
-  return { blocked, damage };
+  return { resisted, blocked, damage };
 }
 function victory(state, rng) {
   const gold = ENCOUNTERS[state.encounter].gold;
@@ -134,7 +158,11 @@ function victory(state, rng) {
   if (state.encounter === ENCOUNTERS.length - 1) {
     state.phase = 'won';
   } else {
-    state.phase = 'reward';
+    state.phase = 'levelup';
+    state.level += 1;
+    state.hero.attributePoints = 1;
+    state.allocationBase = { ...state.hero.attributes };
+    state.hero.statEffects = [];
     state.rewardOffers = pickOffers(rng);
     state.shopOffers = pickOffers(rng);
     state.shopSold = [];
@@ -143,6 +171,8 @@ function victory(state, rng) {
 }
 function nextTurn(state) {
   state.turn += 1;
+  state.hero.statEffects = state.hero.statEffects.filter(e => e.expiresAfterTurn >= state.turn);
+  state.hero.focusRemaining = Math.max(0, state.hero.focusRemaining - 1);
   state.phase = 'select';
   state.selected = [];
   state.rolls = {};
@@ -151,11 +181,11 @@ function nextTurn(state) {
   state.activeDie = null;
   state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = Math.max(0, d.remaining - 1); });
-  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + MANA_REGEN);
+  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + state.hero.manaRegen);
   state.hero.freeRecollections = FREE_RECOLLECTIONS;
   // Enemy poison is applied before an enemy attacks; hero poison ticks on the next turn.
   if (state.hero.poison > 0) {
-    const poison = state.hero.poison;
+    const poison = Math.max(0, state.hero.poison - state.hero.resistances.poison);
     state.hero.hp = Math.max(0, state.hero.hp - poison);
     state.hero.poison -= 1;
     addLog(state, `Poison deals ${poison} damage to you.`, 'bad');
@@ -172,7 +202,7 @@ function commitTurn(state, rng) {
     const value = modifiedValue(state, id);
     if (type.family === 'attack') {
       const bonus = state.hero.strengthCharges > 0 ? state.hero.strength : 0;
-      const result = hurtEnemy(state, value + bonus);
+      const result = hurtEnemy(state, Math.min(type.outputCap ?? 999, value + bonus));
       if (state.hero.strengthCharges > 0 && --state.hero.strengthCharges === 0) state.hero.strength = 0;
       addLog(state, `${type.name} hits for ${result.damage}${result.armored ? ` (${result.armored} armor)` : ''}${result.soaked ? ` (${result.soaked} blocked)` : ''}.`, 'good');
     } else if (type.family === 'block') {
@@ -230,12 +260,18 @@ function commitTurn(state, rng) {
     let inflicted = 0;
     if (move.attack) {
       const attack = Math.max(0, move.attack - state.enemy.weak);
-      const { damage } = hurtHero(state, attack);
+      const { damage, resisted } = hurtHero(state, attack, move.damageType || 'physical');
+      if (resisted) addLog(state, `Resisted ${resisted} ${move.damageType || 'physical'} damage.`, 'good');
       inflicted = damage;
       state.enemy.weak = 0;
     }
     if (move.guard) state.enemy.block += move.guard;
     if (move.poison) state.hero.poison += move.poison;
+    if (move.statPenalty) {
+      const { attribute, amount } = move.statPenalty;
+      state.hero.statEffects.push({ attribute, amount: -amount, expiresAfterTurn: state.turn + 1, source: move.name });
+      addLog(state, `${move.name}: -${amount} ${ATTRIBUTES[attribute].name} on your next turn.`, 'bad');
+    }
     const outcomes = [move.attack ? `${inflicted} damage dealt` : null, move.guard ? `${move.guard} block gained` : null, move.poison ? `${move.poison} poison applied` : null].filter(Boolean).join(', ');
     addLog(state, `${state.enemy.name} uses ${move.name}: ${outcomes}.`, 'bad');
   }
@@ -260,6 +296,46 @@ export function reduceGame(original, action, rng = Math.random) {
   state.notice = '';
   const id = action.id;
   switch (action.type) {
+    case 'ALLOCATE_ATTRIBUTE': {
+      if (!['character', 'levelup'].includes(state.phase)) return reject(original, 'Attributes can only be changed between battles.');
+      const { attribute, delta } = action;
+      if (!Object.hasOwn(ATTRIBUTES, attribute) || ![1, -1].includes(delta)) return reject(original, 'Choose a valid attribute and adjustment.');
+      const value = state.hero.attributes[attribute], cap = state.phase === 'character' ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
+      if (delta === 1 && (state.hero.attributePoints < 1 || value >= cap)) return reject(original, 'No points available, or attribute is at its cap.');
+      if (delta === -1 && value <= state.allocationBase[attribute]) return reject(original, 'Only newly allocated points can be refunded.');
+      state.hero.attributes[attribute] += delta;
+      state.hero.attributePoints -= delta;
+      if (state.hero.attributes[attribute] < 2) delete state.hero.talents[attribute];
+      syncDerivedStats(state.hero);
+      return state;
+    }
+    case 'CHOOSE_TALENT': {
+      if (!['character', 'levelup'].includes(state.phase) || !Object.hasOwn(TALENTS, action.talent)) return original;
+      const talent = TALENTS[action.talent];
+      if (state.hero.attributes[talent.attribute] < 2) return reject(original, 'This talent requires 2 permanent attribute points.');
+      if (state.allocationBase[talent.attribute] >= 2) return reject(original, 'An established talent cannot be changed during this run.');
+      state.hero.talents[talent.attribute] = action.talent;
+      syncDerivedStats(state.hero);
+      return state;
+    }
+    case 'CONFIRM_ATTRIBUTES': {
+      if (!canConfirmAttributes(state)) return reject(original, 'Spend your attribute points and choose any unlocked talents.');
+      if (state.phase === 'character') startBattle(state, 0);
+      else state.phase = 'reward';
+      addLog(state, `Level ${state.level}: your attributes are set.`, 'good');
+      return state;
+    }
+    case 'FOCUS': {
+      if (!Object.hasOwn(ATTRIBUTES, action.attribute)) return original;
+      if (!canFocus(state)) return reject(original, 'Focus costs 2 mana and must be off cooldown.');
+      // Reservations cannot be invalidated by paying for an ability before rolling.
+      if (state.phase === 'select' && state.hero.mana - jarManaCost(state) < FOCUS_COST) return reject(original, 'Remove dice from the jar to reserve 2 mana for Focus.');
+      state.hero.mana -= FOCUS_COST;
+      state.hero.focusRemaining = FOCUS_COOLDOWN + 1;
+      state.hero.statEffects.push({ attribute: action.attribute, amount: FOCUS_BONUS, expiresAfterTurn: state.turn, source: 'Focus' });
+      addLog(state, `Focus: +${FOCUS_BONUS} ${ATTRIBUTES[action.attribute].name} for this turn only.`, 'good');
+      return state;
+    }
     case 'TOGGLE_DIE': {
       if (!validateDice(state,id,'select')) return reject(original, 'That die is still recovering.');
       if (state.selected.includes(id)) state.selected = state.selected.filter(item => item !== id);
@@ -332,6 +408,7 @@ export function reduceGame(original, action, rng = Math.random) {
     case 'REORDER': {
       if (state.phase !== 'cast' || !state.order.includes(id)) return original;
       const index = state.order.indexOf(id);
+      if (![1, -1].includes(action.step)) return original;
       const targetIndex = index + action.step;
       if (targetIndex < 0 || targetIndex >= state.order.length) return original;
       [state.order[index],state.order[targetIndex]] = [state.order[targetIndex],state.order[index]];
