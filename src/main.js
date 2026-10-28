@@ -1,5 +1,6 @@
-import { DICE, ENCOUNTERS, FAMILY, MANA_REGEN, MAX_JAR, NUDGE_COST, REROLL_COST, SHOP_DIE_COST, SHOP_FORGE_COST, SHOP_HEAL_COST } from './content.js';
-import { canCommit, definition, dieStateInfo, isModifier, jarManaCost, modifiedValue, newGame, nextIntent, pendingModifiers, reduceGame, rolledLabel } from './game.js';
+import { DICE, ENCOUNTERS, FAMILY, ATTRIBUTES, MAX_JAR, NUDGE_COST, REROLL_COST, SHOP_DIE_COST, SHOP_FORGE_COST, SHOP_HEAL_COST } from './content.js';
+import { renderCharacterPanel, renderStatsSidebar, renderRollBreakdown, attributeTag } from './character-ui.js';
+import { adjustedRoll, canCommit, definition, dieStateInfo, isModifier, jarManaCost, modifiedValue, newGame, nextIntent, pendingModifiers, reduceGame, rolledLabel } from './game.js';
 
 let game = newGame();
 const root = document.querySelector('#app');
@@ -15,12 +16,12 @@ const stat = (label,value,kind='') => `<span class="status-chip ${kind}"><span c
 
 function bar(value,max,kind){return `<div class="statbar ${kind}"><div style="width:${percent(value,max)}"></div></div>`;}
 function printIntent(move) {
-  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : ''].filter(Boolean).join('');
+  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} ${move.damageType || 'physical'} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : '', move.statPenalty ? `<span class="intent-element poison-intent">−${move.statPenalty.amount} ${ATTRIBUTES[move.statPenalty.attribute].name} next turn</span>` : ''].filter(Boolean).join('');
 }
 function resourceCards() {
   const h=game.hero, e=game.enemy, en=ENCOUNTERS[game.encounter];
   const move=nextIntent(game);
-  const isBetween = ['reward','shop','forge','won'].includes(game.phase);
+  const isBetween = ['character','levelup','reward','shop','forge','won'].includes(game.phase);
   return `<section class="arena" aria-label="Combatants and encounter status">
     <div class="combatant hero-combatant">
       <div class="combatant__icon hero-avatar" aria-hidden="true">✧</div>
@@ -57,6 +58,7 @@ function dieCard(die, opts={}) {
   return `<button class="inventory-die ${data.accent} ${selected?'chosen':''} ${unavailable?'cooling':''} ${unaffordable?'unaffordable':''}" data-action="toggle-die" data-id="${esc(die.id)}" type="button" aria-pressed="${selected}" ${unavailable?'disabled':''} aria-label="${esc(label)}: ${esc(d.name)}${unavailable?', cooldown '+die.remaining:''}, costs ${d.manaCost} mana">
     <div class="die-top"><span class="die-symbol">${esc(d.icon)}</span><span class="die-top-right">${unavailable?`${icon.clock} ${die.remaining} TURN${die.remaining!==1?'S':''}`:selected?'✓ IN JAR':`D6 · CD ${d.cooldown}`}</span></div>
     <div class="die-identity"><h3>${esc(d.name)}</h3><span class="family-tag">${esc(data.label)}</span></div>
+    ${attributeTag(game, d.attribute)}
     <div class="die-detail">${esc(d.description)}</div>
     <div class="mini-faces" aria-label="Die faces: ${die.faces.join(', ')}">${die.faces.map(n=>`<span>${n}</span>`).join('')}</div>
     <div class="inventory-die__foot"><span>${unavailable?'RECOVERING':selected?'REMOVE FROM JAR':unaffordable?'TOO EXPENSIVE':'SELECT DIE'}</span><span class="die-mana-cost">✦ ${d.manaCost} MANA</span></div>
@@ -74,7 +76,7 @@ function selectionPanel() {
   <div class="jar-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> YOUR JAR <span class="subtle-inline">${game.selected.length} / ${MAX_JAR} SLOTS FILLED</span></div>
     <div class="jar-slots">${Array.from({length:MAX_JAR},(_,i)=>jarSlot(game.selected[i],i)).join('')}</div>
-    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${MANA_REGEN} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
+    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${game.hero.manaRegen} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
     <div class="jar-actions"><div class="jar-helper"><span class="helper-sigil">◈</span> Your first Recollection is free each turn. Extra rerolls cost mana, and dice used enter cooldown.</div><button class="primary-button" type="button" data-action="roll" ${canRoll?'':'disabled'}>ROLL THE JAR <span>➜</span></button></div>
   </div>
   <div class="collection-heading"><div><span class="eyebrow">YOUR COLLECTION</span><h2>The dice satchel <small>${game.dice.length} dice</small></h2></div><span class="collection-helper">CLICK A DIE TO ${game.selected.length?'ADD OR REMOVE':'SELECT'}</span></div>
@@ -103,11 +105,12 @@ function rollTile(id,index) {
   return `<article class="rolled-die ${inf.accent} ${active?'active-roll':''} ${canTarget?'drop-target':''} ${attachedTo?'linked-die':''}" ${mod?`draggable="true" data-mod-id="${esc(id)}"`:`data-target-id="${esc(id)}"`}>
     <button class="roll-target" data-action="select-roll" data-id="${esc(id)}" type="button" aria-pressed="${active}" aria-label="${esc(d.name)} rolled ${esc(value)}${canTarget ? '; attach selected modifier here' : ''}">
       <span class="rolled-die__top"><span class="rolled-die__seq">${String(index+1).padStart(2,'0')}</span><span class="rolled-die__family">${esc(inf.label)}</span></span>
-      ${faceElement(rolledLabel(die,value),die)}
+      ${faceElement(value,die)}
       <strong class="rolled-die__name">${esc(d.name)}</strong>
-      <span class="rolled-die__result">${mod ? d.family==='add'?`ADDS +${value}`:`MULTIPLIES ×${Math.ceil(value/2)}`:effectText(die,modifiedValue(game,id))}</span>
+      <span class="rolled-die__result">${mod ? d.family==='add'?`ADDS +${modifiedValue(game,id)}`:`MULTIPLIES ×${modifiedValue(game,id)}`:effectText(die,modifiedValue(game,id))}</span>
+      ${renderRollBreakdown(game, id)}
     </button>
-    <div class="roll-attachments">${mod ? (attachedTo ? `<span class="attached-label">↳ ${esc(definition(dieById(attachedTo)).name)}</span>` : '<span class="unattached-label">○ NEEDS A TARGET</span>') : (attached.length ? attached.map(mid=>`<button class="attachment-chip" type="button" data-action="detach" data-id="${esc(mid)}" title="Detach modifier">${esc(rolledLabel(dieById(mid),game.rolls[mid]))} <span>×</span></button>`).join('') : '<span class="no-attachment">DROP MODIFIER HERE</span>')}</div>
+    <div class="roll-attachments">${mod ? (attachedTo ? `<span class="attached-label">↳ ${esc(definition(dieById(attachedTo)).name)}</span>` : '<span class="unattached-label">○ NEEDS A TARGET</span>') : (attached.length ? attached.map(mid=>`<button class="attachment-chip" type="button" data-action="detach" data-id="${esc(mid)}" title="Detach modifier">${esc(rolledLabel(dieById(mid),adjustedRoll(game,mid)))} <span>×</span></button>`).join('') : '<span class="no-attachment">DROP MODIFIER HERE</span>')}</div>
   </article>`;
 }
 function rollTools() {
@@ -117,11 +120,11 @@ function rollTools() {
   return `<section class="control-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> ARCANE CONTROL <span class="panel-trailing">${game.hero.mana}/${game.hero.maxMana} MANA</span></div>
     <div class="mana-meter">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="mana-crystal ${i<game.hero.mana?'filled':''}" aria-hidden="true">◆</span>`).join('')}</div>
-    ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3><p>Rolled <strong>${esc(rolledLabel(d,value))}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
+    ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3>${renderRollBreakdown(game, d.id)}<p>Raw face <strong>${value}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
     <div class="tool-actions"><button class="tool-button" data-action="reroll" data-id="${esc(d.id)}" type="button" ${game.hero.mana<rerollCost?'disabled':''}><span>↻</span><span>Recollection<small>${rerollCost?'ADDITIONAL REROLL':'FIRST REROLL FREE'}</small></span><b>${rerollCost?`${rerollCost} ✦`:'FREE'}</b></button>
     <button class="tool-button" data-action="nudge" data-id="${esc(d.id)}" type="button" ${!canNudge?'disabled':''}><span>↑</span><span>Nudge +1<small>CHANGE THE RESULT</small></span><b>2 ✦</b></button></div>
     ${game.links[d.id]?`<button class="text-button" data-action="detach" data-id="${esc(d.id)}" type="button">⤫ Detach from ${esc(definition(dieById(game.links[d.id])).name)}</button>`:''}` : `<div class="no-selected"><div class="no-selected__icon">✧</div><h3>Take control of fate.</h3><p>Tap a rolled die to reroll or nudge it. Select a purple modifier, then tap an effect die to attach.</p></div>`}
-    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${MANA_REGEN} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
+    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${game.hero.manaRegen} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
   </section>`;
 }
 function resolutionTrack() {
@@ -129,7 +132,7 @@ function resolutionTrack() {
     <p class="resolution-hint">Reorder effects to time buffs before attacks. Modifiers activate with their attached die.</p>
     <div class="resolution-track">${game.order.map((id,index)=>{
       const die=dieById(id),d=definition(die),attached=attachedFor(id);
-      return `<div class="resolve-step ${FAMILY[d.family].accent}"><div class="step-order">0${index+1}</div><span class="step-icon">${esc(d.icon)}</span><div class="step-copy"><strong>${esc(d.name)}</strong><small>${esc(effectText(die,modifiedValue(game,id)))}</small>${attached.length?`<span class="step-mods">${attached.map(m=>esc(rolledLabel(dieById(m),game.rolls[m]))).join(' · ')}</span>`:''}</div><div class="step-buttons"><button data-action="reorder" data-id="${esc(id)}" data-step="-1" type="button" ${index===0?'disabled':''} aria-label="Move ${esc(d.name)} earlier">←</button><button data-action="reorder" data-id="${esc(id)}" data-step="1" type="button" ${index===game.order.length-1?'disabled':''} aria-label="Move ${esc(d.name)} later">→</button></div></div>`;
+      return `<div class="resolve-step ${FAMILY[d.family].accent}"><div class="step-order">0${index+1}</div><span class="step-icon">${esc(d.icon)}</span><div class="step-copy"><strong>${esc(d.name)}</strong><small>${esc(effectText(die,modifiedValue(game,id)))}</small>${attached.length?`<span class="step-mods">${attached.map(m=>esc(rolledLabel(dieById(m),adjustedRoll(game,m)))).join(' · ')}</span>`:''}</div><div class="step-buttons"><button data-action="reorder" data-id="${esc(id)}" data-step="-1" type="button" ${index===0?'disabled':''} aria-label="Move ${esc(d.name)} earlier">←</button><button data-action="reorder" data-id="${esc(id)}" data-step="1" type="button" ${index===game.order.length-1?'disabled':''} aria-label="Move ${esc(d.name)} later">→</button></div></div>`;
     }).join('')}</div></section>`;
 }
 function castPanel() {
@@ -142,7 +145,7 @@ function castPanel() {
 }
 function offerCard(type,purchase=false,sold=false) {
   const d=DICE[type],f=FAMILY[d.family];
-  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3><p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
+  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3>${attributeTag(game, d.attribute)}<p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
     <button type="button" class="offer-buy" data-action="${purchase?'shop-buy-die':'claim-die'}" data-die-type="${esc(type)}" ${sold||purchase&&game.gold<SHOP_DIE_COST?'disabled':''}>${sold?'SOLD':purchase?`BUY FOR ${SHOP_DIE_COST} ◈`:'CLAIM DIE  →'}</button></div>`;
 }
 function rewardPanel(){return `${phaseHeader('03 / VICTORY REWARD','Claim your <em>fortune.</em>','One battle behind you. Choose a free die, improve a face, or rest before visiting the traveling merchant.',`<div class="phase-meta"><span class="phase-meta__big">+${ENCOUNTERS[game.encounter].gold} GOLD</span><span>ENCOUNTER CLEARED</span></div>`)}
@@ -162,7 +165,7 @@ function finalPanel(won) {return `<div class="final-screen"><div class="final-em
 function sidebar() {
   const active=['select','cast'].includes(game.phase);
   const ready=game.dice.filter(d=>d.remaining===0).length;
-  return `<aside class="sidebar"><section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
+  return `<aside class="sidebar">${renderStatsSidebar(game)}<section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
     <div class="divider"></div><div class="sidebar-subtitle">COOLDOWN STATUS</div><div class="cooldown-count"><span><i class="count-ready"></i> ${ready} ready</span><span><i class="count-wait"></i> ${game.dice.length-ready} recovering</span></div></section>
     <section class="sidebar-card log-card"><div class="panel-label"><span class="dot-ornament">✧</span> CHRONICLE <span class="panel-trailing">LIVE</span></div><div class="log-feed" aria-label="Battle log" aria-live="polite">${game.log.slice(0,9).map(l=>`<div class="log-line ${l.type}"><span>›</span>${esc(l.message)}</div>`).join('')}</div></section>
     ${active ? `<section class="hint-card"><span class="hint-card__icon">✦</span><span class="eyebrow">THE ART OF THE JAR</span><h3>${game.phase==='select'?'Choose with intention.':'Attach. Arrange. Commit.'}</h3><p>${game.phase==='select'?'Loading dice costs mana. Cheap dice leave more energy to manipulate the roll; save expensive combinations for dangerous turns.':'Additive modifiers apply first, then multipliers. A buff die activates only when its place in the order is reached.'}</p><button type="button" data-action="help">READ THE FIELD GUIDE →</button></section>`:''}</aside>`;
@@ -170,6 +173,8 @@ function sidebar() {
 function render() {
   let main;
   switch(game.phase) {
+    case 'character':
+    case 'levelup': main=renderCharacterPanel(game);break;
     case 'select': main=selectionPanel();break;
     case 'cast': main=castPanel();break;
     case 'reward': main=rewardPanel();break;
@@ -181,7 +186,15 @@ function render() {
   }
   root.innerHTML=`${resourceCards()}<div class="workbench"><div class="workbench-main">${main}</div>${sidebar()}</div>${game.notice?`<div class="toast" role="status">✧ ${esc(game.notice)}</div>`:''}`;
 }
-function update(action) {game=reduceGame(game,action);render();}
+function update(action) {
+  const previous = document.activeElement;
+  const focusData = previous?.dataset?.action ? { ...previous.dataset } : null;
+  game=reduceGame(game,action);render();
+  if (focusData && root.querySelectorAll) {
+    const target = [...root.querySelectorAll('[data-action]')].find(el => !el.disabled && Object.entries(focusData).every(([k,v]) => el.dataset[k] === v));
+    target?.focus({ preventScroll: true });
+  }
+}
 
 document.addEventListener('click',event=>{
   const el=event.target.closest('[data-action]'); if(!el || el.disabled) return;
@@ -189,8 +202,8 @@ document.addEventListener('click',event=>{
   const id=el.dataset.id;
   if(action==='help'){modal.showModal();return;}
   if(action==='close-help'){modal.close();return;}
-  if(action==='new-run') { if(['select','cast','reward','shop','forge'].includes(game.phase) && !window.confirm('Start over? Current run progress will be lost.')) return;update({type:'NEW_GAME'});return; }
-  const acts={ 'toggle-die':()=>({type:'TOGGLE_DIE',id}), 'roll':()=>({type:'ROLL'}), 'reroll':()=>({type:'REROLL',id}), 'nudge':()=>({type:'NUDGE',id}), 'detach':()=>({type:'DETACH',id}), 'commit':()=>({type:'COMMIT'}), 'reorder':()=>({type:'REORDER',id,step:Number(el.dataset.step)}), 'claim-die':()=>({type:'CLAIM_DIE',dieType:el.dataset.dieType}), 'rest':()=>({type:'REST'}), 'forge-start':()=>({type:'FORGE_START'}), 'forge-cancel':()=>({type:'FORGE_CANCEL'}), 'upgrade-face':()=>({type:'UPGRADE_FACE',id,faceIndex:Number(el.dataset.faceIndex)}), 'shop-buy-die':()=>({type:'SHOP_BUY_DIE',dieType:el.dataset.dieType}), 'shop-heal':()=>({type:'SHOP_HEAL'}), 'next-encounter':()=>({type:'NEXT_ENCOUNTER'}) };
+  if(action==='new-run') { if(['character','select','cast','levelup','reward','shop','forge'].includes(game.phase) && !window.confirm('Start over? Current run progress will be lost.')) return;update({type:'NEW_GAME'});return; }
+  const acts={ 'allocate-attribute':()=>({type:'ALLOCATE_ATTRIBUTE',attribute:el.dataset.attribute,delta:Number(el.dataset.delta)}), 'choose-talent':()=>({type:'CHOOSE_TALENT',talent:el.dataset.talent}), 'confirm-attributes':()=>({type:'CONFIRM_ATTRIBUTES'}), 'focus':()=>({type:'FOCUS',attribute:el.dataset.attribute}), 'toggle-die':()=>({type:'TOGGLE_DIE',id}), 'roll':()=>({type:'ROLL'}), 'reroll':()=>({type:'REROLL',id}), 'nudge':()=>({type:'NUDGE',id}), 'detach':()=>({type:'DETACH',id}), 'commit':()=>({type:'COMMIT'}), 'reorder':()=>({type:'REORDER',id,step:Number(el.dataset.step)}), 'claim-die':()=>({type:'CLAIM_DIE',dieType:el.dataset.dieType}), 'rest':()=>({type:'REST'}), 'forge-start':()=>({type:'FORGE_START'}), 'forge-cancel':()=>({type:'FORGE_CANCEL'}), 'upgrade-face':()=>({type:'UPGRADE_FACE',id,faceIndex:Number(el.dataset.faceIndex)}), 'shop-buy-die':()=>({type:'SHOP_BUY_DIE',dieType:el.dataset.dieType}), 'shop-heal':()=>({type:'SHOP_HEAL'}), 'next-encounter':()=>({type:'NEXT_ENCOUNTER'}) };
   if(action==='select-roll'){
     const active=selectedDie();
     const target=dieById(id);

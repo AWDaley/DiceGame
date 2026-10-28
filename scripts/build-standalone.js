@@ -15,7 +15,7 @@ const read = path => readFile(resolve(root, path), 'utf8');
 
 function flattenLocalModule(code, name) {
   const stripped = code
-    .replace(/^import\s+\{[^}]*\}\s+from\s+['"]\.\/(?:content|game)\.js['"];?\s*\r?\n?/gm, '')
+    .replace(/^import\s+\{[^}]*\}\s+from\s+['"]\.\/(?:content|attributes|game|character-ui)\.js['"];?\s*\r?\n?/gm, '')
     .replace(/^export\s+(?=(?:const|let|var|function|class)\b)/gm, '');
   if (/^\s*(?:import|export)\b/m.test(stripped)) {
     throw new Error(`Unsupported ES-module syntax in ${name}; update the offline exporter.`);
@@ -24,15 +24,17 @@ function flattenLocalModule(code, name) {
 }
 
 export async function generateStandaloneHTML() {
-  const [template, css, content, game, main] = await Promise.all([
+  const [template, css, content, attributes, game, characterUI, main] = await Promise.all([
     read('src/index.template.html'),
     read('styles.css'),
     read('src/content.js'),
+    read('src/attributes.js'),
     read('src/game.js'),
+    read('src/character-ui.js'),
     read('src/main.js'),
   ]);
   const flattened = [
-    ['content.js', content], ['game.js', game], ['main.js', main],
+    ['content.js', content], ['attributes.js', attributes], ['game.js', game], ['character-ui.js', characterUI], ['main.js', main],
   ].map(([name, code]) => `// === ${name} ===\n${flattenLocalModule(code, name)}`).join('\n\n');
   const script = `(() => {\n'use strict';\n${flattened}\n})();`;
   // Remove remote Google Fonts: system fallback fonts are available offline.

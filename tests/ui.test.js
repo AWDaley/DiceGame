@@ -16,11 +16,16 @@ test('interface exposes new mana budgeting, free Recollection and selected attac
   globalThis.window = { confirm: () => true };
   try {
     await import('../src/main.js');
+    function click(action,id,extra={}) {
+      clickHandlers.click({ target: { closest: () => ({ disabled:false, dataset:{action,id,...extra} }) } });
+    }
+    assert.match(root.innerHTML, /Give your dice/);
+    click('allocate-attribute', null, {attribute:'might',delta:'1'});
+    click('allocate-attribute', null, {attribute:'might',delta:'1'});
+    click('allocate-attribute', null, {attribute:'finesse',delta:'1'});
+    click('confirm-attributes');
     assert.match(root.innerHTML, /0 \/ 7 mana to roll/);
     assert.match(root.innerHTML, /✦ 3 MANA/);
-    function click(action,id) {
-      clickHandlers.click({ target: { closest: () => ({ disabled:false, dataset:{action,id} }) } });
-    }
     click('toggle-die','die-1');
     click('toggle-die','die-7');
     assert.match(root.innerHTML, /2 \/ 7 mana to roll/);
@@ -34,7 +39,7 @@ test('interface exposes new mana budgeting, free Recollection and selected attac
     click('reroll','die-1');
     assert.match(root.innerHTML, /ADDITIONAL REROLL/);
     click('commit');
-    assert.match(root.innerHTML, /TURN 2|FREE REWARD/);
+    assert.match(root.innerHTML, /TURN 2|VICTORY/);
   } finally {
     delete globalThis.document;
     delete globalThis.window;

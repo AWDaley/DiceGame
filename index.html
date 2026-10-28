@@ -45,6 +45,19 @@
 .stagger-chip{background:#483820;color:#edcc93;border-color:#745c37}
 @media(max-width:700px){.jar-budget{flex-direction:column;align-items:stretch;gap:9px}.jar-budget__track{width:100%}.jar-slot__cost{bottom:5px;font-size:8px}.inventory-die__foot .die-mana-cost{font-size:8px}}
 
+/* Character attributes: same visual language, readable math, touch-sized controls. */
+.character-derived{display:flex;flex-wrap:wrap;gap:12px 25px;border:1px solid var(--line);background:var(--panel);padding:17px 20px;border-radius:12px;margin-bottom:18px;color:var(--muted)}
+.character-derived b{color:var(--gold-soft);font:600 21px var(--mono);margin-right:3px}
+.attribute-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.attribute-card{padding:19px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(135deg,#25232c,#181e28);display:flex;flex-direction:column;gap:12px;min-width:0}
+.attribute-card-heading{display:flex;align-items:center;gap:12px}.attribute-card h2{font-size:24px}.attribute-emblem{font-size:24px;color:var(--gold)}.attribute-score{margin-left:auto;font:600 27px var(--mono);color:var(--gold-soft)}
+.attribute-card p{font-size:12px;color:#c5c5ce;line-height:1.6;min-height:39px}.attribute-examples{font-size:10px;color:#a2a6b3;line-height:1.65}
+.attribute-controls{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:auto;padding-top:11px;border-top:1px solid var(--line)}.attribute-controls>span{font:12px var(--mono);color:var(--muted)}.attribute-controls button{min-width:44px;min-height:44px;font-size:21px;padding:4px 12px}
+.attribute-note{font-size:12px;line-height:1.6;color:var(--muted);margin:16px 0 22px}.talent-group{margin:18px 0}.talent-group h3{font-size:17px;margin-bottom:12px}.talent-group h3 small{font:9px var(--mono);color:var(--gold);margin-left:7px}.talent-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.talent-choice{text-align:left;display:flex;flex-direction:column;gap:7px;background:#1e2430;border:1px solid var(--line);border-radius:10px;padding:15px;min-height:100px}.talent-choice span{font-size:12px;color:var(--muted);line-height:1.6}.talent-choice.chosen{border-color:var(--gold);background:#302b28}.talent-choice.chosen strong{color:var(--gold-soft)}.talent-choice.chosen:disabled{opacity:.8}
+.attribute-tag{display:inline-block;font:10px var(--mono);color:#f1cc93;border:1px solid #64523f;background:#352d27;padding:4px 7px;border-radius:5px;margin:6px 0 5px;align-self:flex-start}.roll-math{display:flex;flex-direction:column;gap:4px;font:10px/1.5 var(--mono);color:#b5b9c7;margin:10px 0 0;white-space:normal}.roll-math b{color:#ecd3ac}.rolled-die .roll-target{height:auto;min-height:245px}.roll-math span{overflow-wrap:anywhere}.rolled-die__result{white-space:normal}
+.attribute-list{margin-top:14px}.attribute-line{display:flex;gap:9px;align-items:center;min-height:46px;border-bottom:1px solid var(--line-soft);font-size:12px}.attribute-line>span{flex:1}.attribute-line strong{font:12px var(--mono);white-space:nowrap}.focus-button{font-size:10px;border:1px solid #5d5072;background:#2b2739;border-radius:6px;padding:7px 8px;min-height:36px}.focus-note{font-size:10px;line-height:1.7;color:#aaa5b9;margin:13px 0}.derived-list{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#a5a9b6;border-top:1px solid var(--line-soft);padding-top:13px;margin-top:13px}.derived-list span{display:flex;justify-content:space-between;gap:10px}.derived-list b{color:#d2c8b7}.character-talents{display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--gold-soft);margin-top:13px}.stat-effects{border-top:1px solid var(--line-soft);padding-top:9px;margin-top:13px;font-size:11px}.stat-effects p+ p{margin-top:8px}.stat-effects small{display:block;font:9px/1.7 var(--mono);color:var(--muted)}.positive-stat{color:#9bddb5}.negative-stat{color:#f2a29d}.character-sheet{min-width:0}
+@media(max-width:700px){.attribute-grid,.talent-options{grid-template-columns:1fr}.character-derived{gap:12px;font-size:11px}.character-derived b{font-size:17px}.attribute-card p{min-height:0}.character-builder .section-heading{align-items:flex-start}.character-builder .phase-meta{white-space:normal}.focus-button{min-height:44px;min-width:55px}.roll-math{font-size:10px}.rolled-die .roll-target{min-height:245px}.character-builder .cast-footer{align-items:stretch}.character-builder .primary-button{white-space:normal}}
+
 </style>
 </head>
 <body>
@@ -53,7 +66,7 @@
     <header class="masthead">
       <div class="brand-wrap" aria-label="Jarbound">
         <div class="brand-symbol" aria-hidden="true">✧<span>✦</span></div>
-        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 02</span></div>
+        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 03</span></div>
       </div>
       <div class="header-actions">
         <span class="version-pill"><i></i> PLAYABLE ALPHA</span>
@@ -62,21 +75,23 @@
       </div>
     </header>
     <main id="app" aria-live="off"></main>
-    <footer class="site-footer"><span>✦ THE FATE IS IN YOUR HANDS</span><span>NO ACCOUNT · NO DOWNLOAD · PURE STRATEGY</span></footer>
+    <footer class="site-footer"><span>✦ THE FATE IS IN YOUR HANDS</span><span>NO ACCOUNT · WORKS OFFLINE · PURE STRATEGY</span></footer>
   </div>
   <dialog id="how-to-play" class="help-modal" aria-labelledby="help-title">
     <div class="dialog-head"><span class="eyebrow">FIELD GUIDE / 01</span><button class="icon-button" type="button" data-action="close-help" aria-label="Close instructions">✕</button></div>
     <h2 id="help-title">Bend the roll. <em>Build the combo.</em></h2>
-    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its rolled face determines how powerful that function is.</p>
+    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its raw face plus the associated attribute determines its power. Temporary buffs and penalties affect rolls, never maximum HP or mana.</p>
     <ol>
+      <li><strong>Build your character.</strong> Allocate 3 points across Might, Finesse, Arcana, Vitality, and Spirit (maximum 2 each at creation). Every die shows its scaling attribute. Vitality adds 6 HP per point; Spirit adds 1 maximum mana. At 2 Vitality or Spirit, choose a talent.</li>
       <li><strong>Prepare.</strong> Choose up to five ready dice. Each die has a mana cost, paid when you roll. Budget mana for your dice <em>and</em> manipulation; cooldowns still apply.</li>
       <li><strong>Roll.</strong> All selected dice roll together. Inspect the enemy's telegraphed move.</li>
-      <li><strong>Manipulate.</strong> You get one <strong>free Recollection (reroll)</strong> per turn. Further rerolls cost <strong>1 mana</strong>, and nudging +1 costs <strong>2 mana</strong>. Regenerate 4 mana per turn, up to 7.</li>
+      <li><strong>Manipulate.</strong> You get one <strong>free Recollection (reroll)</strong> per turn. Further rerolls cost <strong>1 mana</strong>, and nudging +1 costs <strong>2 mana</strong>. Regenerate 4 mana per turn (5 with Meditation), up to your character’s maximum.</li>
       <li><strong>Attach.</strong> Select a purple modifier die, then select any effect die to attach it. Drag-and-drop works on desktop. Stack multiple modifiers on one target; additions resolve before multipliers.</li>
       <li><strong>Order and counter.</strong> Move dice left or right to choose activation order. Against armor, use Platebreaker before attacks or poison to bypass armor. Roll Disruptor on charged turns and meet the displayed stagger threshold to interrupt the move.</li>
-      <li><strong>Progress.</strong> Win fights, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
+      <li><strong>Focus.</strong> Spend 2 mana before or after rolling for +2 to one attribute this turn. Focus skips two future turns. Enemy attribute penalties last for your next turn and can be interrupted when indicated.</li>
+      <li><strong>Progress.</strong> Each non-final victory grants 1 attribute point (maximum 4 per attribute). Allocate it, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
     </ol>
-    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A 4-damage attack with a +3 rune and a ×2 prism becomes <strong>(4 + 3) × 2 = 14 damage</strong>.</p></div>
+    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A face-4 attack with Might 2, a +3 rune, and a ×2 prism becomes <strong>(4 + 2 + 3) × 2 = 18 damage</strong>. Each modifier uses its own attribute. Multipliers are bounded from ×1 to ×3. Quick Cut is a free fallback capped at 3 damage including Battle Hymn power.</p></div>
     <button type="button" class="primary-button" data-action="close-help">ENTER THE JAR <span>→</span></button>
   </dialog>
   <script>
@@ -85,32 +100,34 @@
 // === content.js ===
 // Data-driven content. Every die has exactly one effect; rolled values supply its magnitude.
 const DICE = {
-  strike: { name: 'Iron Strike', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'A dependable edge.' },
-  quick: { name: 'Quick Cut', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 0, description: 'Deal damage equal to the result.', flavor: 'Speed is its own weapon.' },
-  guard: { name: 'Stone Guard', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'Weather the next blow.' },
-  venom: { name: 'Viper Venom', family: 'poison', icon: '☣', cooldown: 1, manaCost: 2, description: 'Apply poison equal to the result. Poison damages at enemy turn start, then decays by 1.', flavor: 'The wound keeps working.' },
-  hex: { name: 'Binding Hex', family: 'weaken', icon: '✧', cooldown: 1, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Even giants can stumble.' },
-  rally: { name: 'Battle Hymn', family: 'strength', icon: '✷', cooldown: 2, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'Make every strike count.' },
-  plus: { name: 'Gilded Plus', family: 'add', icon: '+', cooldown: 1, manaCost: 1, description: 'Attach to an effect die. Add the rolled value to its result.', flavor: 'A little more of everything.' },
-  multiply: { name: 'Echo Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply its result by ceil(roll ÷ 2).', flavor: 'Make a whisper thunder.' },
-  channel: { name: 'Mana Well', family: 'mana', icon: '✺', cooldown: 1, manaCost: 0, description: 'Restore mana equal to the result (up to max mana).', flavor: 'Bottle a spark of magic.' },
-  mend: { name: 'Restoration', family: 'heal', icon: '✚', cooldown: 2, manaCost: 2, description: 'Heal HP equal to the result (up to max HP).', flavor: 'An ember of warmth.' },
-  saber: { name: 'Silver Saber', family: 'attack', icon: '⚔', cooldown: 1, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'Sharper than it looks.' },
-  bastion: { name: 'Iron Bastion', family: 'block', icon: '⬡', cooldown: 1, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'A fortress in your palm.' },
-  blight: { name: 'Black Spores', family: 'poison', icon: '☣', cooldown: 2, manaCost: 2, description: 'Apply poison equal to the result.', flavor: 'The forest remembers.' },
-  fracture: { name: 'Fracture Sigil', family: 'weaken', icon: '✧', cooldown: 0, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Ruin their momentum.' },
-  amplify: { name: 'Amber Amplifier', family: 'add', icon: '+', cooldown: 2, manaCost: 2, description: 'Attach to an effect die. Add the rolled value.', flavor: 'Power with a price.' },
-  prism: { name: 'Crimson Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply by ceil(roll ÷ 2).', flavor: 'Strength through refraction.' },
-  anthem: { name: 'War Anthem', family: 'strength', icon: '✷', cooldown: 1, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'A rhythm for battle.' },
-  spring: { name: 'Bright Spring', family: 'heal', icon: '✚', cooldown: 1, manaCost: 2, description: 'Heal HP equal to the result.', flavor: 'A sip of tomorrow.' },
-  sunder: { name: 'Platebreaker', family: 'sunder', icon: '⚒', cooldown: 1, manaCost: 1, description: 'Permanently remove armor equal to the result. Armor reduces each physical hit.', flavor: 'Crack the iron shell.' },
-  stagger: { name: 'Disruptor', family: 'stagger', icon: '⚡', cooldown: 1, manaCost: 1, description: 'Apply stagger equal to the result. Meet a charged attack threshold to interrupt it.', flavor: 'Stop the blow before it falls.' },
+  strike: { attribute: 'might', name: 'Iron Strike', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'A dependable edge.' },
+  quick: { attribute: 'finesse', name: 'Quick Cut', outputCap: 3, family: 'attack', icon: '⚔', cooldown: 0, manaCost: 0, description: 'Free fallback: deal up to 3 physical damage, including all bonuses.', flavor: 'Speed is its own weapon.' },
+  guard: { attribute: 'vitality', name: 'Stone Guard', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'Weather the next blow.' },
+  venom: { attribute: 'finesse', name: 'Viper Venom', family: 'poison', icon: '☣', cooldown: 1, manaCost: 2, description: 'Apply poison equal to the result. Poison damages at enemy turn start, then decays by 1.', flavor: 'The wound keeps working.' },
+  hex: { attribute: 'arcana', name: 'Binding Hex', family: 'weaken', icon: '✧', cooldown: 1, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Even giants can stumble.' },
+  rally: { attribute: 'spirit', name: 'Battle Hymn', family: 'strength', icon: '✷', cooldown: 2, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'Make every strike count.' },
+  plus: { attribute: 'finesse', name: 'Gilded Plus', family: 'add', icon: '+', cooldown: 1, manaCost: 1, description: 'Attach to an effect die. Add the rolled value to its result.', flavor: 'A little more of everything.' },
+  multiply: { attribute: 'arcana', name: 'Echo Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply its result by ceil(adjusted roll ÷ 2), minimum ×1 and maximum ×3.', flavor: 'Make a whisper thunder.' },
+  channel: { attribute: 'spirit', name: 'Mana Well', family: 'mana', icon: '✺', cooldown: 2, manaCost: 1, description: 'Restore mana equal to the result (up to max mana).', flavor: 'Bottle a spark of magic.' },
+  mend: { attribute: 'vitality', name: 'Restoration', family: 'heal', icon: '✚', cooldown: 2, manaCost: 2, description: 'Heal HP equal to the result (up to max HP).', flavor: 'An ember of warmth.' },
+  saber: { attribute: 'finesse', name: 'Silver Saber', family: 'attack', icon: '⚔', cooldown: 1, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'Sharper than it looks.' },
+  bastion: { attribute: 'vitality', name: 'Iron Bastion', family: 'block', icon: '⬡', cooldown: 1, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'A fortress in your palm.' },
+  blight: { attribute: 'arcana', name: 'Black Spores', family: 'poison', icon: '☣', cooldown: 2, manaCost: 2, description: 'Apply poison equal to the result.', flavor: 'The forest remembers.' },
+  fracture: { attribute: 'arcana', name: 'Fracture Sigil', family: 'weaken', icon: '✧', cooldown: 0, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Ruin their momentum.' },
+  amplify: { attribute: 'spirit', name: 'Amber Amplifier', family: 'add', icon: '+', cooldown: 2, manaCost: 2, description: 'Attach to an effect die. Add the rolled value.', flavor: 'Power with a price.' },
+  prism: { attribute: 'arcana', name: 'Crimson Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply by ceil(adjusted roll ÷ 2), minimum ×1 and maximum ×3.', flavor: 'Strength through refraction.' },
+  anthem: { attribute: 'spirit', name: 'War Anthem', family: 'strength', icon: '✷', cooldown: 1, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'A rhythm for battle.' },
+  spring: { attribute: 'vitality', name: 'Bright Spring', family: 'heal', icon: '✚', cooldown: 1, manaCost: 2, description: 'Heal HP equal to the result.', flavor: 'A sip of tomorrow.' },
+  sunder: { attribute: 'might', name: 'Platebreaker', family: 'sunder', icon: '⚒', cooldown: 1, manaCost: 1, description: 'Permanently remove armor equal to the result. Armor reduces each physical hit.', flavor: 'Crack the iron shell.' },
+  stagger: { attribute: 'might', name: 'Disruptor', family: 'stagger', icon: '⚡', cooldown: 1, manaCost: 1, description: 'Apply stagger equal to the result. Meet a charged attack threshold to interrupt it.', flavor: 'Stop the blow before it falls.' },
+  parry: { attribute: 'finesse', name: 'Duelist Parry', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result. Scales with Finesse.', flavor: 'Turn their strength aside.' },
+  barrier: { attribute: 'arcana', name: 'Arcane Barrier', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result. Scales with Arcana.', flavor: 'Will made solid.' },
 };
 
 const STARTING_DICE = [
   'strike', 'quick', 'guard', 'venom', 'hex', 'rally', 'plus', 'multiply', 'channel', 'mend', 'sunder', 'stagger'
 ];
-const REWARD_POOL = ['saber','bastion','blight','fracture','amplify','prism','anthem','spring','venom','guard','plus','multiply','channel','rally','sunder','stagger'];
+const REWARD_POOL = ['saber','bastion','blight','fracture','amplify','prism','anthem','spring','venom','guard','plus','multiply','channel','rally','sunder','stagger','parry','barrier'];
 
 const ENCOUNTERS = [
   {
@@ -126,7 +143,7 @@ const ENCOUNTERS = [
     moves: [
       { name: 'Toxic Dart', attack: 5, poison: 2 },
       { name: 'Vial Shield', guard: 7 },
-      { name: 'Vine Lash', attack: 9 },
+      { name: 'Numbing Vines', attack: 9, interruptAt: 5, statPenalty: { attribute: 'finesse', amount: 2 } },
     ],
   },
   {
@@ -140,9 +157,9 @@ const ENCOUNTERS = [
   {
     name: 'The Jarbreaker', subtitle: 'THE FINAL CHAMBER', icon: '♛', hp: 86, gold: 0,
     moves: [
-      { name: 'Shatter', attack: 10 },
+      { name: 'Arcane Shatter', attack: 10, damageType: 'arcane' },
       { name: 'Glass Fortress', guard: 9, attack: 6 },
-      { name: 'Corrupting Blow', attack: 8, poison: 3 },
+      { name: 'Corrupting Blow', attack: 8, damageType: 'arcane', poison: 3, interruptAt: 6, statPenalty: { attribute: 'arcana', amount: 2 } },
       { name: 'Crushing Finale', attack: 21, interruptAt: 7 },
     ],
   },
@@ -172,9 +189,74 @@ const SHOP_DIE_COST = 22;
 const SHOP_FORGE_COST = 16;
 const SHOP_HEAL_COST = 13;
 
+// Permanent attributes are small additive roll bonuses; temporary effects never alter capacities.
+const ATTRIBUTES = {
+  might: { name: 'Might', icon: '⚔', description: 'Physical power, armor breaking, and interruption.' },
+  finesse: { name: 'Finesse', icon: '◇', description: 'Precise strikes, poison, parries, and additive modifiers.' },
+  arcana: { name: 'Arcana', icon: '✧', description: 'Hexes, barriers, and multiplier reliability (maximum ×3).' },
+  vitality: { name: 'Vitality', icon: '♥', description: 'Guard and healing dice. Each point adds 6 maximum and current HP.' },
+  spirit: { name: 'Spirit', icon: '✦', description: 'Mana and buff dice. Each point adds 1 maximum mana.' },
+};
+const STARTING_ATTRIBUTE_POINTS = 3;
+const STARTING_ATTRIBUTE_CAP = 2;
+const ATTRIBUTE_CAP = 4;
+const BASE_HP = 60;
+const HP_PER_VITALITY = 6;
+const FOCUS_COST = 2;
+const FOCUS_BONUS = 2;
+const FOCUS_COOLDOWN = 2; // Future turns skipped, just like dice.
+const TALENTS = {
+  iron_skin: { attribute: 'vitality', name: 'Iron Skin', description: 'Resist 1 physical damage per enemy hit, before block.', resistance: 'physical', amount: 1 },
+  antitoxin: { attribute: 'vitality', name: 'Antitoxin', description: 'Resist 2 poison damage per tick. Poison still decays normally.', resistance: 'poison', amount: 2 },
+  meditation: { attribute: 'spirit', name: 'Meditation', description: 'Regenerate 1 additional mana each turn (5 total).', manaRegen: 1 },
+  warding: { attribute: 'spirit', name: 'Arcane Warding', description: 'Resist 2 arcane damage per enemy hit, before block.', resistance: 'arcane', amount: 2 },
+};
+
+
+// === attributes.js ===
+function emptyAttributes() {
+  return Object.fromEntries(Object.keys(ATTRIBUTES).map(key => [key, 0]));
+}
+function temporaryAttributeBonus(state, attribute) {
+  return state.hero.statEffects.filter(e => e.attribute === attribute && e.expiresAfterTurn >= state.turn)
+    .reduce((total, effect) => total + effect.amount, 0);
+}
+function attributeBonus(state, attribute) {
+  return state.hero.attributes[attribute] + temporaryAttributeBonus(state, attribute);
+}
+function derivedStats(hero) {
+  const resistances = { physical: 0, poison: 0, arcane: 0 };
+  let manaRegen = MANA_REGEN;
+  for (const id of Object.values(hero.talents)) {
+    const talent = TALENTS[id];
+    if (!talent || hero.attributes[talent.attribute] < 2) continue;
+    manaRegen += talent.manaRegen || 0;
+    if (talent.resistance) resistances[talent.resistance] += talent.amount;
+  }
+  return { maxHp: BASE_HP + hero.attributes.vitality * HP_PER_VITALITY,
+    maxMana: MAX_MANA + hero.attributes.spirit, manaRegen, resistances };
+}
+// Preserve missing HP/mana when raising/lowering capacities during allocation.
+function syncDerivedStats(hero) {
+  const derived = derivedStats(hero);
+  hero.hp = Math.min(derived.maxHp, Math.max(0, hero.hp + derived.maxHp - hero.maxHp));
+  hero.mana = Math.min(derived.maxMana, Math.max(0, hero.mana + derived.maxMana - hero.maxMana));
+  Object.assign(hero, derived);
+}
+function missingTalents(state) {
+  return ['vitality', 'spirit'].filter(key => state.hero.attributes[key] >= 2 && !state.hero.talents[key]);
+}
+function canConfirmAttributes(state) {
+  return ['character', 'levelup'].includes(state.phase) && state.hero.attributePoints === 0 && !missingTalents(state).length;
+}
+function canFocus(state) {
+  return ['select', 'cast'].includes(state.phase) && state.hero.focusRemaining === 0 && state.hero.mana >= FOCUS_COST;
+}
+function multiplierFromRoll(value) { return Math.max(1, Math.min(3, Math.ceil(value / 2))); }
+
+
 // === game.js ===
 const DEFAULT_FACES = [1, 2, 3, 4, 5, 6];
-const EFFECT_FAMILIES = new Set(['attack', 'block', 'poison', 'weaken', 'strength', 'mana', 'heal', 'sunder', 'stagger']);
 const clone = value => structuredClone(value);
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const randomIndex = (length, random) => Math.min(length - 1, Math.floor(clamp(random(), 0, 0.999999999) * length));
@@ -187,7 +269,7 @@ function definition(die) { return DICE[die.type]; }
 function isModifier(die) { return ['add', 'multiply'].includes(definition(die).family); }
 function rolledLabel(die, value) {
   const family = definition(die).family;
-  return family === 'add' ? `+${value}` : family === 'multiply' ? `×${Math.ceil(value / 2)}` : String(value);
+  return family === 'add' ? `+${value}` : family === 'multiply' ? `×${multiplierFromRoll(value)}` : String(value);
 }
 function nextIntent(state) {
   if (!state.enemy) return null;
@@ -230,7 +312,9 @@ function startBattle(state, index) {
   state.hero.poison = 0;
   state.hero.strength = 0;
   state.hero.strengthCharges = 0;
-  state.hero.mana = MAX_MANA;
+  state.hero.mana = state.hero.maxMana;
+  state.hero.statEffects = [];
+  state.hero.focusRemaining = 0;
   state.hero.freeRecollections = FREE_RECOLLECTIONS;
   state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = 0; });
@@ -243,12 +327,15 @@ function newGame() {
   const state = {
     phase: 'select', encounter: 0, turn: 1, nextId: 1,
     dice: [], selected: [], rolls: {}, links: {}, order: [], activeDie: null, lastJarCost: 0,
-    hero: { hp: 60, maxHp: 60, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
+    hero: { attributes: emptyAttributes(), attributePoints: STARTING_ATTRIBUTE_POINTS, talents: {}, statEffects: [], focusRemaining: 0,
+      manaRegen: MANA_REGEN, resistances: { physical: 0, poison: 0, arcane: 0 }, hp: BASE_HP, maxHp: BASE_HP, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
     enemy: null, gold: 0, rewardOffers: [], shopOffers: [], shopSold: [],
+    allocationBase: emptyAttributes(), level: 1,
     forgeReturn: 'shop', forgeCost: 0, notice: '', log: [], logCounter: 0,
   };
   STARTING_DICE.forEach(type => addOwned(state, type));
   startBattle(state, 0);
+  state.phase = 'character';
   return state;
 }
 
@@ -258,16 +345,31 @@ function jarManaCost(state) {
 function findRoll(state, id) {
   return state.rolls[id] === undefined ? null : state.rolls[id];
 }
-function modifiedValue(state, dieId) {
-  const die = findDie(state, dieId);
-  const raw = findRoll(state, dieId);
-  if (!die || raw === null) return 0;
-  if (!EFFECT_FAMILIES.has(definition(die).family)) return raw;
-  const entries = Object.entries(state.links).filter(([, target]) => target === dieId);
-  const additive = entries.reduce((n, [id]) => n + (definition(findDie(state, id)).family === 'add' ? state.rolls[id] : 0), 0);
-  const multiplier = entries.reduce((n, [id]) => n * (definition(findDie(state, id)).family === 'multiply' ? Math.ceil(state.rolls[id] / 2) : 1), 1);
-  return clamp((raw + additive) * multiplier, 0, 999);
+// Raw faces stay in state.rolls. Bonuses are computed, never baked into rerolls.
+function adjustedRoll(state, dieId) {
+  const die = findDie(state, dieId), raw = findRoll(state, dieId);
+  return !die || raw === null ? 0 : Math.max(0, raw + attributeBonus(state, definition(die).attribute));
 }
+function rollBreakdown(state, dieId) {
+  const die = findDie(state, dieId), raw = findRoll(state, dieId);
+  if (!die || raw === null) return null;
+  const def = definition(die), attribute = def.attribute;
+  const adjusted = adjustedRoll(state, dieId);
+  let additive = 0, multiplier = 1;
+  if (!isModifier(die)) {
+    for (const [id, target] of Object.entries(state.links)) {
+      const modifier = findDie(state, id);
+      if (target !== dieId || !modifier || !state.selected.includes(id) || findRoll(state, id) === null) continue;
+      if (definition(modifier).family === 'add') additive += adjustedRoll(state, id);
+      if (definition(modifier).family === 'multiply') multiplier *= multiplierFromRoll(adjustedRoll(state, id));
+    }
+  }
+  const uncapped = def.family === 'multiply' ? multiplierFromRoll(adjusted) : (adjusted + additive) * multiplier;
+  const final = Math.min(def.outputCap ?? 999, uncapped);
+  return { raw, attribute, permanent: state.hero.attributes[attribute],
+    temporary: temporaryAttributeBonus(state, attribute), adjusted, additive, multiplier, final, capped: final !== uncapped };
+}
+function modifiedValue(state, dieId) { return rollBreakdown(state, dieId)?.final ?? 0; }
 function pendingModifiers(state) {
   return state.selected.filter(id => isModifier(findDie(state,id)) && !state.links[id]);
 }
@@ -283,12 +385,14 @@ function hurtEnemy(state, amount) {
   state.enemy.hp = Math.max(0, state.enemy.hp - (incoming - soaked));
   return { armored, soaked, damage: incoming - soaked };
 }
-function hurtHero(state, amount) {
+function hurtHero(state, amount, damageType = 'physical') {
+  const resisted = Math.min(amount, state.hero.resistances[damageType] || 0);
+  amount -= resisted;
   const blocked = Math.min(state.hero.block, amount);
   state.hero.block -= blocked;
   const damage = Math.max(0, amount - blocked);
   state.hero.hp = Math.max(0, state.hero.hp - damage);
-  return { blocked, damage };
+  return { resisted, blocked, damage };
 }
 function victory(state, rng) {
   const gold = ENCOUNTERS[state.encounter].gold;
@@ -303,7 +407,11 @@ function victory(state, rng) {
   if (state.encounter === ENCOUNTERS.length - 1) {
     state.phase = 'won';
   } else {
-    state.phase = 'reward';
+    state.phase = 'levelup';
+    state.level += 1;
+    state.hero.attributePoints = 1;
+    state.allocationBase = { ...state.hero.attributes };
+    state.hero.statEffects = [];
     state.rewardOffers = pickOffers(rng);
     state.shopOffers = pickOffers(rng);
     state.shopSold = [];
@@ -312,6 +420,8 @@ function victory(state, rng) {
 }
 function nextTurn(state) {
   state.turn += 1;
+  state.hero.statEffects = state.hero.statEffects.filter(e => e.expiresAfterTurn >= state.turn);
+  state.hero.focusRemaining = Math.max(0, state.hero.focusRemaining - 1);
   state.phase = 'select';
   state.selected = [];
   state.rolls = {};
@@ -320,11 +430,11 @@ function nextTurn(state) {
   state.activeDie = null;
   state.lastJarCost = 0;
   state.dice.forEach(d => { d.remaining = Math.max(0, d.remaining - 1); });
-  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + MANA_REGEN);
+  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + state.hero.manaRegen);
   state.hero.freeRecollections = FREE_RECOLLECTIONS;
   // Enemy poison is applied before an enemy attacks; hero poison ticks on the next turn.
   if (state.hero.poison > 0) {
-    const poison = state.hero.poison;
+    const poison = Math.max(0, state.hero.poison - state.hero.resistances.poison);
     state.hero.hp = Math.max(0, state.hero.hp - poison);
     state.hero.poison -= 1;
     addLog(state, `Poison deals ${poison} damage to you.`, 'bad');
@@ -341,7 +451,7 @@ function commitTurn(state, rng) {
     const value = modifiedValue(state, id);
     if (type.family === 'attack') {
       const bonus = state.hero.strengthCharges > 0 ? state.hero.strength : 0;
-      const result = hurtEnemy(state, value + bonus);
+      const result = hurtEnemy(state, Math.min(type.outputCap ?? 999, value + bonus));
       if (state.hero.strengthCharges > 0 && --state.hero.strengthCharges === 0) state.hero.strength = 0;
       addLog(state, `${type.name} hits for ${result.damage}${result.armored ? ` (${result.armored} armor)` : ''}${result.soaked ? ` (${result.soaked} blocked)` : ''}.`, 'good');
     } else if (type.family === 'block') {
@@ -399,12 +509,18 @@ function commitTurn(state, rng) {
     let inflicted = 0;
     if (move.attack) {
       const attack = Math.max(0, move.attack - state.enemy.weak);
-      const { damage } = hurtHero(state, attack);
+      const { damage, resisted } = hurtHero(state, attack, move.damageType || 'physical');
+      if (resisted) addLog(state, `Resisted ${resisted} ${move.damageType || 'physical'} damage.`, 'good');
       inflicted = damage;
       state.enemy.weak = 0;
     }
     if (move.guard) state.enemy.block += move.guard;
     if (move.poison) state.hero.poison += move.poison;
+    if (move.statPenalty) {
+      const { attribute, amount } = move.statPenalty;
+      state.hero.statEffects.push({ attribute, amount: -amount, expiresAfterTurn: state.turn + 1, source: move.name });
+      addLog(state, `${move.name}: -${amount} ${ATTRIBUTES[attribute].name} on your next turn.`, 'bad');
+    }
     const outcomes = [move.attack ? `${inflicted} damage dealt` : null, move.guard ? `${move.guard} block gained` : null, move.poison ? `${move.poison} poison applied` : null].filter(Boolean).join(', ');
     addLog(state, `${state.enemy.name} uses ${move.name}: ${outcomes}.`, 'bad');
   }
@@ -429,6 +545,46 @@ function reduceGame(original, action, rng = Math.random) {
   state.notice = '';
   const id = action.id;
   switch (action.type) {
+    case 'ALLOCATE_ATTRIBUTE': {
+      if (!['character', 'levelup'].includes(state.phase)) return reject(original, 'Attributes can only be changed between battles.');
+      const { attribute, delta } = action;
+      if (!Object.hasOwn(ATTRIBUTES, attribute) || ![1, -1].includes(delta)) return reject(original, 'Choose a valid attribute and adjustment.');
+      const value = state.hero.attributes[attribute], cap = state.phase === 'character' ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
+      if (delta === 1 && (state.hero.attributePoints < 1 || value >= cap)) return reject(original, 'No points available, or attribute is at its cap.');
+      if (delta === -1 && value <= state.allocationBase[attribute]) return reject(original, 'Only newly allocated points can be refunded.');
+      state.hero.attributes[attribute] += delta;
+      state.hero.attributePoints -= delta;
+      if (state.hero.attributes[attribute] < 2) delete state.hero.talents[attribute];
+      syncDerivedStats(state.hero);
+      return state;
+    }
+    case 'CHOOSE_TALENT': {
+      if (!['character', 'levelup'].includes(state.phase) || !Object.hasOwn(TALENTS, action.talent)) return original;
+      const talent = TALENTS[action.talent];
+      if (state.hero.attributes[talent.attribute] < 2) return reject(original, 'This talent requires 2 permanent attribute points.');
+      if (state.allocationBase[talent.attribute] >= 2) return reject(original, 'An established talent cannot be changed during this run.');
+      state.hero.talents[talent.attribute] = action.talent;
+      syncDerivedStats(state.hero);
+      return state;
+    }
+    case 'CONFIRM_ATTRIBUTES': {
+      if (!canConfirmAttributes(state)) return reject(original, 'Spend your attribute points and choose any unlocked talents.');
+      if (state.phase === 'character') startBattle(state, 0);
+      else state.phase = 'reward';
+      addLog(state, `Level ${state.level}: your attributes are set.`, 'good');
+      return state;
+    }
+    case 'FOCUS': {
+      if (!Object.hasOwn(ATTRIBUTES, action.attribute)) return original;
+      if (!canFocus(state)) return reject(original, 'Focus costs 2 mana and must be off cooldown.');
+      // Reservations cannot be invalidated by paying for an ability before rolling.
+      if (state.phase === 'select' && state.hero.mana - jarManaCost(state) < FOCUS_COST) return reject(original, 'Remove dice from the jar to reserve 2 mana for Focus.');
+      state.hero.mana -= FOCUS_COST;
+      state.hero.focusRemaining = FOCUS_COOLDOWN + 1;
+      state.hero.statEffects.push({ attribute: action.attribute, amount: FOCUS_BONUS, expiresAfterTurn: state.turn, source: 'Focus' });
+      addLog(state, `Focus: +${FOCUS_BONUS} ${ATTRIBUTES[action.attribute].name} for this turn only.`, 'good');
+      return state;
+    }
     case 'TOGGLE_DIE': {
       if (!validateDice(state,id,'select')) return reject(original, 'That die is still recovering.');
       if (state.selected.includes(id)) state.selected = state.selected.filter(item => item !== id);
@@ -501,6 +657,7 @@ function reduceGame(original, action, rng = Math.random) {
     case 'REORDER': {
       if (state.phase !== 'cast' || !state.order.includes(id)) return original;
       const index = state.order.indexOf(id);
+      if (![1, -1].includes(action.step)) return original;
       const targetIndex = index + action.step;
       if (targetIndex < 0 || targetIndex >= state.order.length) return original;
       [state.order[index],state.order[targetIndex]] = [state.order[targetIndex],state.order[index]];
@@ -587,6 +744,55 @@ function dieStateInfo(state, die) {
   return { ...type, ...FAMILY[type.family], average: avg, isModifier: isModifier(die) };
 }
 
+// === character-ui.js ===
+const escapeCharacter = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const signedBonus = n => `${n >= 0 ? '+' : '−'}${Math.abs(n)}`;
+
+function attributeTag(state, attribute) {
+  return `<span class="attribute-tag">${escapeCharacter(ATTRIBUTES[attribute].name)} ${signedBonus(attributeBonus(state, attribute))}</span>`;
+}
+function renderRollBreakdown(state, id) {
+  const b = rollBreakdown(state, id);
+  if (!b) return '';
+  const die = state.dice.find(d => d.id === id), def = DICE[die.type];
+  const modifier = def.family === 'add' || def.family === 'multiply';
+  return `<span class="roll-math"><span>Face ${b.raw} + ${b.permanent} ${ATTRIBUTES[b.attribute].name}${b.temporary ? ` ${signedBonus(b.temporary)} temporary` : ''} = <b>${b.adjusted}</b></span>${def.family === 'multiply' ? `<span>ceil(${b.adjusted} ÷ 2), bounded ×1–×3 → <b>×${b.final}</b></span>` : !modifier && (b.additive || b.multiplier !== 1) ? `<span>(${b.adjusted} + ${b.additive}) × ${b.multiplier} → <b>${b.final}</b></span>` : ''}${b.capped ? `<span>Output capped at ${def.outputCap}</span>` : ''}</span>`;
+}
+function talentChoices(state) {
+  return ['vitality', 'spirit'].filter(attribute => state.hero.attributes[attribute] >= 2).map(attribute => {
+    const locked = state.allocationBase[attribute] >= 2;
+    return `<section class="talent-group" aria-label="${ATTRIBUTES[attribute].name} talent"><h3>${ATTRIBUTES[attribute].name} talent <small>${locked ? 'LOCKED FOR THIS RUN' : 'CHOOSE ONE'}</small></h3><div class="talent-options">${Object.entries(TALENTS).filter(([, t]) => t.attribute === attribute).map(([id, t]) => `<button class="talent-choice ${state.hero.talents[attribute] === id ? 'chosen' : ''}" type="button" data-action="choose-talent" data-talent="${id}" aria-pressed="${state.hero.talents[attribute] === id}" ${locked ? 'disabled' : ''}><strong>${t.name}</strong><span>${t.description}</span></button>`).join('')}</div></section>`;
+  }).join('');
+}
+function renderCharacterPanel(state) {
+  const creating = state.phase === 'character', cap = creating ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
+  const hero = state.hero;
+  return `<section class="character-builder" aria-label="Character attributes">
+    <div class="section-heading"><div class="section-heading__copy"><span class="eyebrow accent-eyebrow">${creating ? '00 / BUILD YOUR WANDERER' : `VICTORY / LEVEL ${state.level}`}</span><h1>${creating ? 'Give your dice <em>character.</em>' : 'Grow into your <em>power.</em>'}</h1><p>${creating ? 'Spend three points. Every die uses one attribute as a roll bonus. Start with up to two points per attribute; grow to four during the run.' : 'You earned one attribute point. Invest it before choosing your free reward. Earlier investments cannot be refunded.'}</p></div><div class="phase-meta"><span class="phase-meta__big" aria-live="polite">${hero.attributePoints} POINT${hero.attributePoints === 1 ? '' : 'S'} LEFT</span><span>LEVEL ${state.level}</span></div></div>
+    <div class="character-derived"><span>♥ <b>${hero.maxHp}</b> max HP</span><span>✦ <b>${hero.maxMana}</b> max mana</span><span>↻ <b>${hero.manaRegen}</b> mana / turn</span></div>
+    <div class="attribute-grid">${Object.entries(ATTRIBUTES).map(([key, a]) => {
+      const examples = Object.values(DICE).filter(d => d.attribute === key).map(d => d.name);
+      const value = hero.attributes[key];
+      return `<article class="attribute-card"><div class="attribute-card-heading"><span class="attribute-emblem" aria-hidden="true">${a.icon}</span><h2>${a.name}</h2><b class="attribute-score">+${value}</b></div><p>${a.description}</p><small class="attribute-examples">${examples.join(' · ')}</small><div class="attribute-controls"><button class="ghost-button" type="button" data-action="allocate-attribute" data-attribute="${key}" data-delta="-1" aria-label="Remove ${a.name} point" ${value <= state.allocationBase[key] ? 'disabled' : ''}>−</button><span>${value} / ${cap}</span><button class="ghost-button" type="button" data-action="allocate-attribute" data-attribute="${key}" data-delta="1" aria-label="Add ${a.name} point" ${hero.attributePoints < 1 || value >= cap ? 'disabled' : ''}>+</button></div></article>`;
+    }).join('')}</div>
+    <p class="attribute-note">At 2 Vitality or Spirit, choose one talent. Temporary bonuses never change maximum HP, mana, or talent eligibility.</p>
+    ${talentChoices(state)}
+    <div class="cast-footer"><div class="cast-footer__note"><strong>Face + attribute, then attachments.</strong><span>Rerolls change the face only. Additions apply before multipliers.</span></div><button class="primary-button" type="button" data-action="confirm-attributes" ${canConfirmAttributes(state) ? '' : 'disabled'}>${creating ? 'BEGIN ADVENTURE' : 'CHOOSE YOUR REWARD'} <span>➜</span></button></div>
+  </section>`;
+}
+function renderStatsSidebar(state) {
+  const h = state.hero, inCombat = ['select', 'cast'].includes(state.phase);
+  const canUse = canFocus(state) && (state.phase !== 'select' || h.mana - jarManaCost(state) >= FOCUS_COST);
+  return `<section class="sidebar-card character-sheet"><div class="panel-label">✧ CHARACTER <span class="panel-trailing">LEVEL ${state.level}</span></div><div class="attribute-list">${Object.entries(ATTRIBUTES).map(([key, a]) => {
+    const temporary = temporaryAttributeBonus(state, key);
+    return `<div class="attribute-line"><span>${a.icon} ${a.name}</span><strong>${signedBonus(h.attributes[key])}${temporary ? `<small class="${temporary > 0 ? 'positive-stat' : 'negative-stat'}"> ${signedBonus(temporary)}</small>` : ''}</strong>${inCombat ? `<button type="button" class="focus-button" data-action="focus" data-attribute="${key}" ${canUse ? '' : 'disabled'} aria-label="Focus ${a.name} for 2 mana" title="+2 ${a.name} this turn. Costs 2 mana; skips 2 future turns.">Focus</button>` : ''}</div>`;
+  }).join('')}</div>${inCombat ? `<p class="focus-note">Focus: +2 to one attribute this turn · 2 mana.<br>${h.focusRemaining ? `Recovering · ${Math.min(h.focusRemaining, 2)} future turn(s) remaining.` : 'Ready · use before or after rolling.'}</p>` : ''}
+  <div class="derived-list"><span>Mana regeneration <b>${h.manaRegen} / turn</b></span>${Object.entries(h.resistances).map(([type, value]) => `<span>${type[0].toUpperCase() + type.slice(1)} resistance <b>${value}</b></span>`).join('')}</div>
+  ${Object.values(h.talents).length ? `<div class="character-talents">${Object.values(h.talents).map(id => `<span title="${escapeCharacter(TALENTS[id].description)}">✦ ${TALENTS[id].name}</span>`).join('')}</div>` : ''}
+  ${h.statEffects.length ? `<div class="stat-effects">${h.statEffects.map(e => `<p class="${e.amount > 0 ? 'positive-stat' : 'negative-stat'}">${signedBonus(e.amount)} ${ATTRIBUTES[e.attribute].name} · ${escapeCharacter(e.source)}<small>Through turn ${e.expiresAfterTurn}</small></p>`).join('')}</div>` : ''}</section>`;
+}
+
+
 // === main.js ===
 let game = newGame();
 const root = document.querySelector('#app');
@@ -602,12 +808,12 @@ const stat = (label,value,kind='') => `<span class="status-chip ${kind}"><span c
 
 function bar(value,max,kind){return `<div class="statbar ${kind}"><div style="width:${percent(value,max)}"></div></div>`;}
 function printIntent(move) {
-  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : ''].filter(Boolean).join('');
+  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} ${move.damageType || 'physical'} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : '', move.statPenalty ? `<span class="intent-element poison-intent">−${move.statPenalty.amount} ${ATTRIBUTES[move.statPenalty.attribute].name} next turn</span>` : ''].filter(Boolean).join('');
 }
 function resourceCards() {
   const h=game.hero, e=game.enemy, en=ENCOUNTERS[game.encounter];
   const move=nextIntent(game);
-  const isBetween = ['reward','shop','forge','won'].includes(game.phase);
+  const isBetween = ['character','levelup','reward','shop','forge','won'].includes(game.phase);
   return `<section class="arena" aria-label="Combatants and encounter status">
     <div class="combatant hero-combatant">
       <div class="combatant__icon hero-avatar" aria-hidden="true">✧</div>
@@ -644,6 +850,7 @@ function dieCard(die, opts={}) {
   return `<button class="inventory-die ${data.accent} ${selected?'chosen':''} ${unavailable?'cooling':''} ${unaffordable?'unaffordable':''}" data-action="toggle-die" data-id="${esc(die.id)}" type="button" aria-pressed="${selected}" ${unavailable?'disabled':''} aria-label="${esc(label)}: ${esc(d.name)}${unavailable?', cooldown '+die.remaining:''}, costs ${d.manaCost} mana">
     <div class="die-top"><span class="die-symbol">${esc(d.icon)}</span><span class="die-top-right">${unavailable?`${icon.clock} ${die.remaining} TURN${die.remaining!==1?'S':''}`:selected?'✓ IN JAR':`D6 · CD ${d.cooldown}`}</span></div>
     <div class="die-identity"><h3>${esc(d.name)}</h3><span class="family-tag">${esc(data.label)}</span></div>
+    ${attributeTag(game, d.attribute)}
     <div class="die-detail">${esc(d.description)}</div>
     <div class="mini-faces" aria-label="Die faces: ${die.faces.join(', ')}">${die.faces.map(n=>`<span>${n}</span>`).join('')}</div>
     <div class="inventory-die__foot"><span>${unavailable?'RECOVERING':selected?'REMOVE FROM JAR':unaffordable?'TOO EXPENSIVE':'SELECT DIE'}</span><span class="die-mana-cost">✦ ${d.manaCost} MANA</span></div>
@@ -661,7 +868,7 @@ function selectionPanel() {
   <div class="jar-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> YOUR JAR <span class="subtle-inline">${game.selected.length} / ${MAX_JAR} SLOTS FILLED</span></div>
     <div class="jar-slots">${Array.from({length:MAX_JAR},(_,i)=>jarSlot(game.selected[i],i)).join('')}</div>
-    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${MANA_REGEN} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
+    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${game.hero.manaRegen} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
     <div class="jar-actions"><div class="jar-helper"><span class="helper-sigil">◈</span> Your first Recollection is free each turn. Extra rerolls cost mana, and dice used enter cooldown.</div><button class="primary-button" type="button" data-action="roll" ${canRoll?'':'disabled'}>ROLL THE JAR <span>➜</span></button></div>
   </div>
   <div class="collection-heading"><div><span class="eyebrow">YOUR COLLECTION</span><h2>The dice satchel <small>${game.dice.length} dice</small></h2></div><span class="collection-helper">CLICK A DIE TO ${game.selected.length?'ADD OR REMOVE':'SELECT'}</span></div>
@@ -690,11 +897,12 @@ function rollTile(id,index) {
   return `<article class="rolled-die ${inf.accent} ${active?'active-roll':''} ${canTarget?'drop-target':''} ${attachedTo?'linked-die':''}" ${mod?`draggable="true" data-mod-id="${esc(id)}"`:`data-target-id="${esc(id)}"`}>
     <button class="roll-target" data-action="select-roll" data-id="${esc(id)}" type="button" aria-pressed="${active}" aria-label="${esc(d.name)} rolled ${esc(value)}${canTarget ? '; attach selected modifier here' : ''}">
       <span class="rolled-die__top"><span class="rolled-die__seq">${String(index+1).padStart(2,'0')}</span><span class="rolled-die__family">${esc(inf.label)}</span></span>
-      ${faceElement(rolledLabel(die,value),die)}
+      ${faceElement(value,die)}
       <strong class="rolled-die__name">${esc(d.name)}</strong>
-      <span class="rolled-die__result">${mod ? d.family==='add'?`ADDS +${value}`:`MULTIPLIES ×${Math.ceil(value/2)}`:effectText(die,modifiedValue(game,id))}</span>
+      <span class="rolled-die__result">${mod ? d.family==='add'?`ADDS +${modifiedValue(game,id)}`:`MULTIPLIES ×${modifiedValue(game,id)}`:effectText(die,modifiedValue(game,id))}</span>
+      ${renderRollBreakdown(game, id)}
     </button>
-    <div class="roll-attachments">${mod ? (attachedTo ? `<span class="attached-label">↳ ${esc(definition(dieById(attachedTo)).name)}</span>` : '<span class="unattached-label">○ NEEDS A TARGET</span>') : (attached.length ? attached.map(mid=>`<button class="attachment-chip" type="button" data-action="detach" data-id="${esc(mid)}" title="Detach modifier">${esc(rolledLabel(dieById(mid),game.rolls[mid]))} <span>×</span></button>`).join('') : '<span class="no-attachment">DROP MODIFIER HERE</span>')}</div>
+    <div class="roll-attachments">${mod ? (attachedTo ? `<span class="attached-label">↳ ${esc(definition(dieById(attachedTo)).name)}</span>` : '<span class="unattached-label">○ NEEDS A TARGET</span>') : (attached.length ? attached.map(mid=>`<button class="attachment-chip" type="button" data-action="detach" data-id="${esc(mid)}" title="Detach modifier">${esc(rolledLabel(dieById(mid),adjustedRoll(game,mid)))} <span>×</span></button>`).join('') : '<span class="no-attachment">DROP MODIFIER HERE</span>')}</div>
   </article>`;
 }
 function rollTools() {
@@ -704,11 +912,11 @@ function rollTools() {
   return `<section class="control-panel">
     <div class="panel-label"><span class="dot-ornament">✧</span> ARCANE CONTROL <span class="panel-trailing">${game.hero.mana}/${game.hero.maxMana} MANA</span></div>
     <div class="mana-meter">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="mana-crystal ${i<game.hero.mana?'filled':''}" aria-hidden="true">◆</span>`).join('')}</div>
-    ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3><p>Rolled <strong>${esc(rolledLabel(d,value))}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
+    ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3>${renderRollBreakdown(game, d.id)}<p>Raw face <strong>${value}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
     <div class="tool-actions"><button class="tool-button" data-action="reroll" data-id="${esc(d.id)}" type="button" ${game.hero.mana<rerollCost?'disabled':''}><span>↻</span><span>Recollection<small>${rerollCost?'ADDITIONAL REROLL':'FIRST REROLL FREE'}</small></span><b>${rerollCost?`${rerollCost} ✦`:'FREE'}</b></button>
     <button class="tool-button" data-action="nudge" data-id="${esc(d.id)}" type="button" ${!canNudge?'disabled':''}><span>↑</span><span>Nudge +1<small>CHANGE THE RESULT</small></span><b>2 ✦</b></button></div>
     ${game.links[d.id]?`<button class="text-button" data-action="detach" data-id="${esc(d.id)}" type="button">⤫ Detach from ${esc(definition(dieById(game.links[d.id])).name)}</button>`:''}` : `<div class="no-selected"><div class="no-selected__icon">✧</div><h3>Take control of fate.</h3><p>Tap a rolled die to reroll or nudge it. Select a purple modifier, then tap an effect die to attach.</p></div>`}
-    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${MANA_REGEN} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
+    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${game.hero.manaRegen} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
   </section>`;
 }
 function resolutionTrack() {
@@ -716,7 +924,7 @@ function resolutionTrack() {
     <p class="resolution-hint">Reorder effects to time buffs before attacks. Modifiers activate with their attached die.</p>
     <div class="resolution-track">${game.order.map((id,index)=>{
       const die=dieById(id),d=definition(die),attached=attachedFor(id);
-      return `<div class="resolve-step ${FAMILY[d.family].accent}"><div class="step-order">0${index+1}</div><span class="step-icon">${esc(d.icon)}</span><div class="step-copy"><strong>${esc(d.name)}</strong><small>${esc(effectText(die,modifiedValue(game,id)))}</small>${attached.length?`<span class="step-mods">${attached.map(m=>esc(rolledLabel(dieById(m),game.rolls[m]))).join(' · ')}</span>`:''}</div><div class="step-buttons"><button data-action="reorder" data-id="${esc(id)}" data-step="-1" type="button" ${index===0?'disabled':''} aria-label="Move ${esc(d.name)} earlier">←</button><button data-action="reorder" data-id="${esc(id)}" data-step="1" type="button" ${index===game.order.length-1?'disabled':''} aria-label="Move ${esc(d.name)} later">→</button></div></div>`;
+      return `<div class="resolve-step ${FAMILY[d.family].accent}"><div class="step-order">0${index+1}</div><span class="step-icon">${esc(d.icon)}</span><div class="step-copy"><strong>${esc(d.name)}</strong><small>${esc(effectText(die,modifiedValue(game,id)))}</small>${attached.length?`<span class="step-mods">${attached.map(m=>esc(rolledLabel(dieById(m),adjustedRoll(game,m)))).join(' · ')}</span>`:''}</div><div class="step-buttons"><button data-action="reorder" data-id="${esc(id)}" data-step="-1" type="button" ${index===0?'disabled':''} aria-label="Move ${esc(d.name)} earlier">←</button><button data-action="reorder" data-id="${esc(id)}" data-step="1" type="button" ${index===game.order.length-1?'disabled':''} aria-label="Move ${esc(d.name)} later">→</button></div></div>`;
     }).join('')}</div></section>`;
 }
 function castPanel() {
@@ -729,7 +937,7 @@ function castPanel() {
 }
 function offerCard(type,purchase=false,sold=false) {
   const d=DICE[type],f=FAMILY[d.family];
-  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3><p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
+  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3>${attributeTag(game, d.attribute)}<p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
     <button type="button" class="offer-buy" data-action="${purchase?'shop-buy-die':'claim-die'}" data-die-type="${esc(type)}" ${sold||purchase&&game.gold<SHOP_DIE_COST?'disabled':''}>${sold?'SOLD':purchase?`BUY FOR ${SHOP_DIE_COST} ◈`:'CLAIM DIE  →'}</button></div>`;
 }
 function rewardPanel(){return `${phaseHeader('03 / VICTORY REWARD','Claim your <em>fortune.</em>','One battle behind you. Choose a free die, improve a face, or rest before visiting the traveling merchant.',`<div class="phase-meta"><span class="phase-meta__big">+${ENCOUNTERS[game.encounter].gold} GOLD</span><span>ENCOUNTER CLEARED</span></div>`)}
@@ -749,7 +957,7 @@ function finalPanel(won) {return `<div class="final-screen"><div class="final-em
 function sidebar() {
   const active=['select','cast'].includes(game.phase);
   const ready=game.dice.filter(d=>d.remaining===0).length;
-  return `<aside class="sidebar"><section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
+  return `<aside class="sidebar">${renderStatsSidebar(game)}<section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
     <div class="divider"></div><div class="sidebar-subtitle">COOLDOWN STATUS</div><div class="cooldown-count"><span><i class="count-ready"></i> ${ready} ready</span><span><i class="count-wait"></i> ${game.dice.length-ready} recovering</span></div></section>
     <section class="sidebar-card log-card"><div class="panel-label"><span class="dot-ornament">✧</span> CHRONICLE <span class="panel-trailing">LIVE</span></div><div class="log-feed" aria-label="Battle log" aria-live="polite">${game.log.slice(0,9).map(l=>`<div class="log-line ${l.type}"><span>›</span>${esc(l.message)}</div>`).join('')}</div></section>
     ${active ? `<section class="hint-card"><span class="hint-card__icon">✦</span><span class="eyebrow">THE ART OF THE JAR</span><h3>${game.phase==='select'?'Choose with intention.':'Attach. Arrange. Commit.'}</h3><p>${game.phase==='select'?'Loading dice costs mana. Cheap dice leave more energy to manipulate the roll; save expensive combinations for dangerous turns.':'Additive modifiers apply first, then multipliers. A buff die activates only when its place in the order is reached.'}</p><button type="button" data-action="help">READ THE FIELD GUIDE →</button></section>`:''}</aside>`;
@@ -757,6 +965,8 @@ function sidebar() {
 function render() {
   let main;
   switch(game.phase) {
+    case 'character':
+    case 'levelup': main=renderCharacterPanel(game);break;
     case 'select': main=selectionPanel();break;
     case 'cast': main=castPanel();break;
     case 'reward': main=rewardPanel();break;
@@ -768,7 +978,15 @@ function render() {
   }
   root.innerHTML=`${resourceCards()}<div class="workbench"><div class="workbench-main">${main}</div>${sidebar()}</div>${game.notice?`<div class="toast" role="status">✧ ${esc(game.notice)}</div>`:''}`;
 }
-function update(action) {game=reduceGame(game,action);render();}
+function update(action) {
+  const previous = document.activeElement;
+  const focusData = previous?.dataset?.action ? { ...previous.dataset } : null;
+  game=reduceGame(game,action);render();
+  if (focusData && root.querySelectorAll) {
+    const target = [...root.querySelectorAll('[data-action]')].find(el => !el.disabled && Object.entries(focusData).every(([k,v]) => el.dataset[k] === v));
+    target?.focus({ preventScroll: true });
+  }
+}
 
 document.addEventListener('click',event=>{
   const el=event.target.closest('[data-action]'); if(!el || el.disabled) return;
@@ -776,8 +994,8 @@ document.addEventListener('click',event=>{
   const id=el.dataset.id;
   if(action==='help'){modal.showModal();return;}
   if(action==='close-help'){modal.close();return;}
-  if(action==='new-run') { if(['select','cast','reward','shop','forge'].includes(game.phase) && !window.confirm('Start over? Current run progress will be lost.')) return;update({type:'NEW_GAME'});return; }
-  const acts={ 'toggle-die':()=>({type:'TOGGLE_DIE',id}), 'roll':()=>({type:'ROLL'}), 'reroll':()=>({type:'REROLL',id}), 'nudge':()=>({type:'NUDGE',id}), 'detach':()=>({type:'DETACH',id}), 'commit':()=>({type:'COMMIT'}), 'reorder':()=>({type:'REORDER',id,step:Number(el.dataset.step)}), 'claim-die':()=>({type:'CLAIM_DIE',dieType:el.dataset.dieType}), 'rest':()=>({type:'REST'}), 'forge-start':()=>({type:'FORGE_START'}), 'forge-cancel':()=>({type:'FORGE_CANCEL'}), 'upgrade-face':()=>({type:'UPGRADE_FACE',id,faceIndex:Number(el.dataset.faceIndex)}), 'shop-buy-die':()=>({type:'SHOP_BUY_DIE',dieType:el.dataset.dieType}), 'shop-heal':()=>({type:'SHOP_HEAL'}), 'next-encounter':()=>({type:'NEXT_ENCOUNTER'}) };
+  if(action==='new-run') { if(['character','select','cast','levelup','reward','shop','forge'].includes(game.phase) && !window.confirm('Start over? Current run progress will be lost.')) return;update({type:'NEW_GAME'});return; }
+  const acts={ 'allocate-attribute':()=>({type:'ALLOCATE_ATTRIBUTE',attribute:el.dataset.attribute,delta:Number(el.dataset.delta)}), 'choose-talent':()=>({type:'CHOOSE_TALENT',talent:el.dataset.talent}), 'confirm-attributes':()=>({type:'CONFIRM_ATTRIBUTES'}), 'focus':()=>({type:'FOCUS',attribute:el.dataset.attribute}), 'toggle-die':()=>({type:'TOGGLE_DIE',id}), 'roll':()=>({type:'ROLL'}), 'reroll':()=>({type:'REROLL',id}), 'nudge':()=>({type:'NUDGE',id}), 'detach':()=>({type:'DETACH',id}), 'commit':()=>({type:'COMMIT'}), 'reorder':()=>({type:'REORDER',id,step:Number(el.dataset.step)}), 'claim-die':()=>({type:'CLAIM_DIE',dieType:el.dataset.dieType}), 'rest':()=>({type:'REST'}), 'forge-start':()=>({type:'FORGE_START'}), 'forge-cancel':()=>({type:'FORGE_CANCEL'}), 'upgrade-face':()=>({type:'UPGRADE_FACE',id,faceIndex:Number(el.dataset.faceIndex)}), 'shop-buy-die':()=>({type:'SHOP_BUY_DIE',dieType:el.dataset.dieType}), 'shop-heal':()=>({type:'SHOP_HEAL'}), 'next-encounter':()=>({type:'NEXT_ENCOUNTER'}) };
   if(action==='select-roll'){
     const active=selectedDie();
     const target=dieById(id);

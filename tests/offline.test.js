@@ -40,16 +40,20 @@ test('standalone script starts, selects dice, rolls and New Run resets the game'
   new Script(match[1]).runInNewContext({
     document, window: { confirm: () => true }, structuredClone,
   });
-  assert.match(root.innerHTML, /THE DICE SATCHEL|dice satchel/i);
-  assert.match(root.innerHTML, /Choose your/);
-  const click = (action, id) => handlers.click({
-    target: { closest: () => ({ disabled: false, dataset: { action, id } }) },
+  assert.match(root.innerHTML, /Give your dice/);
+  const click = (action, id, extra = {}) => handlers.click({
+    target: { closest: () => ({ disabled: false, dataset: { action, id, ...extra } }) },
   });
+  click('allocate-attribute', null, { attribute: 'might', delta: '1' });
+  click('allocate-attribute', null, { attribute: 'might', delta: '1' });
+  click('allocate-attribute', null, { attribute: 'finesse', delta: '1' });
+  click('confirm-attributes');
+  assert.match(root.innerHTML, /dice satchel/i);
   click('toggle-die', 'die-1');
   assert.match(root.innerHTML, /1 \/ 5 SLOTS FILLED/);
   click('roll');
   assert.match(root.innerHTML, /ROLL COMPLETE/);
   click('new-run');
-  assert.match(root.innerHTML, /0 \/ 5 SLOTS FILLED/);
-  assert.match(root.innerHTML, /Choose your/);
+  assert.match(root.innerHTML, /Give your dice/);
+  assert.match(root.innerHTML, /3 POINTS LEFT/);
 });
