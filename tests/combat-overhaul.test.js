@@ -1,144 +1,44 @@
+/** v0.3's single-cast tests are migrated to explicit exchanges and round boundaries. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { newGame as createCharacter, reduceGame, modifiedValue, nextIntent, jarManaCost } from '../src/game.js';
-import { DICE, MAX_MANA, MANA_REGEN } from '../src/content.js';
-// Isolate legacy combat rules from the separately tested character creation flow.
-function newGame() {
-  const state = createCharacter();
-  state.phase = 'select';
-  state.hero.attributePoints = 0;
-  return state;
-}
-const rng = () => 0.5;
-const first = (s, type) => s.dice.find(d => d.type === type).id;
-const act = (s, type, fields = {}, random = rng) => reduceGame(s, { type, ...fields }, random);
-function roll(s, ...types) {
-  for (const type of types) s = act(s, 'TOGGLE_DIE', { id: first(s, type) });
-  return act(s, 'ROLL');
-}
+import { calculateBundle, damageBreakdown, tickPoison } from '../src/effects.js';
+import { battle, act, rawAct, rejected, install, item, setFaces, select, declare, revealed, finish, exchange, nextSlot, passSlot, sequenceRng } from './helpers.js';
 
-test('each die has a nonnegative mana cost and budget is charged only when rolled', () => {
-  for (const d of Object.values(DICE)) {
-    assert.equal(Number.isInteger(d.manaCost), true);
-    assert.equal(d.manaCost >= 0, true);
-  }
-  let s = newGame();
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'strike') });
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'multiply') });
-  assert.equal(jarManaCost(s), 4);
-  assert.equal(s.hero.mana, MAX_MANA, 'selecting should not spend mana');
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'multiply') });
-  assert.equal(jarManaCost(s), 1, 'deselecting refunds the reservation');
-  s = act(s, 'ROLL');
-  assert.equal(s.lastJarCost, 1);
-  assert.equal(s.hero.mana, MAX_MANA - 1);
-});
+function event(s,type){return s.events.filter(e=>e.type===type).at(-1);}
 
-test('cannot add an unaffordable die, and ROLL validates forged state too', () => {
-  let s = newGame();
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'strike') });
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'rally') });
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'multiply') });
-  assert.equal(jarManaCost(s), 6);
-  const declined = act(s, 'TOGGLE_DIE', { id: first(s, 'venom') });
-  assert.match(declined.notice, /Not enough mana/);
-  assert.deepEqual(declined.selected, s.selected);
-  assert.equal(declined.hero.mana, MAX_MANA);
-  const forged = structuredClone(s);
-  forged.hero.mana = 5;
-  const denied = act(forged, 'ROLL');
-  assert.equal(denied.phase, 'select');
-  assert.match(denied.notice, /Not enough mana/);
-  assert.equal(denied.hero.mana, 5);
-});
-
-test('at zero mana, the cheap fallback can still roll and one free reroll works', () => {
-  let s = newGame();
-  s.hero.mana = 0;
-  const refused = act(s, 'TOGGLE_DIE', { id: first(s, 'strike') });
-  assert.match(refused.notice, /Not enough mana/);
-  s = act(s, 'TOGGLE_DIE', { id: first(s, 'quick') });
-  s = act(s, 'ROLL');
-  assert.equal(s.phase, 'cast');
-  assert.equal(s.hero.mana, 0);
-  s = act(s, 'REROLL', { id: first(s, 'quick') });
-  assert.equal(s.hero.freeRecollections, 0);
-  assert.equal(s.hero.mana, 0);
-  const declined = act(s, 'REROLL', { id: first(s, 'quick') });
-  assert.match(declined.notice, /Not enough mana/);
-});
-
-test('mana regenerates exactly at the end of a turn and respects max capacity', () => {
-  let s = newGame();
-  s.hero.mana = 1;
-  s = roll(s, 'strike');
-  assert.equal(s.hero.mana, 0);
-  s = act(s, 'COMMIT');
-  assert.equal(s.hero.mana, MANA_REGEN);
-  assert.equal(s.hero.freeRecollections, 1);
-  s = roll(s, 'quick');
-  s = act(s, 'COMMIT');
-  assert.equal(s.hero.mana, MAX_MANA);
-});
-
-test('Hollow Sentinel armor reduces every physical hit; poison bypasses armor', () => {
-  const base = newGame();
-  base.encounter = 2;
-  base.enemy = { ...base.enemy, name: 'Hollow Sentinel', hp: 66, maxHp: 66, armor: 3 };
-  const strike = act(roll(structuredClone(base), 'strike'), 'COMMIT');
-  assert.equal(strike.enemy.hp, 65);
-  assert.equal(strike.enemy.armor, 3);
-  const venom = act(roll(structuredClone(base), 'venom'), 'COMMIT');
-  assert.equal(venom.enemy.hp, 62);
-  assert.equal(venom.enemy.armor, 3);
-});
-
-test('ordering a sunder die before attacks removes permanent armor for that encounter', () => {
-  const base = newGame();
-  base.encounter = 2;
-  base.enemy = { ...base.enemy, name: 'Hollow Sentinel', hp: 66, maxHp: 66, armor: 3 };
-  const early = act(roll(structuredClone(base), 'sunder', 'strike'), 'COMMIT');
-  assert.equal(early.enemy.armor, 0);
-  assert.equal(early.enemy.hp, 62);
-  let late = roll(structuredClone(base), 'sunder', 'strike');
-  late = act(late, 'REORDER', { id: first(late, 'strike'), step: -1 });
-  late = act(late, 'COMMIT');
-  assert.equal(late.enemy.hp, 65);
-  assert.equal(late.enemy.armor, 0, 'the armor reduction persists');
-});
-
-test('stagger that meets a telegraphed threshold interrupts a charged attack', () => {
-  let s = newGame();
-  s.enemy.moveIndex = 2; // Scrap Brute Overhead Slam, 14 attack / 5 stagger
-  s = roll(s, 'stagger', 'plus');
-  s = act(s, 'ATTACH', { modId: first(s, 'plus'), targetId: first(s, 'stagger') });
-  assert.equal(modifiedValue(s, first(s, 'stagger')), 8);
-  s = act(s, 'COMMIT');
-  assert.equal(s.hero.hp, 60);
-  assert.equal(s.enemy.moveIndex, 0);
-  assert.equal(s.enemy.stagger, 0);
-  assert.match(s.log.map(x => x.message).join(' '), /interrupted/);
-});
-
-test('insufficient stagger cannot interrupt, and stagger never carries to the next turn', () => {
-  let s = newGame();
-  s.enemy.moveIndex = 2;
-  s = act(roll(s, 'stagger'), 'COMMIT');
-  assert.equal(s.hero.hp, 46);
-  assert.equal(s.enemy.stagger, 0);
-  const plain = act(roll(newGame(), 'stagger'), 'COMMIT');
-  assert.equal(plain.hero.hp, 53);
-  assert.equal(plain.enemy.stagger, 0);
-});
-
-test('Jarbreaker charged finale has an independently tuned stagger threshold', () => {
-  let s = newGame();
-  s.encounter = 3;
-  s.enemy = { ...s.enemy, name: 'The Jarbreaker', hp: 86, maxHp: 86, moveIndex: 3 };
-  assert.equal(nextIntent(s).interruptAt, 7);
-  s = roll(s, 'stagger', 'plus');
-  s = act(s, 'ATTACH', { modId: first(s, 'plus'), targetId: first(s, 'stagger') });
-  s = act(s, 'COMMIT');
-  assert.equal(s.hero.hp, 60);
-  assert.equal(s.enemy.moveIndex, 0);
-});
+test('neither side rolls until both choices are committed; deterministic reveal order',()=>{let s=battle(),calls=0;const random=()=>{calls++;return .5;};s=declare(s,'quick_strike',['add'],random);assert.equal(calls,0);assert.deepEqual(s.combat.exchange.raw,{hero:{},enemy:{}});s=select(s,'block',[],random);assert.equal(calls,0);s=act(s,'DECLARE_REACTION',{},sequenceRng([0,.2,.9]));assert.equal(s.combat.exchange.raw.hero[item(s,'hero','quick_strike').id],1);assert.equal(s.combat.exchange.raw.hero[item(s,'hero','add').id],2);assert.equal(s.combat.exchange.raw.enemy[item(s,'enemy','block').id],6);});
+test('wrong owner, wrong stage, missing revision and stale exchange cannot spend or draw',()=>{let s=battle();rejected(s,'PASS_TURN',{actorId:'enemy'},/wrong/);rejected(s,'PASS_TURN',{expectedRevision:undefined},/Stale/);rejected(s,'PASS_TURN',{exchangeId:999},/Stale/);rejected(s,'LOCK_RESULT');s=declare(s,'quick_strike');rejected(s,'DECLARE_ACTION');});
+test('actor locks before defender and locked results cannot be manipulated again',()=>{let s=revealed(battle(),'quick_strike','block');rejected(s,'REROLL',{actorId:'enemy',itemId:item(s,'enemy','block').id},/wrong/);s=act(s,'LOCK_RESULT');assert.equal(s.combat.stage,'manipulate_defender');rejected(s,'NUDGE',{actorId:'hero',itemId:item(s,'hero','quick_strike').id},/wrong/);s=act(s,'LOCK_RESULT');assert.equal(s.combat.stage,'summary');rejected(s,'LOCK_RESULT');});
+test('each owner can manipulate only its own selected dice',()=>{const s=revealed(battle(),'quick_strike','block');rejected(s,'REROLL',{itemId:item(s,'enemy','block').id},/own rolled/);rejected(s,'REROLL',{itemId:item(s,'hero','channel').id},/own rolled/);});
+test('free Recollection is used before paid rerolls, shared with the later reaction',()=>{let s=revealed(battle(),'quick_strike');const id=item(s,'hero','quick_strike').id;s=act(s,'REROLL',{itemId:id});assert.equal(s.combatants.hero.mana,6);s=act(s,'REROLL',{itemId:id});assert.equal(s.combatants.hero.mana,5);s=nextSlot(finish(s));s=revealed(s,'quick_strike','block');s=act(s,'LOCK_RESULT');const before=s.combatants.hero.mana;s=act(s,'REROLL',{itemId:item(s,'hero','block').id});assert.equal(s.combatants.hero.mana,before-1);s=nextSlot(finish(s));assert.equal(s.combatants.hero.freeRecollections,1);});
+test('Dodge succeeds at equality, avoids every on-hit payload, and spends committed charges',()=>{let s=battle();install(s,'hero',['short_sword','venom_vial','focus_crystal']);install(s,'enemy',['nimble_boots','focus_crystal']);s.combatants.enemy.attributes.finesse=3;setFaces(s,'enemy','dodge',4);s=exchange(s,'quick_strike','dodge',['venom']);assert.equal(s.combatants.enemy.hp,28);assert.equal(s.combatants.enemy.poison,0);assert.equal(item(s,'hero','venom').charges,2);assert.ok(event(s,'ATTACK_AVOIDED'));});
+test('more damage cannot fix a failed accuracy contest, but aiming can',()=>{function setup(){let s=battle();install(s,'enemy',['nimble_boots','focus_crystal']);s.combatants.enemy.attributes.finesse=4;setFaces(s,'enemy','dodge',4);return s;}const damage=exchange(setup(),'quick_strike','dodge',['add']);assert.equal(damage.combatants.enemy.hp,28);const aimed=exchange(setup(),'quick_strike','dodge',['aim']);assert.equal(aimed.combatants.enemy.hp,24);});
+test('accuracy modifier does not add damage, and echo does not multiply accuracy or venom',()=>{let s=battle();install(s,'hero',['short_sword','aiming_lens','echo_crystal','venom_vial']);s.combatants.hero.mana=20;s=revealed(s,'quick_strike',null,['aim','multiply']);let e=s.combat.exchange,r=calculateBundle(s.combatants.hero,e.action,e.raw.hero,e.id);assert.equal(r.effect,8);assert.equal(r.accuracy,11);s=battle();install(s,'hero',['short_sword','echo_crystal','venom_vial']);s.combatants.hero.mana=20;s=revealed(s,'quick_strike',null,['multiply','venom']);e=s.combat.exchange;r=calculateBundle(s.combatants.hero,e.action,e.raw.hero,e.id);assert.equal(r.effect,8);assert.equal(r.poison,4);});
+test('armor, resistance and active block apply in order without negative damage',()=>{let s=battle();s.combatants.enemy.armor=2;s.combatants.enemy.resistances.physical=1;setFaces(s,'hero','quick_strike',12);setFaces(s,'enemy','block',3);s=exchange(s,'quick_strike','block');const d=event(s,'DAMAGE_APPLIED').data;assert.deepEqual([d.armored,d.resisted,d.blocked,d.damage],[2,1,4,5]);assert.equal(s.combatants.enemy.hp,23);});
+test('Block cannot answer magic, Ward cannot answer a sword, recovery is always an eligible response',()=>{let s=battle();install(s,'hero',['fire_wand','focus_crystal']);s=declare(s,'firebolt');rejected(s,'SELECT_MANEUVER',{itemId:item(s,'enemy','block').id,maneuverId:'block'},/cannot answer/);let t=battle();install(t,'enemy',['ward_focus','focus_crystal']);t=declare(t,'quick_strike');rejected(t,'SELECT_MANEUVER',{itemId:item(t,'enemy','ward').id,maneuverId:'ward'},/cannot answer/);t=declare(t,'catch_breath');assert.equal(t.combat.stage,'manipulate_actor');});
+test('non-hostile Channel cannot be blocked but can be answered with Catch Breath',()=>{let s=declare(battle(),'channel');rejected(s,'SELECT_MANEUVER',{itemId:item(s,'enemy','block').id,maneuverId:'block'},/cannot answer/);s=declare(s,'catch_breath');assert.equal(s.combat.exchange.reaction.maneuverId,'catch_breath');});
+test('fully blocked weapon poison does not apply; a penetrating wound does',()=>{function setup(){let s=battle();install(s,'hero',['short_sword','venom_vial','focus_crystal']);return s;}const blocked=exchange(setup(),'quick_strike','block',['venom']);assert.equal(blocked.combatants.enemy.poison,0);const wound=exchange(setup(),'quick_strike',null,['venom']);assert.equal(wound.combatants.enemy.poison,4);assert.equal(wound.combatants.enemy.hp,24);});
+test('poison spell needs no wound, bypasses armor, and Ward reduces application rather than ticking damage',()=>{let s=battle();install(s,'hero',['venom_staff','focus_crystal']);install(s,'enemy',['ward_focus','focus_crystal']);s.combatants.enemy.armor=99;s.combatants.enemy.resistances.poison=2;setFaces(s,'enemy','ward',1);s=exchange(s,'poison_spell','ward');assert.equal(s.combatants.enemy.hp,28);assert.equal(s.combatants.enemy.poison,3);s=nextSlot(s);s=passSlot(s);assert.equal(s.combatants.enemy.hp,27);assert.equal(s.combatants.enemy.poison,2);});
+test('poison ticks both sides simultaneously, resistance does not prevent stack decay',()=>{const s=battle();s.combatants.hero.poison=2;s.combatants.hero.resistances.poison=5;s.combatants.enemy.poison=3;tickPoison(s);assert.equal(s.combatants.hero.hp,60);assert.equal(s.combatants.hero.poison,1);assert.equal(s.combatants.enemy.hp,25);assert.equal(s.combatants.enemy.poison,2);});
+test('simultaneous poison lethality is a draw with no rewards',()=>{let s=battle();s.combatants.hero.hp=1;s.combatants.enemy.hp=1;s.combatants.hero.poison=1;s.combatants.enemy.poison=1;s=passSlot(s);s=passSlot(s);assert.equal(s.phase,'lost');assert.equal(s.outcome,'draw');assert.equal(s.gold,0);});
+test('lethal attack ends combat immediately, before any future poison boundary',()=>{let s=battle();s.combatants.enemy.hp=1;s.combatants.hero.hp=1;s.combatants.hero.poison=20;s=exchange(s,'quick_strike');assert.equal(s.phase,'levelup');assert.equal(s.combatants.hero.hp,1);assert.equal(s.events.some(e=>e.type==='POISON_TICK'),false);});
+test('Counterstrike does not mitigate, happens only if alive and never creates a chain',()=>{let s=battle();s=exchange(s,'quick_strike','counterstrike');assert.equal(s.combatants.enemy.hp,24);assert.equal(s.combatants.hero.hp,56);assert.equal(s.events.filter(e=>e.type==='DAMAGE_APPLIED').length,2);assert.equal(s.combat.stage,'summary');});
+test('dead defender cannot Counterstrike or Catch Breath',()=>{for(const reaction of ['counterstrike','catch_breath']){let s=battle();s.combatants.enemy.hp=1;s=exchange(s,'quick_strike',reaction);assert.equal(s.combatants.hero.hp,60);assert.equal(s.events.filter(e=>e.type==='DAMAGE_APPLIED').length,1);assert.equal(s.events.some(e=>e.type==='MANA_RECOVERED'),false);}});
+test('Catch Breath applies additions before halving, restores only on resolution and clamps capacity',()=>{let s=battle();install(s,'enemy',['focus_crystal','power_charm']);s.combatants.enemy.mana=2;s=declare(s,'quick_strike');s=declare(s,'catch_breath',['add']);assert.equal(s.combatants.enemy.mana,1);s=finish(s);assert.equal(s.combatants.enemy.mana,5);assert.equal(event(s,'MANA_RECOVERED').data.amount,4);});
+test('Parry cancels current attack, consumes its cost and buff charge, but no future main turn',()=>{let s=battle();install(s,'enemy',['parrying_dagger','focus_crystal']);s.combatants.enemy.attributes.finesse=4;s.combatants.hero.power={amount:3,charges:2};s=exchange(s,'quick_strike','parry');assert.equal(s.combatants.enemy.hp,28);assert.equal(s.combatants.hero.mana,6);assert.equal(s.combatants.hero.power.charges,1);assert.equal(s.combatants.hero.pendingSkip,false);assert.ok(event(s,'ACTION_INTERRUPTED'));});
+test('Shield Bash uses remaining stagger, ignores HP armor/resistance and does no HP damage',()=>{let s=battle();s.combatants.enemy.armor=99;s.combatants.enemy.resistances.physical=99;s.combatants.enemy.poise=4;setFaces(s,'hero','shield_bash',8);setFaces(s,'enemy','block',2);s=exchange(s,'shield_bash','block');assert.equal(s.combatants.enemy.hp,28);assert.equal(s.combatants.enemy.pendingSkip,true);assert.equal(event(s,'SKIP_SCHEDULED').data.stagger,5);});
+test('partial stagger is discarded, not banked into the next exchange',()=>{let s=exchange(battle(),'shield_bash');assert.equal(s.combatants.enemy.pendingSkip,false);s=nextSlot(s);s=passSlot(s);s=exchange(s,'shield_bash');assert.equal(s.combatants.enemy.pendingSkip,false);});
+test('pending skip cannot stack, and Resolve blocks another skip until a later completed main turn',()=>{let s=battle();setFaces(s,'hero','shield_bash',12);s=exchange(s,'shield_bash');s=nextSlot(s);assert.equal(s.combat.stage,'summary');assert.equal(s.combat.summaryForcedSkip,true);assert.equal(s.combatants.enemy.resolveProtection,true);assert.equal(s.combatants.enemy.pendingSkip,false);s=nextSlot(s);assert.equal(s.combat.roundNumber,2);s=exchange(s,'shield_bash');assert.equal(s.combatants.enemy.pendingSkip,false);assert.ok(event(s,'STAGGER_RESISTED'));s=nextSlot(s);s=passSlot(s);assert.equal(s.combatants.enemy.resolveProtection,false);s=exchange(s,'shield_bash');assert.equal(s.combatants.enemy.pendingSkip,true);});
+test('Bash after the hero already acted skips its next round main slot',()=>{let s=battle();setFaces(s,'enemy','shield_bash',12);s=passSlot(s);s=exchange(s,'shield_bash');assert.equal(s.combatants.hero.pendingSkip,true);s=nextSlot(s);assert.equal(s.combat.roundNumber,2);assert.equal(s.combat.summaryForcedSkip,true);assert.equal(s.combatants.hero.resolveProtection,true);assert.equal(s.combatants.hero.reactionAvailable,true);});
+test('a living staggered defender still performs its already committed Counterstrike',()=>{let s=battle();setFaces(s,'hero','shield_bash',12);s=exchange(s,'shield_bash','counterstrike');assert.equal(s.combatants.enemy.pendingSkip,true);assert.equal(s.combatants.hero.hp,56);});
+test('a parried main slot still clears Resolve after its summary',()=>{let s=battle();install(s,'enemy',['parrying_dagger','focus_crystal']);s.combatants.hero.resolveProtection=true;s.combatants.enemy.attributes.finesse=4;s=exchange(s,'quick_strike','parry');assert.equal(s.combatants.hero.resolveProtection,true);s=nextSlot(s);assert.equal(s.combatants.hero.resolveProtection,false);});
+test('mana and free rerolls refresh exactly once per round; passing creates no reaction window',()=>{let s=battle();s.combatants.hero.mana=0;s.combatants.hero.freeRecollections=0;s=passSlot(s);assert.equal(s.combat.roundNumber,1);assert.equal(s.combat.stage,'action');assert.equal(s.combatants.hero.mana,0);assert.equal(s.combatants.hero.freeRecollections,0);s=passSlot(s);assert.equal(s.combat.roundNumber,2);assert.equal(s.combatants.hero.mana,2);assert.equal(s.combatants.hero.freeRecollections,1);assert.equal(s.events.filter(e=>e.type==='ROUND_STARTED').length,2);});
+test('zero recovery returns next round, recovery one skips the next round',()=>{let s=exchange(battle(),'heavy_strike');assert.equal(item(s,'hero','heavy_strike').readyRound,3);s=nextSlot(s);s=passSlot(s);rejected(s,'SELECT_MANEUVER',{itemId:item(s,'hero','heavy_strike').id,maneuverId:'heavy_strike'},/Recovering/);s=passSlot(s);s=passSlot(s);assert.equal(s.combat.roundNumber,3);s=select(s,'heavy_strike');assert.equal(s.combat.draft.maneuverId,'heavy_strike');});
+test('Focus skips exactly two future rounds and never leaks into another exchange',()=>{let s=revealed(battle(),'quick_strike');s=act(s,'FOCUS',{attribute:'finesse'});s=nextSlot(finish(s));s=passSlot(s);for(const round of [2,3]){assert.equal(s.combat.roundNumber,round);s=revealed(s,'quick_strike');assert.equal(calculateBundle(s.combatants.hero,s.combat.exchange.action,s.combat.exchange.raw.hero,s.combat.exchangeId).effect,4);rejected(s,'FOCUS',{attribute:'finesse'},/unavailable/);s=nextSlot(finish(s));s=passSlot(s);}s=revealed(s,'quick_strike');s=act(s,'FOCUS',{attribute:'finesse'});assert.equal(s.combatants.hero.focusReadyRound,7);});
+test('penalties are applied only to a later rolled exchange, not a locked counter',()=>{let s=battle();install(s,'hero',['vine_staff','short_sword','focus_crystal']);s=exchange(s,'numbing');assert.equal(s.combatants.enemy.statEffects.length,1);s=nextSlot(s);s=revealed(s,'quick_strike');const e=s.combat.exchange;assert.equal(calculateBundle(s.combatants.enemy,e.action,e.raw.enemy,e.id).effect,2);s=finish(s);assert.equal(s.combatants.enemy.statEffects.length,0);});
+test('pass and forced skip do not consume next-rolled-exchange penalties',()=>{let s=battle();s.combatants.hero.statEffects=[{attribute:'finesse',amount:-2,uses:1,startsAfterExchange:0}];s=passSlot(s);s=passSlot(s);assert.equal(s.combatants.hero.statEffects.length,1);s.combatants.hero.pendingSkip=true;s=passSlot(s);s=passSlot(s);assert.equal(s.combat.summaryForcedSkip,true);assert.equal(s.combatants.hero.statEffects.length,1);});
+test('Ward can prevent the entire attribute penalty',()=>{let s=battle();install(s,'hero',['vine_staff','focus_crystal']);install(s,'enemy',['ward_focus','focus_crystal']);s=exchange(s,'numbing','ward');assert.equal(s.combatants.enemy.statEffects.length,0);});
+test('weaken affects one attack attempt and is consumed even if parried',()=>{let s=battle();install(s,'hero',['hex_wand','parrying_dagger','focus_crystal']);s.combatants.hero.attributes.finesse=4;s=exchange(s,'hex');assert.equal(s.combatants.enemy.weaken,4);s=nextSlot(s);s=exchange(s,'quick_strike','parry');assert.equal(s.combatants.enemy.weaken,0);assert.equal(s.combatants.hero.hp,60);});
+test('Battle Hymn buffs the next two attempts including a counter, without stacking twice',()=>{let s=battle();install(s,'hero',['war_horn','short_sword','focus_crystal']);s=exchange(s,'rally');assert.deepEqual(s.combatants.hero.power,{amount:2,charges:2});s=nextSlot(s);s=exchange(s,'quick_strike','counterstrike');assert.equal(s.combatants.enemy.hp,22);assert.equal(s.combatants.hero.power.charges,1);});
+test('armor removed by Platebreaker persists into later rounds',()=>{let s=battle();s.combatants.enemy.armor=3;s=exchange(s,'sunder');assert.equal(s.combatants.enemy.armor,0);s=nextSlot(s);s=passSlot(s);s=exchange(s,'quick_strike');assert.equal(s.combatants.enemy.hp,24);});
+test('golden full round: resources, accuracy, mitigation and recovery are exact',()=>{let s=battle();install(s,'hero',['short_sword','aiming_lens','round_shield','power_charm','focus_crystal']);install(s,'enemy',['nimble_boots','short_sword','focus_crystal']);s.combatants.hero.attributes.finesse=1;s.combatants.hero.attributes.vitality=1;s.combatants.enemy.attributes.finesse=2;s.combatants.enemy.mana=7;setFaces(s,'hero','quick_strike',4);setFaces(s,'hero','aim',2);setFaces(s,'enemy','dodge',4);setFaces(s,'enemy','quick_strike',6);setFaces(s,'hero','block',3);setFaces(s,'hero','add',2);s=exchange(s,'quick_strike','dodge',['aim']);assert.equal(s.combatants.hero.mana,5);assert.equal(s.combat.exchange.locked.hero.accuracy,10);assert.equal(s.combatants.enemy.hp,23);s=nextSlot(s);s=exchange(s,'quick_strike','block',[],['add']);assert.equal(s.combatants.hero.hp,59);assert.equal(s.combatants.hero.mana,3);s=nextSlot(s);assert.equal(s.combat.roundNumber,2);assert.equal(s.combatants.hero.mana,5);assert.equal(s.combatants.hero.reactionAvailable,true);});

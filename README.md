@@ -1,109 +1,117 @@
-# Jarbound — Character Stats Prototype v0.3
+# Jarbound — Rounds & Equipment v0.4
 
-An offline, single-player dice-building roguelike with four encounters. Choose a character build, load a five-die jar, roll, attach modifiers, manipulate outcomes, and manage mana and cooldowns.
+A single-player, equipment-building dice roguelike. Your items define your actions; character attributes improve their dice. Commit a maneuver, answer your opponent, manipulate the rolls, and save resources for the other half of the round.
 
 ## Play immediately
 
-**Double-click `index.html`.** It contains all game code and styles; no installation, account, server, network, or build step is needed for players. Extract the ZIP first. New Run returns to character creation.
+**Extract the ZIP and double-click `index.html`.** The generated HTML includes all JavaScript and styles. No installation, server, account, build step, or internet connection is needed. The standalone HTML can also be copied by itself.
 
-There is no save system yet. Refreshing the page or starting a new run discards the current run.
+New Run returns to character creation. There is **no save system**: refreshing or closing the page discards your run.
 
-## Build a character
+1. Allocate **3 attribute points**, with at most 2 in one attribute. Choose any unlocked talent.
+2. Equip up to **8 items**. Your backpack contains additional spells, wards, poison, and potions. Keep a Focus Crystal and a repeatable attack or poison spell equipped.
+3. On your main turn, select **one maneuver + up to two supporting items**. Commit the action. Its mana, charges, and equipment availability are now spent.
+4. The enemy commits its reaction before either side rolls. Both sides reveal their dice. You manipulate and lock first; the enemy then locks its reaction.
+5. Read the outcome and Continue. On the enemy's main turn, choose **one reaction + up to one support**, or Pass. You see its declared maneuver and range, not its future rolls.
+6. After the enemy exchange, poison ticks for both sides and a new round begins. Mana and free rerolls refresh once per round, not between the two turns.
+7. Win an encounter, allocate a new attribute point, choose a reward, visit the shop, and adjust your loadout before the next fight. There are four opponents.
 
-Start with **3 attribute points**, allocating at most **2** to one attribute. Each non-final victory grants **1 additional point**, up to **4** per attribute. Allocate the earned point before choosing the normal victory reward. Points can be moved only during the current allocation screen; established investments cannot be refunded.
+## Equipment is not just a die skin
 
-Every die has exactly one associated attribute, shown on its card. The association belongs to the die, not its effect family: Stone Guard uses Vitality, Duelist Parry uses Finesse, and Arcane Barrier uses Arcana, although all three generate block.
+Each owned item has its own faces, charges, and next-ready round. A Shield provides **Block** and **Shield Bash**; a Short Sword provides **Quick Strike** and **Counterstrike**. The maneuvers share the same physical item. Using your shield to Bash means you cannot also Block with that shield later in the round. Two separate shields have independent recovery.
 
-| Attribute | Examples | Character effect |
-|---|---|---|
-| Might | Iron Strike, Platebreaker, Disruptor | Add to the associated die's roll |
-| Finesse | Quick Cut, Venom, Gilded Plus, Duelist Parry | Add to the associated die's roll |
-| Arcana | Hex, Echo Prism, Black Spores, Arcane Barrier | Add to the associated die's roll |
-| Vitality | Guard, Restoration, Iron Bastion | +6 maximum and current HP per permanent point |
-| Spirit | Mana Well, Battle Hymn, Amber Amplifier | +1 maximum mana per permanent point |
+Forging one item face improves every maneuver on that item. Swapping equipment never resets charges or upgrades. Battle initialization resets recovery and temporary effects, but **not consumable charges**. Potions and venom can be replenished explicitly at the shop.
 
-Base HP is 60. Base maximum mana is 7. Regeneration is 4 per turn unless the Meditation talent raises it to 5. Permanent resource-capacity increases preserve missing HP/mana; they do not fully heal the character. Temporary attribute bonuses never change capacities, regeneration, resistances, or talent eligibility.
+A legal loadout includes the reusable Focus Crystal: **Channel** is a zero-mana main action that recovers the roll, while **Catch Breath** is a reaction that recovers half, rounded down, after the incoming action. Both use the same crystal. Passing is always legal. Recovery arrives only on resolution and cannot finance its own reroll in advance.
 
-### Talents and resistances
+### Maneuvers and reactions
 
-At **2 Vitality**, choose Iron Skin (resist 1 physical damage per hit) or Antitoxin (resist 2 poison damage per tick).
+| Equipment / maneuver | Behavior |
+|---|---|
+| Warhammer / Heavy Strike | Strong physical hit; lower accuracy and one additional recovery round. |
+| Warhammer / Platebreaker | Remove armor for the encounter instead of dealing HP damage. |
+| Short Sword / Quick Strike | More accurate physical hit with no additional recovery round. |
+| Shield / Block | Reduce a blockable physical hit or impact. |
+| Shield / Shield Bash | Apply stagger instead of HP damage; meeting Poise denies the next main action. |
+| Nimble Boots / Dodge | Meet or exceed accuracy to avoid an eligible maneuver entirely. Failure offers no protection. |
+| Parrying Dagger / Parry | Meet a melee maneuver's separate parry difficulty to cancel the current action only. |
+| Short Sword / Counterstrike | Retaliate if you survive. Provides no mitigation and never opens another reaction. |
+| Ward Focus / Ward | Reduce wardable magical damage or spell-application strength. |
+| Fire Wand / Firebolt | Arcane damage; “fire” is descriptive, not another resistance system in this release. |
+| Venom Staff / Venom Cloud | Apply poison directly; Dodge avoids application and Ward reduces stacks. |
+| Healing Potion / Drink | Spend a charge to heal. The amount varies; the drink does not have a separate failure roll. |
 
-At **2 Spirit**, choose Meditation (+1 mana regenerated per turn) or Arcane Warding (resist 2 arcane damage per hit).
+## Attributes and numerical channels
 
-Choose a newly unlocked talent before confirming allocation. A confirmed talent is locked for the run. Refunding a newly allocated threshold point removes its unconfirmed talent. Physical/arcane resistance is applied before block; poison bypasses block but is reduced by poison resistance. Resistance never produces healing or negative damage.
-
-## How rolls work
-
-```text
-Adjusted roll = max(0, raw face + permanent attribute + temporary bonuses/penalties)
-Final effect = (adjusted roll + adjusted additive modifiers) × multiplier modifiers
-```
-
-Each modifier uses its own attribute. Apply the target's attribute only once. A multiplier converts its adjusted roll using `ceil(adjusted / 2)`, bounded to **×1–×3**. Multiple multipliers can still stack. Effects have a numerical safety ceiling of 999.
-
-Example: Iron Strike face 4 + Might 2 = 6; Gilded Plus face 4 + Finesse 1 = +5; Echo Prism face 4 + Arcana 0 = ×2. The final attack is `(6 + 5) × 2 = 22` before Battle Hymn power and enemy defenses.
-
-The UI shows raw face, permanent attribute, temporary effects, and attachment arithmetic. Rerolls replace only the raw face. Nudge adds 1 to the raw face up to its highest engraved face; an attribute-adjusted result may exceed that maximum. A stat-adjusted six is not a natural six.
-
-**Quick Cut is a free emergency attack capped at 3 total damage**, including attributes, attachments, and Battle Hymn power. Mana Well costs 1 mana and skips 2 future turns, so scaling it is not a free resource engine.
-
-## Combat loop
-
-1. Select up to five ready dice within the mana budget. Selection reserves mana; rolling pays it. Include at least one effect die.
-2. Roll all selected dice. One Recollection is free each turn; further rerolls cost 1 mana and Nudge costs 2.
-3. Attach each purple modifier to one effect die, freely. Modifiers can be moved or detached. Modifier-to-modifier chaining is not supported.
-4. Reorder effect dice, then commit. Battle Hymn power applies to the next two attacks; Platebreaker strips armor before later physical hits. Poison bypasses enemy armor and block.
-5. The enemy acts unless killed or interrupted. Meet a charged move's stagger threshold to interrupt the whole move, including penalties. Used dice skip the stated number of future turns.
-6. After a non-final victory, allocate a stat point, choose a die/rest/forge reward, then visit the shop. HP persists; battle statuses and cooldowns reset between fights.
-
-### Focus and enemy counterplay
-
-**Focus** costs 2 mana and adds +2 to a chosen attribute **for the current turn only**. Use it before or after rolling through the character sidebar. It skips two future turns after use. Focus cannot spend mana already reserved for the jar.
-
-The Mire Alchemist's Numbing Vines telegraphs **−2 Finesse for your next turn** and is interruptible with 5 stagger. The Jarbreaker's Corrupting Blow telegraphs **−2 Arcana for your next turn** and can be interrupted with 6 stagger. These penalties are additive, expire after that one player turn, and do not permanently alter the character. Focus can offset a penalty without deleting it.
-
-The Jarbreaker's Arcane Shatter and Corrupting Blow deal arcane damage. Other current attacks are physical. Intents show damage type, penalty, and interrupt threshold before commitment.
-
-## Develop and test
-
-Node.js 20+ is required only for development. There are no npm/runtime dependencies.
-
-```sh
-npm run dev       # rebuild the standalone game and serve localhost:5173
-npm run build     # regenerate index.html after source changes
-npm run check     # syntax, exact generated-file verification, and automated tests
-npm test          # deterministic engine, UI, and offline packaging tests
-```
-
-Edit the modules and `src/index.template.html`, not the generated `index.html`. Always rebuild and commit the generated file so downloaded repository ZIPs remain playable directly.
-
-An optional graphical smoke test is in `tests/browser-smoke.py`. It requires Python, Playwright, and Chromium (or `CHROMIUM_PATH`) and is not part of the game's runtime. It exercises the exact standalone HTML in an isolated browser document with networking blocked, at desktop and mobile sizes. Screenshots/results are written to ignored `test-results/`. This environment blocks `file://` navigation; the smoke test therefore loads the HTML directly, while Node tests independently verify self-contained packaging and startup/reset behavior.
-
-## Code layout
+Every maneuver has exactly one associated attribute: **Might, Finesse, Arcana, Vitality, or Spirit**. Individual maneuvers on the same item can use different attributes. Raw faces remain separate from adjusted results.
 
 ```text
-src/content.js              Dice, encounters, attributes, talents, balance constants
-src/attributes.js           Pure attribute and derived-resource calculations
-src/game.js                 Immutable reducer, roll breakdowns, combat, progression
-src/character-ui.js          Allocation screen, stat sidebar, visible roll arithmetic
-src/main.js                 Combat/progression UI and pointer/keyboard interactions
-src/index.template.html     Editable HTML and field guide
-styles.css                  Shared responsive presentation
-scripts/build-standalone.js  Dependency-ordered, zero-dependency offline exporter
-scripts/server.js           Optional local HTTP server
-index.html                  Generated standalone player-facing game
+Adjusted die = max(0, raw face + permanent attribute + temporary effects)
+Primary output = (adjusted primary + compatible additions) × multipliers
+Accuracy = maneuver accuracy + aiming modifiers
+Weapon poison payload = venom attachment output
 ```
 
-The reducer accepts an RNG for deterministic tests. Character creation and level-up use explicit phases, validated point allocation, and required talent choices. The legacy combat suites use zero-stat fixtures so old combat behavior and new character behavior are tested separately.
+Attack power and weakening apply after the primary calculation; the maneuver's total-output cap applies last. Each multiplier converts its adjusted result to `ceil(result / 2)`, bounded to ×1–×3. Multipliers stack, but never automatically multiply accuracy or attached venom. Damage and accuracy are independent. Accuracy is a Dodge difficulty, **not a universal percentage chance to hit**; there is no extra attack-success roll.
 
-## Deployment
+A weapon's poison applies only if it inflicts at least one point of health damage. A fully blocked or dodged hit applies none. Poison spells do not need an initial wound. Poison ticks simultaneously at round end, bypasses armor and block, is reduced by poison resistance, and decays by one. A simultaneous poison defeat is a draw without rewards.
 
-The existing GitHub Actions workflow runs `npm run check` and deploys when GitHub Pages has been enabled. In repository Settings → Pages, select GitHub Actions as the deployment source. The standalone HTML can also be uploaded to any static host.
+### Resources and character growth
 
-## Current scope
+- Base health **60**, plus **6 per Vitality**. Base mana **7**, plus **1 per Spirit**.
+- Base mana regeneration **2 per round**; Meditation raises it to 3. Each battle starts at full mana without extra first-round regeneration.
+- **One free Recollection per round**, shared by your action and reaction. Additional rerolls cost 1 mana; nudging a raw face by +1 costs 2, up to its highest engraved face.
+- **Focus** costs 2 mana, adds +2 to a chosen attribute for the current exchange, and skips two future rounds. Use it only in your own manipulation window.
+- Each non-final victory grants one attribute point, up to 4 in each attribute. At 2 Vitality choose physical or poison resistance; at 2 Spirit choose regeneration or arcane resistance.
+- Permanent capacity increases preserve missing HP/mana. Temporary bonuses and penalties never change capacities or talent eligibility.
+- Numbing Vines and Corrupting Sigil affect one **future rolled exchange**, not already-locked results. Passing does not consume those penalties.
 
-This is a playable prototype, not final balance. All dice remain six-sided. No saves, branching route map, equipment inventory, audio, permanent account progression, or full damage-type ecosystem yet. Stats, poison, stacking modifiers, mana generation, and enemy difficulty need further playtesting as a combined economy.
+Equipment readiness uses `readyRound = currentRound + additionalRecoveryRounds + 1`. An item used in round 3 with no extra recovery returns in round 4; with one extra recovery, it returns in round 5. The same rule applies to modifiers, actions, and reactions.
+
+### Interruptions without permanent stun locks
+
+Block reduces impact; Parry cancels the current eligible melee action; Shield Bash denies the target's **next main action** if remaining stagger reaches Poise. These are three different effects. Armor and HP resistance do not reduce stagger; eligible Block does.
+
+Partial stagger does not carry over. Pending skips do not stack. After a forced skip, **Resolve** prevents another until the target completes a later non-skipped main-turn slot (a voluntary Pass counts). Reactions do not clear Resolve. Skipping a main action does not remove a committed reaction or stop round progression.
+
+## Development and testing
+
+Node.js 20+ is needed only for development. There are no npm packages to install.
+
+```bash
+npm run build                # Regenerate standalone index.html
+npm run check                # Syntax, definitions, output freshness, Node tests
+npm test                     # Deterministic engine / campaign / packaging / UI tests
+npm run simulate -- --strict # 100 seeded policy probes; fail if any hit the round cap
+npm run dev                  # Build and serve locally on http://localhost:5173
+```
+
+The reducer remains `reduceGame(state, action, rng)`. Recognized commands require the current `expectedRevision`; combat commands also require actor and exchange IDs. The renderer never draws random values or mutates resources. Selection AI receives a public view with no unrevealed rolls or future RNG stream. Both sides pay through the same reducer.
+
+Optional graphical checks require Python and Playwright, not game runtime dependencies:
+
+```bash
+python -m pip install -r requirements-browser.txt
+python -m playwright install chromium
+python tests/browser-smoke.py --require-file
+```
+
+CI installs browser OS dependencies as well. It requires actual `file://` navigation. Restricted local environments can omit `--require-file`; a blocked file navigation is then reported explicitly, and the exact standalone HTML is tested in an isolated document with networking disabled. That fallback is **not** reported as a direct-file pass. The suite covers desktop, mobile, both combat roles, Focus, shared rerolls, Bash/Resolve, talents, reset/help, and a complete four-encounter campaign including level-ups, shopping, and forging. Fixed legal rolls make the campaign test a progression check, not a balance claim.
+
+Results are written to `test-results/`. Simulations report capped samples rather than adding a forced-loss timer to the actual game. Probe outcomes are AI-policy comparisons with fresh starting resources per encounter, not human win rates.
+
+## Code organization
+
+`content.js` defines equipment, maneuvers, and encounters; `equipment.js` owns validation and availability; `attributes.js` is combatant-neutral; `effects.js` calculates results; `combat.js` owns rounds/exchanges; `enemy-ai.js` selects legal decisions; and `game.js` owns the campaign. UI modules render those states without independent combat calculations. `scripts/build-standalone.js` bundles named local modules into isolated scopes and fails on unsupported syntax, dependency cycles, or missing exports.
+
+See `docs/combat-v04.md` for the timing contract, `docs/test-migration.md` for regression coverage changes, and `docs/round-equipment-plan.md` for the approved historical plan.
+
+## Scope and balance
+
+This is a first equipment/rounds prototype, not a finished balance pass. It uses fixed hero-first order and one opponent at a time. There is no save system, movement grid, durability, detailed hand/weight model, multiplayer, or reaction-to-reaction chain. Equipment uses text/icons; no new character art is included. Revisit mana costs, defensive thresholds, and encounter tuning after human playtesting.
+
+GitHub Actions tests the source and direct-open browser build before optional Pages deployment. Hosting requires Pages to be enabled in repository Settings; downloading the game does not.
 
 ## License
 
-MIT; see LICENSE.
+MIT — see `LICENSE`.
