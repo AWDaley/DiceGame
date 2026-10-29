@@ -1,4 +1,4 @@
-<!-- Generated with `npm run build`. Works directly from file://. -->
+<!-- Generated with npm run build. Self-contained and playable from file://. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -58,6 +58,21 @@
 .attribute-list{margin-top:14px}.attribute-line{display:flex;gap:9px;align-items:center;min-height:46px;border-bottom:1px solid var(--line-soft);font-size:12px}.attribute-line>span{flex:1}.attribute-line strong{font:12px var(--mono);white-space:nowrap}.focus-button{font-size:10px;border:1px solid #5d5072;background:#2b2739;border-radius:6px;padding:7px 8px;min-height:36px}.focus-note{font-size:10px;line-height:1.7;color:#aaa5b9;margin:13px 0}.derived-list{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#a5a9b6;border-top:1px solid var(--line-soft);padding-top:13px;margin-top:13px}.derived-list span{display:flex;justify-content:space-between;gap:10px}.derived-list b{color:#d2c8b7}.character-talents{display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--gold-soft);margin-top:13px}.stat-effects{border-top:1px solid var(--line-soft);padding-top:9px;margin-top:13px;font-size:11px}.stat-effects p+ p{margin-top:8px}.stat-effects small{display:block;font:9px/1.7 var(--mono);color:var(--muted)}.positive-stat{color:#9bddb5}.negative-stat{color:#f2a29d}.character-sheet{min-width:0}
 @media(max-width:700px){.attribute-grid,.talent-options{grid-template-columns:1fr}.character-derived{gap:12px;font-size:11px}.character-derived b{font-size:17px}.attribute-card p{min-height:0}.character-builder .section-heading{align-items:flex-start}.character-builder .phase-meta{white-space:normal}.focus-button{min-height:44px;min-width:55px}.roll-math{font-size:10px}.rolled-die .roll-target{min-height:245px}.character-builder .cast-footer{align-items:stretch}.character-builder .primary-button{white-space:normal}}
 
+/* v0.4: equipment and simultaneous declarations, preserving the original palette. */
+.v04 .muted,.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.v04 h2.subheading{font-size:25px;margin:28px 0 15px}.subheading small{display:block;font:11px/1.8 var(--sans);color:var(--muted);margin-top:3px}
+.gear-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}.gear-card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:18px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(140deg,#242833,#181d27)}
+.gear-card.chosen{border-color:var(--gold);box-shadow:0 0 0 1px #b78b4c}.gear-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.gear-icon{color:var(--gold-soft);font-size:28px}.gear-card h3{font-size:25px;margin:0}.charge-label{font:10px var(--mono);color:#a6d0c9;margin-left:auto}.gear-moves{display:grid;gap:14px}.gear-moves strong{display:block;font-size:13px;color:#e5d6be}.gear-moves strong small{color:var(--muted);font:10px var(--mono);margin-left:4px}.gear-moves span{display:block;font-size:10px;line-height:1.7;color:#d0b88b;margin:5px 0}.gear-moves p{font-size:12px;line-height:1.6;color:#adb4c4}.shared-warning{font-size:10px;line-height:1.7;color:#d1b57d;border-top:1px solid var(--line);padding-top:9px;margin-top:auto}.equip-button{margin-top:auto;justify-content:center;text-align:center;white-space:normal;font-size:11px;min-height:44px}
+.loadout-banner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px;border:1px solid #65533c;border-radius:12px;background:#29262b}.loadout-banner strong{font:18px var(--mono);color:var(--gold-soft)}.loadout-banner p{font-size:12px;line-height:1.7;margin-top:8px;color:#bcb8b4}.loadout-banner .warning{color:#f5b0a0}.loadout-banner button{flex-shrink:0}
+.maneuver-jar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;padding:23px;margin-bottom:20px;border:1px solid #6d5b42;border-radius:14px;background:linear-gradient(105deg,#2b2830,#212534)}.maneuver-jar h2{font-size:28px;margin:7px 0}.range-line{font:12px/1.8 var(--mono);color:#d7c193;overflow-wrap:anywhere}.jar-support-names{font-size:12px;color:#bcb1d9;margin-top:8px}.jar-budget-v4{display:flex;flex-direction:column;gap:8px;justify-content:center;text-align:right;font:11px/1.6 var(--mono);color:#bcb9cc}.jar-budget-v4 strong{font-size:13px;color:#d0c5eb}.jar-buttons{display:flex;gap:12px;flex-wrap:wrap;grid-column:1/-1}.jar-buttons button{min-height:44px}.incoming-panel{border:1px solid #68504a;background:linear-gradient(100deg,#30252a,#24232d);border-radius:12px;padding:21px;margin-bottom:17px}.incoming-panel h2{font-size:25px;margin:8px 0}.incoming-panel>p{font-size:12px;line-height:1.6;margin:9px 0;color:#bfb9bf}
+.maneuver-options{display:flex;flex-direction:column;gap:10px}.maneuver-choice{display:flex;flex-direction:column;gap:7px;min-height:115px;text-align:left;padding:13px;border:1px solid #4a4855;border-radius:8px;background:#202633}.maneuver-choice strong{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:#e8e1d3}.maneuver-choice strong>span{color:#c5b9ec;white-space:nowrap;font:11px var(--mono)}.maneuver-choice small{font:10px/1.6 var(--mono);color:#cfb386}.maneuver-choice p{font-size:11px;line-height:1.7;color:#aeb8c9}.maneuver-choice.selected{background:#373027;border-color:var(--gold)}.unavailable-reason{display:block;font-size:10px;line-height:1.5;color:#e7ada8}.v04 button:disabled{opacity:.62;cursor:not-allowed}.v04 button:focus-visible{outline:3px solid #e8c98b;outline-offset:3px}
+.support-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px}.support-card{padding:17px;border:1px solid #51475f;background:#24232f;border-radius:11px;display:flex;flex-direction:column;gap:8px;text-align:left;min-height:190px}.support-card.chosen{border-color:#c8a4eb;background:#373045}.support-card strong{font-size:14px;color:#ddd1ec}.support-card small{font:10px var(--mono);color:#c1b0d3}.support-card p{font-size:11px;line-height:1.7;color:#b6b3c3}
+.exchange-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.roll-side{padding:19px;border:1px solid #4e4b5a;border-radius:13px;min-width:0;background:#1e2330}.roll-side-head{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap}.lock-tag{font:9px var(--mono);color:#b5a9cb}.roll-side h2{font-size:27px;margin:13px 0}.effect-total{display:flex;align-items:center;gap:12px}.effect-total b{font:600 40px var(--mono);color:var(--gold-soft)}.effect-total span{font:11px/1.6 var(--mono);color:#bec3d3}.roll-formula{font:11px/1.8 var(--mono);margin:12px 0 17px;color:#c9b695;overflow-wrap:anywhere}.exchange-dice{display:flex;flex-direction:column;gap:14px}.exchange-die{display:flex;align-items:flex-start;gap:13px;border-top:1px solid var(--line);padding-top:14px}.raw-face{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border:1px solid #867355;border-radius:9px;background:#37312d;color:#f2d9b2;font:600 25px var(--mono)}.die-math{display:flex;flex-direction:column;gap:7px;min-width:0}.die-math strong{font-size:13px}.die-math>span,.die-math>small{font:10px/1.7 var(--mono);color:#b5bbc9}.inline-tools{display:flex;gap:7px;flex-wrap:wrap}.inline-tools button{min-height:40px;font-size:10px;padding:8px 10px}.exchange-outcome{padding:23px;border:1px solid #526153;background:#202b29;border-radius:13px;margin:20px 0}.exchange-outcome p{font:12px/1.8 var(--mono);margin:8px 0;color:#c5d5c9}.summary-duel{display:flex;gap:13px;flex-wrap:wrap;align-items:center;padding:15px;border:1px solid var(--line);border-radius:10px;color:#e2caa5}.summary-duel span:nth-child(2){font-style:italic;color:var(--muted)}
+.enemy-equipment{display:flex;flex-direction:column;gap:12px}.enemy-equipment>div{display:flex;flex-direction:column;gap:4px}.enemy-equipment strong{font-size:12px;color:#d8c8b2}.enemy-equipment small{font-size:10px;line-height:1.5;color:#a2adbf}.shop-services{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.shop-services button{min-height:44px;white-space:normal}.v04 .log-feed{max-height:420px}.points-left{color:var(--gold-soft);font:600 15px var(--mono)}
+@media(max-width:980px){.exchange-grid{grid-template-columns:1fr}.gear-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+@media(max-width:700px){.gear-grid{grid-template-columns:1fr}.gear-card{padding:16px}.loadout-banner{flex-direction:column;align-items:stretch}.loadout-banner button{width:100%}.maneuver-jar{grid-template-columns:1fr;padding:17px;gap:13px}.jar-budget-v4{text-align:left;gap:3px}.jar-buttons{flex-direction:column}.jar-buttons button{width:100%}.exchange-grid{grid-template-columns:1fr}.support-grid{grid-template-columns:1fr 1fr}.support-card{padding:13px}.v04 .sidebar{display:flex;flex-direction:column}.v04 .cast-footer{gap:15px}.v04 .primary-button{white-space:normal}.inline-tools button{min-height:44px}.v04 .focus-button{min-height:44px}.site-footer{padding-bottom:20px}}
+@media(max-width:380px){.support-grid{grid-template-columns:1fr}.exchange-die{gap:9px}.raw-face{width:39px;height:39px;flex-basis:39px}}
+
 </style>
 </head>
 <body>
@@ -66,7 +81,7 @@
     <header class="masthead">
       <div class="brand-wrap" aria-label="Jarbound">
         <div class="brand-symbol" aria-hidden="true">✧<span>✦</span></div>
-        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">DICEBUILDING ROGUELIKE <span class="dot">·</span> PROTOTYPE 03</span></div>
+        <div class="brand-type"><span class="brand-name">JARBOUND</span><span class="brand-caption">EQUIPMENT & DICE ROGUELIKE <span class="dot">·</span> PROTOTYPE 04</span></div>
       </div>
       <div class="header-actions">
         <span class="version-pill"><i></i> PLAYABLE ALPHA</span>
@@ -80,955 +95,1201 @@
   <dialog id="how-to-play" class="help-modal" aria-labelledby="help-title">
     <div class="dialog-head"><span class="eyebrow">FIELD GUIDE / 01</span><button class="icon-button" type="button" data-action="close-help" aria-label="Close instructions">✕</button></div>
     <h2 id="help-title">Bend the roll. <em>Build the combo.</em></h2>
-    <p>Jarbound is a short, complete four-fight prototype. Every die performs one function. Its raw face plus the associated attribute determines its power. Temporary buffs and penalties affect rolls, never maximum HP or mana.</p>
+    <p>Every die belongs to an item you carry. A round includes your main turn and the enemy’s main turn. Both sides can react, and share mana and equipment across the whole round.</p>
     <ol>
-      <li><strong>Build your character.</strong> Allocate 3 points across Might, Finesse, Arcana, Vitality, and Spirit (maximum 2 each at creation). Every die shows its scaling attribute. Vitality adds 6 HP per point; Spirit adds 1 maximum mana. At 2 Vitality or Spirit, choose a talent.</li>
-      <li><strong>Prepare.</strong> Choose up to five ready dice. Each die has a mana cost, paid when you roll. Budget mana for your dice <em>and</em> manipulation; cooldowns still apply.</li>
-      <li><strong>Roll.</strong> All selected dice roll together. Inspect the enemy's telegraphed move.</li>
-      <li><strong>Manipulate.</strong> You get one <strong>free Recollection (reroll)</strong> per turn. Further rerolls cost <strong>1 mana</strong>, and nudging +1 costs <strong>2 mana</strong>. Regenerate 4 mana per turn (5 with Meditation), up to your character’s maximum.</li>
-      <li><strong>Attach.</strong> Select a purple modifier die, then select any effect die to attach it. Drag-and-drop works on desktop. Stack multiple modifiers on one target; additions resolve before multipliers.</li>
-      <li><strong>Order and counter.</strong> Move dice left or right to choose activation order. Against armor, use Platebreaker before attacks or poison to bypass armor. Roll Disruptor on charged turns and meet the displayed stagger threshold to interrupt the move.</li>
-      <li><strong>Focus.</strong> Spend 2 mana before or after rolling for +2 to one attribute this turn. Focus skips two future turns. Enemy attribute penalties last for your next turn and can be interrupted when indicated.</li>
-      <li><strong>Progress.</strong> Each non-final victory grants 1 attribute point (maximum 4 per attribute). Allocate it, take a free reward, visit the shop, and forge better faces. Defeat all four encounters to win.</li>
+      <li><strong>Build and equip.</strong> Spend 3 attribute points and choose unlocked talents. Equip up to 8 items, including a Focus Crystal and a repeatable offensive weapon or spell. Unused items stay in your backpack.</li>
+      <li><strong>Declare.</strong> Choose one main maneuver plus up to 2 supports. The defender chooses one reaction plus up to 1 support. Costs and charges are spent on commitment, even if the attack fails. Neither side sees rolls before committing.</li>
+      <li><strong>Roll and manipulate.</strong> Both sides roll. The acting side manipulates and locks first, then the defender. One free Recollection is shared across the entire round; extra rerolls cost 1 mana and nudges cost 2. Focus costs 2 mana for +2 to an attribute this exchange and skips two future rounds.</li>
+      <li><strong>Defend or retaliate.</strong> Block reduces physical hits and impacts; Ward reduces magical effects. Dodge meets accuracy; Parry meets melee parry difficulty. Counterstrike provides no defense and happens only if you survive. Catch Breath gives half the rolled recovery after the incoming action.</li>
+      <li><strong>Plan both turns.</strong> Every used item is unavailable for the rest of the round, plus its extra recovery rounds. Shield Block and Shield Bash share one shield. Mana regenerates by 2 at round start, or 3 with Meditation. Channel spends a main action to recover mana.</li>
+      <li><strong>Separate the numbers.</strong> Damage modifiers do not improve accuracy. An Aiming Lens improves accuracy, not damage. Weapon venom applies only after HP damage; a Venom Staff applies poison directly. Echo multiplies the primary effect, not accuracy or attached venom.</li>
+      <li><strong>Interrupt.</strong> Shield Bash must meet Poise after defense to skip the target’s next main action. After that skip, Resolve prevents another skip until a later main turn completes. Parry cancels only the current attack.</li>
+      <li><strong>Round end and progress.</strong> Poison ticks simultaneously, ignores armor and block, then decays. Resistance can reduce it. After victory, allocate a point, take a reward, visit the shop and change your loadout. Consumables refill only when purchased or explicitly replenished.</li>
     </ol>
-    <div class="help-note"><span>✧</span><p><strong>Modifier example:</strong> A face-4 attack with Might 2, a +3 rune, and a ×2 prism becomes <strong>(4 + 2 + 3) × 2 = 18 damage</strong>. Each modifier uses its own attribute. Multipliers are bounded from ×1 to ×3. Quick Cut is a free fallback capped at 3 damage including Battle Hymn power.</p></div>
+    <div class="help-note"><span>✧</span><p><strong>Offline and no save:</strong> This file contains all code and styles. Refreshing or starting a new run discards progress. Passing is always legal. A required Focus Crystal ensures zero-mana recovery. Firebolt deals arcane damage; fire is not a separate resistance in this prototype.</p></div>
     <button type="button" class="primary-button" data-action="close-help">ENTER THE JAR <span>→</span></button>
   </dialog>
   <script>
 (() => {
 'use strict';
-// === content.js ===
-// Data-driven content. Every die has exactly one effect; rolled values supply its magnitude.
-const DICE = {
-  strike: { attribute: 'might', name: 'Iron Strike', family: 'attack', icon: '⚔', cooldown: 0, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'A dependable edge.' },
-  quick: { attribute: 'finesse', name: 'Quick Cut', outputCap: 3, family: 'attack', icon: '⚔', cooldown: 0, manaCost: 0, description: 'Free fallback: deal up to 3 physical damage, including all bonuses.', flavor: 'Speed is its own weapon.' },
-  guard: { attribute: 'vitality', name: 'Stone Guard', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'Weather the next blow.' },
-  venom: { attribute: 'finesse', name: 'Viper Venom', family: 'poison', icon: '☣', cooldown: 1, manaCost: 2, description: 'Apply poison equal to the result. Poison damages at enemy turn start, then decays by 1.', flavor: 'The wound keeps working.' },
-  hex: { attribute: 'arcana', name: 'Binding Hex', family: 'weaken', icon: '✧', cooldown: 1, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Even giants can stumble.' },
-  rally: { attribute: 'spirit', name: 'Battle Hymn', family: 'strength', icon: '✷', cooldown: 2, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'Make every strike count.' },
-  plus: { attribute: 'finesse', name: 'Gilded Plus', family: 'add', icon: '+', cooldown: 1, manaCost: 1, description: 'Attach to an effect die. Add the rolled value to its result.', flavor: 'A little more of everything.' },
-  multiply: { attribute: 'arcana', name: 'Echo Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply its result by ceil(adjusted roll ÷ 2), minimum ×1 and maximum ×3.', flavor: 'Make a whisper thunder.' },
-  channel: { attribute: 'spirit', name: 'Mana Well', family: 'mana', icon: '✺', cooldown: 2, manaCost: 1, description: 'Restore mana equal to the result (up to max mana).', flavor: 'Bottle a spark of magic.' },
-  mend: { attribute: 'vitality', name: 'Restoration', family: 'heal', icon: '✚', cooldown: 2, manaCost: 2, description: 'Heal HP equal to the result (up to max HP).', flavor: 'An ember of warmth.' },
-  saber: { attribute: 'finesse', name: 'Silver Saber', family: 'attack', icon: '⚔', cooldown: 1, manaCost: 1, description: 'Deal damage equal to the result.', flavor: 'Sharper than it looks.' },
-  bastion: { attribute: 'vitality', name: 'Iron Bastion', family: 'block', icon: '⬡', cooldown: 1, manaCost: 1, description: 'Gain block equal to the result.', flavor: 'A fortress in your palm.' },
-  blight: { attribute: 'arcana', name: 'Black Spores', family: 'poison', icon: '☣', cooldown: 2, manaCost: 2, description: 'Apply poison equal to the result.', flavor: 'The forest remembers.' },
-  fracture: { attribute: 'arcana', name: 'Fracture Sigil', family: 'weaken', icon: '✧', cooldown: 0, manaCost: 1, description: 'Reduce the next enemy attack by the result.', flavor: 'Ruin their momentum.' },
-  amplify: { attribute: 'spirit', name: 'Amber Amplifier', family: 'add', icon: '+', cooldown: 2, manaCost: 2, description: 'Attach to an effect die. Add the rolled value.', flavor: 'Power with a price.' },
-  prism: { attribute: 'arcana', name: 'Crimson Prism', family: 'multiply', icon: '×', cooldown: 2, manaCost: 3, description: 'Attach to an effect die. Multiply by ceil(adjusted roll ÷ 2), minimum ×1 and maximum ×3.', flavor: 'Strength through refraction.' },
-  anthem: { attribute: 'spirit', name: 'War Anthem', family: 'strength', icon: '✷', cooldown: 1, manaCost: 2, description: 'Next 2 attack dice gain +ceil(result ÷ 2) damage.', flavor: 'A rhythm for battle.' },
-  spring: { attribute: 'vitality', name: 'Bright Spring', family: 'heal', icon: '✚', cooldown: 1, manaCost: 2, description: 'Heal HP equal to the result.', flavor: 'A sip of tomorrow.' },
-  sunder: { attribute: 'might', name: 'Platebreaker', family: 'sunder', icon: '⚒', cooldown: 1, manaCost: 1, description: 'Permanently remove armor equal to the result. Armor reduces each physical hit.', flavor: 'Crack the iron shell.' },
-  stagger: { attribute: 'might', name: 'Disruptor', family: 'stagger', icon: '⚡', cooldown: 1, manaCost: 1, description: 'Apply stagger equal to the result. Meet a charged attack threshold to interrupt it.', flavor: 'Stop the blow before it falls.' },
-  parry: { attribute: 'finesse', name: 'Duelist Parry', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result. Scales with Finesse.', flavor: 'Turn their strength aside.' },
-  barrier: { attribute: 'arcana', name: 'Arcane Barrier', family: 'block', icon: '⬡', cooldown: 0, manaCost: 1, description: 'Gain block equal to the result. Scales with Arcana.', flavor: 'Will made solid.' },
-};
+// === src/content.js ===
+const module0 = (() => {
 
-const STARTING_DICE = [
-  'strike', 'quick', 'guard', 'venom', 'hex', 'rally', 'plus', 'multiply', 'channel', 'mend', 'sunder', 'stagger'
-];
-const REWARD_POOL = ['saber','bastion','blight','fracture','amplify','prism','anthem','spring','venom','guard','plus','multiply','channel','rally','sunder','stagger','parry','barrier'];
-
-const ENCOUNTERS = [
-  {
-    name: 'Scrap Brute', subtitle: 'THE FORGOTTEN WORKSHOP', icon: '⚒', hp: 40, gold: 24,
-    moves: [
-      { name: 'Heavy Swing', attack: 7 },
-      { name: 'Brace & Bash', attack: 4, guard: 5 },
-      { name: 'Overhead Slam', attack: 14, interruptAt: 5 },
-    ],
-  },
-  {
-    name: 'Mire Alchemist', subtitle: 'THE WITHERED GARDENS', icon: '☣', hp: 50, gold: 29,
-    moves: [
-      { name: 'Toxic Dart', attack: 5, poison: 2 },
-      { name: 'Vial Shield', guard: 7 },
-      { name: 'Numbing Vines', attack: 9, interruptAt: 5, statPenalty: { attribute: 'finesse', amount: 2 } },
-    ],
-  },
-  {
-    name: 'Hollow Sentinel', subtitle: 'THE SILENT CITADEL', icon: '♜', hp: 66, gold: 36, armor: 3, mechanic: 'Plated: each physical hit loses 3 damage. Sunder removes armor; poison bypasses it.',
-    moves: [
-      { name: 'Shield March', guard: 7, attack: 5 },
-      { name: 'Iron Cleave', attack: 11 },
-      { name: 'Judgment', attack: 15 },
-    ],
-  },
-  {
-    name: 'The Jarbreaker', subtitle: 'THE FINAL CHAMBER', icon: '♛', hp: 86, gold: 0,
-    moves: [
-      { name: 'Arcane Shatter', attack: 10, damageType: 'arcane' },
-      { name: 'Glass Fortress', guard: 9, attack: 6 },
-      { name: 'Corrupting Blow', attack: 8, damageType: 'arcane', poison: 3, interruptAt: 6, statPenalty: { attribute: 'arcana', amount: 2 } },
-      { name: 'Crushing Finale', attack: 21, interruptAt: 7 },
-    ],
-  },
-];
-
-const FAMILY = {
-  attack: { label: 'Attack', accent: 'ember', desc: 'Damage' },
-  block: { label: 'Defense', accent: 'azure', desc: 'Block' },
-  poison: { label: 'Debuff', accent: 'verdant', desc: 'Poison' },
-  weaken: { label: 'Debuff', accent: 'verdant', desc: 'Weaken' },
-  strength: { label: 'Buff', accent: 'gold', desc: 'Empower' },
-  sunder: { label: 'Disruption', accent: 'gold', desc: 'Strip armor' },
-  stagger: { label: 'Disruption', accent: 'gold', desc: 'Stagger' },
-  mana: { label: 'Utility', accent: 'cyan', desc: 'Mana' },
-  heal: { label: 'Utility', accent: 'cyan', desc: 'Heal' },
-  add: { label: 'Modifier', accent: 'violet', desc: 'Add' },
-  multiply: { label: 'Modifier', accent: 'violet', desc: 'Multiply' },
-};
-
-const MAX_JAR = 5;
+/** v0.4 rules are data, shared by the hero, AI, previews and tests. */
+const VERSION = '0.4.0';
+const LOADOUT_CAP = 8;
+const ACTION_SUPPORTS = 2;
+const REACTION_SUPPORTS = 1;
 const MAX_MANA = 7;
-const MANA_REGEN = 4;
-const FREE_RECOLLECTIONS = 1;
-const REROLL_COST = 1;
-const NUDGE_COST = 2;
-const SHOP_DIE_COST = 22;
-const SHOP_FORGE_COST = 16;
-const SHOP_HEAL_COST = 13;
-
-// Permanent attributes are small additive roll bonuses; temporary effects never alter capacities.
-const ATTRIBUTES = {
-  might: { name: 'Might', icon: '⚔', description: 'Physical power, armor breaking, and interruption.' },
-  finesse: { name: 'Finesse', icon: '◇', description: 'Precise strikes, poison, parries, and additive modifiers.' },
-  arcana: { name: 'Arcana', icon: '✧', description: 'Hexes, barriers, and multiplier reliability (maximum ×3).' },
-  vitality: { name: 'Vitality', icon: '♥', description: 'Guard and healing dice. Each point adds 6 maximum and current HP.' },
-  spirit: { name: 'Spirit', icon: '✦', description: 'Mana and buff dice. Each point adds 1 maximum mana.' },
-};
+const MANA_REGEN = 2;
+const BASE_HP = 60;
+const HP_PER_VITALITY = 6;
 const STARTING_ATTRIBUTE_POINTS = 3;
 const STARTING_ATTRIBUTE_CAP = 2;
 const ATTRIBUTE_CAP = 4;
-const BASE_HP = 60;
-const HP_PER_VITALITY = 6;
+const FREE_RECOLLECTIONS = 1;
+const REROLL_COST = 1;
+const NUDGE_COST = 2;
 const FOCUS_COST = 2;
 const FOCUS_BONUS = 2;
-const FOCUS_COOLDOWN = 2; // Future turns skipped, just like dice.
-const TALENTS = {
-  iron_skin: { attribute: 'vitality', name: 'Iron Skin', description: 'Resist 1 physical damage per enemy hit, before block.', resistance: 'physical', amount: 1 },
-  antitoxin: { attribute: 'vitality', name: 'Antitoxin', description: 'Resist 2 poison damage per tick. Poison still decays normally.', resistance: 'poison', amount: 2 },
-  meditation: { attribute: 'spirit', name: 'Meditation', description: 'Regenerate 1 additional mana each turn (5 total).', manaRegen: 1 },
-  warding: { attribute: 'spirit', name: 'Arcane Warding', description: 'Resist 2 arcane damage per enemy hit, before block.', resistance: 'arcane', amount: 2 },
+const FOCUS_RECOVERY = 2;
+const SHOP_ITEM_COST = 22;
+const SHOP_FORGE_COST = 16;
+const SHOP_HEAL_COST = 13;
+const SHOP_REFILL_COST = 9;
+const ATTRIBUTES = {
+  might: { name: 'Might', icon: '⚔', description: 'Heavy weapons, armor breaking and Shield Bash.' },
+  finesse: { name: 'Finesse', icon: '◇', description: 'Swords, dodges, parries, precision and venom attachments.' },
+  arcana: { name: 'Arcana', icon: '✧', description: 'Spell strength, magical wards and multiplier reliability.' },
+  vitality: { name: 'Vitality', icon: '♥', description: 'Shields and healing. Each permanent point adds 6 maximum HP.' },
+  spirit: { name: 'Spirit', icon: '✦', description: 'Recovery and rallying. Each permanent point adds 1 maximum mana.' },
 };
+const TALENTS = {
+  iron_skin: { attribute: 'vitality', name: 'Iron Skin', description: 'Resist 1 physical HP damage per hit, before Block.', resistance: 'physical', amount: 1 },
+  antitoxin: { attribute: 'vitality', name: 'Antitoxin', description: 'Resist 2 poison damage per round-end tick.', resistance: 'poison', amount: 2 },
+  meditation: { attribute: 'spirit', name: 'Meditation', description: 'Regenerate 1 extra mana per round (3 total).', manaRegen: 1 },
+  warding: { attribute: 'spirit', name: 'Arcane Warding', description: 'Resist 2 arcane HP damage per hit, before Ward.', resistance: 'arcane', amount: 2 },
+};
+const melee = ['hostile', 'weapon', 'melee', 'blockable', 'dodgeable', 'parryable', 'counterable'];
+const spell = ['hostile', 'spell', 'wardable', 'dodgeable'];
+/** Each maneuver has one attribute and one primary numerical effect. */
+const MANEUVERS = {
+  heavy_strike: { name: 'Heavy Strike', timing: 'action', kind: 'attack', attribute: 'might', manaCost: 2, recoveryRounds: 1, damageType: 'physical', accuracy: 5, parryDifficulty: 10, tags: melee, description: 'Heavy physical damage. Slow recovery and easier to dodge.' },
+  sunder: { name: 'Platebreaker', timing: 'action', kind: 'sunder', attribute: 'might', manaCost: 1, recoveryRounds: 0, accuracy: 6, parryDifficulty: 8, tags: ['hostile','melee','blockable','dodgeable','parryable','counterable'], description: 'Remove armor permanently for this encounter. No HP damage.' },
+  quick_strike: { name: 'Quick Strike', timing: 'action', kind: 'attack', attribute: 'finesse', manaCost: 1, recoveryRounds: 0, damageType: 'physical', accuracy: 7, parryDifficulty: 8, tags: melee, description: 'A precise physical strike. Shares recovery with Counterstrike.' },
+  knife_strike: { name: 'Desperate Cut', timing: 'action', kind: 'attack', attribute: 'finesse', manaCost: 0, recoveryRounds: 0, damageType: 'physical', accuracy: 5, parryDifficulty: 6, outputCap: 3, tags: melee, description: 'Free fallback; at most 3 damage, including every bonus.' },
+  counterstrike: { name: 'Counterstrike', timing: 'reaction', kind: 'counter', attribute: 'finesse', manaCost: 1, recoveryRounds: 0, damageType: 'physical', tags: ['weapon'], respondsTo: ['counterable'], description: 'If you survive, retaliate after the incoming action. Does not protect you.' },
+  block: { name: 'Block', timing: 'reaction', kind: 'block', attribute: 'vitality', manaCost: 1, recoveryRounds: 0, tags: [], respondsTo: ['blockable'], description: 'Reduce a blockable physical hit or impact by the result.' },
+  shield_bash: { name: 'Shield Bash', timing: 'action', kind: 'stagger', attribute: 'might', manaCost: 2, recoveryRounds: 0, accuracy: 6, parryDifficulty: 9, tags: ['hostile','melee','blockable','dodgeable','parryable','counterable'], description: 'Meet Poise after defense to cancel the target’s next main action. No HP damage.' },
+  dodge: { name: 'Dodge', timing: 'reaction', kind: 'dodge', attribute: 'finesse', manaCost: 2, recoveryRounds: 0, tags: [], respondsTo: ['dodgeable'], description: 'Meet attack accuracy to avoid it completely. Failure gives no protection.' },
+  firebolt: { name: 'Firebolt', timing: 'action', kind: 'attack', attribute: 'arcana', manaCost: 2, recoveryRounds: 0, damageType: 'arcane', accuracy: 6, tags: spell, description: 'Deal arcane damage. Fire is a flavor tag, not a separate resistance.' },
+  poison_spell: { name: 'Venom Cloud', timing: 'action', kind: 'poison', attribute: 'arcana', manaCost: 2, recoveryRounds: 1, accuracy: 6, tags: spell, description: 'Apply poison directly. Dodge avoids it; Ward reduces stacks.' },
+  ward: { name: 'Ward', timing: 'reaction', kind: 'ward', attribute: 'arcana', manaCost: 1, recoveryRounds: 0, tags: [], respondsTo: ['wardable'], description: 'Reduce magical damage or spell application strength.' },
+  channel: { name: 'Channel', timing: 'action', kind: 'recover', attribute: 'spirit', manaCost: 0, recoveryRounds: 0, tags: [], description: 'Recover the result as mana on resolution, instead of attacking.' },
+  catch_breath: { name: 'Catch Breath', timing: 'reaction', kind: 'breath', attribute: 'spirit', manaCost: 0, recoveryRounds: 0, tags: [], respondsTo: ['any'], description: 'If alive, regain half the modified result, rounded down. No protection.' },
+  drink: { name: 'Drink Potion', timing: 'action', kind: 'heal', attribute: 'vitality', manaCost: 0, recoveryRounds: 0, tags: [], description: 'Consume one charge and heal the rolled amount. Charges persist between fights.' },
+  parry: { name: 'Parry', timing: 'reaction', kind: 'parry', attribute: 'finesse', manaCost: 2, recoveryRounds: 1, tags: [], respondsTo: ['parryable'], description: 'Meet parry difficulty to cancel the current melee action, not a later turn.' },
+  rally: { name: 'Battle Hymn', timing: 'action', kind: 'rally', attribute: 'spirit', manaCost: 1, recoveryRounds: 1, tags: [], description: 'Next two attack attempts gain ceil(result / 2) damage. Misses use a charge.' },
+  hex: { name: 'Binding Hex', timing: 'action', kind: 'weaken', attribute: 'arcana', manaCost: 1, recoveryRounds: 1, accuracy: 7, tags: spell, description: 'Reduce the target’s next attack attempt by the result.' },
+  numbing: { name: 'Numbing Vines', timing: 'action', kind: 'penalty', attribute: 'arcana', penaltyAttribute: 'finesse', outputCap: 2, manaCost: 1, recoveryRounds: 1, accuracy: 7, tags: spell, description: 'Up to −2 Finesse for the target’s next rolled exchange.' },
+  corrupt: { name: 'Corrupting Sigil', timing: 'action', kind: 'penalty', attribute: 'arcana', penaltyAttribute: 'arcana', outputCap: 2, manaCost: 1, recoveryRounds: 1, accuracy: 7, tags: spell, description: 'Up to −2 Arcana for the target’s next rolled exchange.' },
+  add: { name: 'Empower', timing: 'modifier', kind: 'add', attribute: 'finesse', manaCost: 1, recoveryRounds: 0, tags: [], description: 'Add to the primary effect only. Not accuracy or attached poison.' },
+  aim: { name: 'Aim', timing: 'modifier', kind: 'aim', attribute: 'finesse', manaCost: 1, recoveryRounds: 0, tags: [], description: 'Add accuracy to a dodgeable main maneuver; never adds damage.' },
+  multiply: { name: 'Echo', timing: 'modifier', kind: 'multiply', attribute: 'arcana', manaCost: 3, recoveryRounds: 1, tags: [], description: 'Multiply the primary effect by ceil(adjusted / 2), capped ×1–×3.' },
+  venom: { name: 'Coat Weapon', timing: 'modifier', kind: 'venom', attribute: 'finesse', manaCost: 1, recoveryRounds: 0, tags: [], description: 'Spend a charge. Apply this much poison only when the weapon causes HP damage.' },
+};
+const EQUIPMENT = {
+  warhammer: { name: 'Warhammer', icon: '⚒', category: 'Weapon', faces: [3,4,5,6,7,8], maneuvers: ['heavy_strike','sunder'] },
+  short_sword: { name: 'Short Sword', icon: '⚔', category: 'Weapon', faces: [1,2,3,4,5,6], maneuvers: ['quick_strike','counterstrike'] },
+  worn_knife: { name: 'Worn Knife', icon: '†', category: 'Weapon', faces: [1,2,3,4,5,6], maneuvers: ['knife_strike'] },
+  round_shield: { name: 'Round Shield', icon: '⬡', category: 'Shield', faces: [1,2,3,4,5,6], maneuvers: ['block','shield_bash'] },
+  nimble_boots: { name: 'Nimble Boots', icon: '◇', category: 'Footwear', faces: [1,2,3,4,5,6], maneuvers: ['dodge'] },
+  fire_wand: { name: 'Fire Wand', icon: '✧', category: 'Spell focus', faces: [2,3,4,5,6,7], maneuvers: ['firebolt'] },
+  venom_staff: { name: 'Venom Staff', icon: '☣', category: 'Spell focus', faces: [1,2,3,4,5,6], maneuvers: ['poison_spell'] },
+  ward_focus: { name: 'Ward Focus', icon: '✥', category: 'Spell focus', faces: [1,2,3,4,5,6], maneuvers: ['ward'] },
+  focus_crystal: { name: 'Focus Crystal', icon: '✦', category: 'Recovery', faces: [1,2,3,4,5,6], maneuvers: ['channel','catch_breath'] },
+  power_charm: { name: 'Power Charm', icon: '+', category: 'Modifier', faces: [1,2,3,4,5,6], maneuvers: ['add'] },
+  aiming_lens: { name: 'Aiming Lens', icon: '◎', category: 'Modifier', faces: [1,2,3,4,5,6], maneuvers: ['aim'] },
+  echo_crystal: { name: 'Echo Crystal', icon: '×', category: 'Modifier', faces: [1,2,3,4,5,6], maneuvers: ['multiply'] },
+  venom_vial: { name: 'Venom Vial', icon: '☣', category: 'Consumable modifier', charges: 3, faces: [1,2,3,4,5,6], maneuvers: ['venom'] },
+  healing_potion: { name: 'Healing Potion', icon: '✚', category: 'Consumable', charges: 2, faces: [3,4,5,6,7,8], maneuvers: ['drink'] },
+  parrying_dagger: { name: 'Parrying Dagger', icon: '†', category: 'Weapon', faces: [2,3,4,5,6,7], maneuvers: ['quick_strike','parry'] },
+  war_horn: { name: 'War Horn', icon: '✷', category: 'Support', faces: [1,2,3,4,5,6], maneuvers: ['rally'] },
+  hex_wand: { name: 'Hex Wand', icon: '⌁', category: 'Spell focus', faces: [1,2,3,4,5,6], maneuvers: ['hex'] },
+  vine_staff: { name: 'Vine Staff', icon: '❧', category: 'Spell focus', faces: [1,2,3,4,5,6], maneuvers: ['numbing'] },
+  corrupt_sigil: { name: 'Corrupting Sigil', icon: '✴', category: 'Spell focus', faces: [1,2,3,4,5,6], maneuvers: ['corrupt'] },
+};
+const STARTING_ITEMS = ['short_sword','warhammer','round_shield','nimble_boots','focus_crystal','power_charm','aiming_lens','echo_crystal','fire_wand','venom_staff','ward_focus','venom_vial','healing_potion'];
+const REWARD_POOL = ['parrying_dagger','war_horn','hex_wand','vine_staff','corrupt_sigil','fire_wand','ward_focus','venom_staff','power_charm','aiming_lens','echo_crystal','venom_vial','healing_potion','short_sword','round_shield'];
+const ENCOUNTERS = [
+  { name: 'Scrap Brute', subtitle: 'THE FORGOTTEN WORKSHOP', icon: '⚒', hp: 28, gold: 26, armor: 0, poise: 6, baseMana: 5, policy: 'brute', attributes: { might: 1, vitality: 1 }, items: ['warhammer','short_sword','round_shield','focus_crystal'], tendency: 'Heavy blows and basic blocks. Its hammer needs an extra round to recover.' },
+  { name: 'Mire Alchemist', subtitle: 'THE WITHERED GARDENS', icon: '☣', hp: 34, gold: 30, armor: 0, poise: 6, baseMana: 6, policy: 'mage', attributes: { arcana: 1, spirit: 1 }, items: ['venom_staff','fire_wand','vine_staff','ward_focus','focus_crystal','nimble_boots'], tendency: 'Poison and arcane spells. Channels when depleted; wards magic.' },
+  { name: 'Hollow Sentinel', subtitle: 'THE SILENT CITADEL', icon: '♜', hp: 42, gold: 38, armor: 2, poise: 8, baseMana: 6, policy: 'sentinel', attributes: { might: 1, vitality: 2 }, items: ['short_sword','warhammer','round_shield','focus_crystal','power_charm','parrying_dagger'], tendency: 'Armor and shields. Bash and Block share its shield. Sunder or poison bypass its armor.' },
+  { name: 'The Jarbreaker', subtitle: 'THE FINAL CHAMBER', icon: '♛', hp: 54, gold: 0, armor: 1, poise: 9, baseMana: 7, policy: 'duelist', attributes: { might: 2, finesse: 2, arcana: 1, spirit: 1 }, items: ['short_sword','fire_wand','nimble_boots','ward_focus','focus_crystal','power_charm','corrupt_sigil','round_shield'], tendency: 'Precise strikes, evasive reactions and arcane pressure. Save resources for its response.' },
+];
 
+return Object.freeze({ VERSION, LOADOUT_CAP, ACTION_SUPPORTS, REACTION_SUPPORTS, MAX_MANA, MANA_REGEN, BASE_HP, HP_PER_VITALITY, STARTING_ATTRIBUTE_POINTS, STARTING_ATTRIBUTE_CAP, ATTRIBUTE_CAP, FREE_RECOLLECTIONS, REROLL_COST, NUDGE_COST, FOCUS_COST, FOCUS_BONUS, FOCUS_RECOVERY, SHOP_ITEM_COST, SHOP_FORGE_COST, SHOP_HEAL_COST, SHOP_REFILL_COST, ATTRIBUTES, TALENTS, MANEUVERS, EQUIPMENT, STARTING_ITEMS, REWARD_POOL, ENCOUNTERS });
+})();
 
-// === attributes.js ===
-function emptyAttributes() {
-  return Object.fromEntries(Object.keys(ATTRIBUTES).map(key => [key, 0]));
+// === src/equipment.js ===
+const module1 = (() => {
+const { EQUIPMENT, MANEUVERS, LOADOUT_CAP, ACTION_SUPPORTS, REACTION_SUPPORTS, ATTRIBUTES } = module0;
+/** @typedef {{id:string, definitionId:string, faces:number[], charges:number|null, readyRound:number, lastUsedRound:number}} Item */
+function makeItem(definitionId, id) {
+  const d = Object.hasOwn(EQUIPMENT, definitionId) ? EQUIPMENT[definitionId] : null;
+  if (!d || typeof id !== 'string' || !id) throw new Error(`Unknown equipment or invalid ID: ${definitionId}`);
+  return { id, definitionId, faces: [...d.faces], charges: d.charges ?? null, readyRound: 1, lastUsedRound: 0 };
 }
-function temporaryAttributeBonus(state, attribute) {
-  return state.hero.statEffects.filter(e => e.attribute === attribute && e.expiresAfterTurn >= state.turn)
-    .reduce((total, effect) => total + effect.amount, 0);
+function itemById(actor, id) { return actor.items.find(item => item.id === id); }
+function itemDefinition(item) { return EQUIPMENT[item.definitionId]; }
+function modifierManeuver(item) { return itemDefinition(item).maneuvers.find(id => MANEUVERS[id].timing === 'modifier'); }
+function validItemInstance(item) {
+  if (!item || typeof item.id !== 'string' || !item.id || !Object.hasOwn(EQUIPMENT, item.definitionId)) return false;
+  const maxCharges = EQUIPMENT[item.definitionId].charges;
+  return Array.isArray(item.faces) && item.faces.length === 6
+    && item.faces.every(n => Number.isInteger(n) && n >= 0 && n <= 12)
+    && (maxCharges === undefined ? item.charges === null : Number.isInteger(item.charges) && item.charges >= 0 && item.charges <= maxCharges)
+    && Number.isInteger(item.readyRound) && item.readyRound >= 1
+    && Number.isInteger(item.lastUsedRound) && item.lastUsedRound >= 0;
 }
-function attributeBonus(state, attribute) {
-  return state.hero.attributes[attribute] + temporaryAttributeBonus(state, attribute);
+function itemReason(actor, item, round) {
+  if (!item) return 'Item not owned.';
+  if (!validItemInstance(item)) return 'Invalid equipment instance.';
+  if (!actor.equippedItemIds.includes(item.id)) return 'In backpack; equip between battles.';
+  if (item.charges === 0) return 'Out of charges; replenish between battles.';
+  if (item.readyRound > round) return item.lastUsedRound === round ? `Used this round; ready in round ${item.readyRound}.` : `Recovering; ready in round ${item.readyRound}.`;
+  return '';
 }
-function derivedStats(hero) {
+function compatibleModifier(primary, modifier) {
+  if (!primary || !modifier || modifier.timing !== 'modifier' || primary.timing === 'modifier') return false;
+  if (modifier.kind === 'aim') return primary.timing === 'action' && primary.tags.includes('dodgeable');
+  if (modifier.kind === 'venom') return ['attack','counter'].includes(primary.kind) && primary.tags.includes('weapon');
+  return ['add','multiply'].includes(modifier.kind);
+}
+function compatibleReaction(reaction, incoming) {
+  return reaction?.timing === 'reaction' && !!incoming && reaction.respondsTo.some(tag => tag === 'any' || incoming.tags.includes(tag));
+}
+function bundleEntries(actor, bundle) {
+  if (!bundle) return [];
+  return [{ item: itemById(actor, bundle.itemId), maneuverId: bundle.maneuverId }, ...(bundle.modifierIds || []).map(id => {
+    const item = itemById(actor, id); return { item, maneuverId: item ? modifierManeuver(item) : null };
+  })];
+}
+function bundleCost(actor, bundle) {
+  return bundleEntries(actor, bundle).reduce((total, e) => total + (MANEUVERS[e.maneuverId]?.manaCost || 0), 0);
+}
+function validateBundle(actor, bundle, timing, round, incoming = null) {
+  if (!bundle || typeof bundle.itemId !== 'string' || !Array.isArray(bundle.modifierIds)) return 'Choose a primary maneuver.';
+  const primary = MANEUVERS[bundle.maneuverId], item = itemById(actor, bundle.itemId);
+  if (!primary || primary.timing !== timing || !validItemInstance(item) || !itemDefinition(item).maneuvers.includes(bundle.maneuverId)) return 'This item cannot perform that maneuver.';
+  if (timing === 'reaction' && !compatibleReaction(primary, incoming)) return 'That reaction cannot answer this maneuver.';
+  const limit = timing === 'action' ? ACTION_SUPPORTS : REACTION_SUPPORTS;
+  if (bundle.modifierIds.length > limit) return `At most ${limit} supporting items allowed.`;
+  const ids = [bundle.itemId, ...bundle.modifierIds];
+  if (ids.some(id => typeof id !== 'string') || new Set(ids).size !== ids.length) return 'Each physical item can only be used once.';
+  for (const id of ids) {
+    const owned = itemById(actor, id), reason = itemReason(actor, owned, round);
+    if (reason) return reason;
+    if (id !== bundle.itemId && !compatibleModifier(primary, MANEUVERS[modifierManeuver(owned)])) return 'Modifier is incompatible with this maneuver.';
+  }
+  if (bundleCost(actor, bundle) > actor.mana) return 'Not enough mana for this combination.';
+  return '';
+}
+function validateLoadout(actor) {
+  if (!Array.isArray(actor.items) || !actor.items.every(validItemInstance) || new Set(actor.items.map(i => i.id)).size !== actor.items.length) return 'Invalid or duplicated owned equipment.';
+  const ids = actor.equippedItemIds;
+  if (!Array.isArray(ids) || ids.length > LOADOUT_CAP || new Set(ids).size !== ids.length) return `Equip at most ${LOADOUT_CAP} unique items.`;
+  if (ids.some(id => !itemById(actor, id))) return 'Loadout contains an unowned item.';
+  const items = ids.map(id => itemById(actor, id));
+  if (!items.some(i => i.definitionId === 'focus_crystal')) return 'Equip a Focus Crystal so you can always recover mana.';
+  if (!items.some(i => i.charges === null && itemDefinition(i).maneuvers.some(id => MANEUVERS[id].timing === 'action' && ['attack','poison'].includes(MANEUVERS[id].kind)))) return 'Equip a repeatable attack or poison spell.';
+  return '';
+}
+/** Validate static content once at boot and in CI; never silently ignore bad data. */
+function validateDefinitions() {
+  for (const [id, m] of Object.entries(MANEUVERS)) {
+    if (!ATTRIBUTES[m.attribute] || !['action','reaction','modifier'].includes(m.timing)) throw new Error(`Invalid maneuver ${id}`);
+    if (![m.manaCost, m.recoveryRounds].every(n => Number.isInteger(n) && n >= 0)) throw new Error(`Invalid cost/recovery: ${id}`);
+    if (!Array.isArray(m.tags) || (m.timing === 'reaction' && !Array.isArray(m.respondsTo))) throw new Error(`Missing tags: ${id}`);
+    if (m.tags.includes('dodgeable') && !(Number.isInteger(m.accuracy) && m.accuracy > 0)) throw new Error(`Missing accuracy: ${id}`);
+    if (m.tags.includes('parryable') && !(Number.isInteger(m.parryDifficulty) && m.parryDifficulty > 0)) throw new Error(`Missing parry difficulty: ${id}`);
+  }
+  for (const [id, d] of Object.entries(EQUIPMENT)) {
+    if (d.faces.length !== 6 || !d.faces.every(n => Number.isInteger(n) && n >= 0 && n <= 12) || !d.maneuvers.length || d.maneuvers.some(m => !MANEUVERS[m])) throw new Error(`Invalid equipment: ${id}`);
+    if (d.charges !== undefined && !(Number.isInteger(d.charges) && d.charges > 0)) throw new Error(`Invalid charges: ${id}`);
+    if (d.maneuvers.some(m => MANEUVERS[m].timing === 'modifier') && d.maneuvers.length !== 1) throw new Error(`Modifier item must have one maneuver: ${id}`);
+  }
+  return true;
+}
+
+return Object.freeze({ makeItem, itemById, itemDefinition, modifierManeuver, validItemInstance, itemReason, compatibleModifier, compatibleReaction, bundleEntries, bundleCost, validateBundle, validateLoadout, validateDefinitions });
+})();
+
+// === src/attributes.js ===
+const module2 = (() => {
+const { ATTRIBUTES, TALENTS, MAX_MANA, MANA_REGEN, BASE_HP, HP_PER_VITALITY } = module0;
+function emptyAttributes() { return Object.fromEntries(Object.keys(ATTRIBUTES).map(key => [key, 0])); }
+/** Timed penalties are eligible only after their originating exchange. */
+function temporaryAttributeBonus(actor, attribute, exchangeId, focus = null) {
+  return actor.statEffects.filter(e => e.attribute === attribute && e.uses > 0 && e.startsAfterExchange < exchangeId)
+    .reduce((sum, e) => sum + e.amount, 0) + (focus?.attribute === attribute ? focus.amount : 0);
+}
+function attributeBonus(actor, attribute, exchangeId = 0, focus = null) {
+  return (actor.attributes[attribute] || 0) + temporaryAttributeBonus(actor, attribute, exchangeId, focus);
+}
+function derivedStats(actor) {
   const resistances = { physical: 0, poison: 0, arcane: 0 };
   let manaRegen = MANA_REGEN;
-  for (const id of Object.values(hero.talents)) {
-    const talent = TALENTS[id];
-    if (!talent || hero.attributes[talent.attribute] < 2) continue;
-    manaRegen += talent.manaRegen || 0;
-    if (talent.resistance) resistances[talent.resistance] += talent.amount;
+  for (const id of Object.values(actor.talents)) {
+    const t = TALENTS[id];
+    if (!t || actor.attributes[t.attribute] < 2) continue;
+    manaRegen += t.manaRegen || 0;
+    if (t.resistance) resistances[t.resistance] += t.amount;
   }
-  return { maxHp: BASE_HP + hero.attributes.vitality * HP_PER_VITALITY,
-    maxMana: MAX_MANA + hero.attributes.spirit, manaRegen, resistances };
+  return { maxHp: (actor.baseHp ?? BASE_HP) + actor.attributes.vitality * HP_PER_VITALITY,
+    maxMana: (actor.baseMana ?? MAX_MANA) + actor.attributes.spirit, manaRegen, resistances };
 }
-// Preserve missing HP/mana when raising/lowering capacities during allocation.
-function syncDerivedStats(hero) {
-  const derived = derivedStats(hero);
-  hero.hp = Math.min(derived.maxHp, Math.max(0, hero.hp + derived.maxHp - hero.maxHp));
-  hero.mana = Math.min(derived.maxMana, Math.max(0, hero.mana + derived.maxMana - hero.maxMana));
-  Object.assign(hero, derived);
+function syncDerivedStats(actor) {
+  const d = derivedStats(actor);
+  actor.hp = Math.min(d.maxHp, Math.max(0, actor.hp + d.maxHp - actor.maxHp));
+  actor.mana = Math.min(d.maxMana, Math.max(0, actor.mana + d.maxMana - actor.maxMana));
+  Object.assign(actor, d);
 }
-function missingTalents(state) {
-  return ['vitality', 'spirit'].filter(key => state.hero.attributes[key] >= 2 && !state.hero.talents[key]);
-}
+function missingTalents(actor) { return ['vitality','spirit'].filter(a => actor.attributes[a] >= 2 && !actor.talents[a]); }
 function canConfirmAttributes(state) {
-  return ['character', 'levelup'].includes(state.phase) && state.hero.attributePoints === 0 && !missingTalents(state).length;
+  return ['character','levelup'].includes(state.phase) && state.combatants.hero.attributePoints === 0 && !missingTalents(state.combatants.hero).length;
 }
-function canFocus(state) {
-  return ['select', 'cast'].includes(state.phase) && state.hero.focusRemaining === 0 && state.hero.mana >= FOCUS_COST;
-}
-function multiplierFromRoll(value) { return Math.max(1, Math.min(3, Math.ceil(value / 2))); }
+function multiplierFromRoll(n) { return Math.max(1, Math.min(3, Math.ceil(n / 2))); }
 
+return Object.freeze({ emptyAttributes, temporaryAttributeBonus, attributeBonus, derivedStats, syncDerivedStats, missingTalents, canConfirmAttributes, multiplierFromRoll });
+})();
 
-// === game.js ===
-const DEFAULT_FACES = [1, 2, 3, 4, 5, 6];
-const clone = value => structuredClone(value);
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const randomIndex = (length, random) => Math.min(length - 1, Math.floor(clamp(random(), 0, 0.999999999) * length));
+// === src/events.js ===
+const module3 = (() => {
 
-function makeDie(type, id) {
-  if (!DICE[type]) throw new Error(`Unknown die type ${type}`);
-  return { id, type, faces: [...DEFAULT_FACES], remaining: 0 };
+/** Called only on reducer-owned drafts. Events are data first, readable text second. */
+function emit(state, type, actorId, data = {}, text = '') {
+  state.events.push({ id: ++state.eventCounter, type, actorId, round: state.combat?.roundNumber || 0,
+    exchangeId: state.combat?.exchangeId || 0, data, text });
+  if (state.events.length > 200) state.events.splice(0, state.events.length - 200);
 }
-function definition(die) { return DICE[die.type]; }
-function isModifier(die) { return ['add', 'multiply'].includes(definition(die).family); }
-function rolledLabel(die, value) {
-  const family = definition(die).family;
-  return family === 'add' ? `+${value}` : family === 'multiply' ? `×${multiplierFromRoll(value)}` : String(value);
-}
-function nextIntent(state) {
-  if (!state.enemy) return null;
-  return ENCOUNTERS[state.encounter].moves[state.enemy.moveIndex];
-}
-function rollValue(die, rng) { return die.faces[randomIndex(die.faces.length, rng)]; }
 
-function pickOffers(rng, count = 3) {
-  const pool = [...REWARD_POOL];
-  const offered = [];
-  for (let i = 0; i < count && pool.length; i += 1) {
-    offered.push(pool.splice(randomIndex(pool.length, rng), 1)[0]);
+return Object.freeze({ emit });
+})();
+
+// === src/effects.js ===
+const module4 = (() => {
+const { MANEUVERS } = module0;
+const { temporaryAttributeBonus, multiplierFromRoll } = module2;
+const { bundleEntries } = module1;
+const { emit } = module3;
+const bounded = (n, cap = 999) => Math.min(cap, Math.max(0, n));
+/** Pure: never rolls or changes the actor. Used for both previews and locking. */
+function calculateBundle(actor, bundle, raw, exchangeId, focus = null) {
+  if (!bundle) return null;
+  const primary = MANEUVERS[bundle.maneuverId];
+  const breakdown = bundleEntries(actor, bundle).map(({item, maneuverId}) => {
+    const m = MANEUVERS[maneuverId];
+    const face = raw[item.id];
+    if (!Number.isFinite(face)) throw new Error(`Missing face for ${item.id}`);
+    const permanent = actor.attributes[m.attribute] || 0;
+    const temporary = temporaryAttributeBonus(actor, m.attribute, exchangeId, focus);
+    const adjusted = Math.max(0, face + permanent + temporary);
+    return { itemId: item.id, maneuverId, attribute: m.attribute, raw: face, permanent, temporary, adjusted,
+      contribution: m.kind === 'multiply' ? multiplierFromRoll(adjusted) : adjusted };
+  });
+  let add = 0, multiplier = 1, accuracy = primary.accuracy || 0, poison = 0;
+  for (const b of breakdown.slice(1)) {
+    const kind = MANEUVERS[b.maneuverId].kind;
+    if (kind === 'add') add += b.contribution;
+    if (kind === 'multiply') multiplier *= b.contribution;
+    if (kind === 'aim') accuracy += b.contribution;
+    if (kind === 'venom') poison += b.contribution;
   }
-  return offered;
+  const attack = ['attack','counter'].includes(primary.kind);
+  const power = attack && actor.power.charges > 0 ? actor.power.amount : 0;
+  const weakened = attack ? actor.weaken : 0;
+  const base = (breakdown[0].adjusted + add) * multiplier;
+  const effect = bounded(base + power - weakened, primary.outputCap ?? 999);
+  return { maneuverId: bundle.maneuverId, kind: primary.kind, damageType: primary.damageType || null,
+    name: primary.name, tags: [...primary.tags], parryDifficulty: primary.parryDifficulty || 0,
+    penaltyAttribute: primary.penaltyAttribute || null, effect, accuracy: bounded(accuracy), poison: bounded(poison),
+    breakdown, add, multiplier, power, weakened, base, capped: effect !== base + power - weakened };
 }
-function initializeEnemy(index) {
-  const e = ENCOUNTERS[index];
-  return { name: e.name, hp: e.hp, maxHp: e.hp, block: 0, armor: e.armor || 0, stagger: 0, poison: 0, weak: 0, moveIndex: 0 };
+function estimateBundle(actor, bundle, exchangeId, focus = null, mode = 'mean') {
+  if (!bundle) return null;
+  const raw = Object.fromEntries(bundleEntries(actor, bundle).map(({item}) => [item.id,
+    mode === 'min' ? Math.min(...item.faces) : mode === 'max' ? Math.max(...item.faces) : item.faces.reduce((a,b)=>a+b,0)/item.faces.length]));
+  return calculateBundle(actor, bundle, raw, exchangeId, focus);
 }
-function addLog(state, message, type = 'neutral') {
-  state.log.unshift({ id: ++state.logCounter, message, type });
-  state.log = state.log.slice(0, 40);
+function damageBreakdown(target, amount, damageType, protection = 0) {
+  const armored = damageType === 'physical' ? Math.min(amount, target.armor) : 0;
+  const resisted = Math.min(amount - armored, target.resistances[damageType] || 0);
+  const blocked = Math.min(amount - armored - resisted, protection);
+  return { armored, resisted, blocked, damage: Math.max(0, amount - armored - resisted - blocked) };
 }
-function reject(state, notice) { return { ...state, notice }; }
-function findDie(state, id) { return state.dice.find(d => d.id === id); }
-function addOwned(state, type) {
-  state.dice.push(makeDie(type, `die-${state.nextId++}`));
+function applyDamage(state, sourceId, targetId, amount, damageType, protection = 0) {
+  const target = state.combatants[targetId];
+  const result = damageBreakdown(target, amount, damageType, protection);
+  const before = target.hp;
+  target.hp = Math.max(0, target.hp - result.damage);
+  emit(state, 'DAMAGE_APPLIED', sourceId, { targetId, amount, damageType, ...result, hpLost: before - target.hp },
+    `${target.name}: ${result.damage} ${damageType} damage (${result.armored} armor, ${result.resisted} resisted, ${result.blocked} defended).`);
+  return result.damage;
 }
-function startBattle(state, index) {
-  state.encounter = index;
-  state.enemy = initializeEnemy(index);
-  state.phase = 'select';
-  state.turn = 1;
-  state.selected = [];
-  state.rolls = {};
-  state.links = {};
-  state.order = [];
-  state.activeDie = null;
-  state.hero.block = 0;
-  state.hero.poison = 0;
-  state.hero.strength = 0;
-  state.hero.strengthCharges = 0;
-  state.hero.mana = state.hero.maxMana;
-  state.hero.statEffects = [];
-  state.hero.focusRemaining = 0;
-  state.hero.freeRecollections = FREE_RECOLLECTIONS;
-  state.lastJarCost = 0;
-  state.dice.forEach(d => { d.remaining = 0; });
-  state.log = [];
-  state.logCounter = 0;
-  addLog(state, `A ${state.enemy.name} blocks your path.`, 'story');
+function restoreMana(state, id, amount) {
+  const actor = state.combatants[id], restored = Math.min(actor.maxMana - actor.mana, amount);
+  actor.mana += restored;
+  emit(state, 'MANA_RECOVERED', id, { amount: restored }, `${actor.name} recovers ${restored} mana.`);
 }
-
-function newGame() {
-  const state = {
-    phase: 'select', encounter: 0, turn: 1, nextId: 1,
-    dice: [], selected: [], rolls: {}, links: {}, order: [], activeDie: null, lastJarCost: 0,
-    hero: { attributes: emptyAttributes(), attributePoints: STARTING_ATTRIBUTE_POINTS, talents: {}, statEffects: [], focusRemaining: 0,
-      manaRegen: MANA_REGEN, resistances: { physical: 0, poison: 0, arcane: 0 }, hp: BASE_HP, maxHp: BASE_HP, block: 0, mana: MAX_MANA, maxMana: MAX_MANA, freeRecollections: FREE_RECOLLECTIONS, poison: 0, strength: 0, strengthCharges: 0 },
-    enemy: null, gold: 0, rewardOffers: [], shopOffers: [], shopSold: [],
-    allocationBase: emptyAttributes(), level: 1,
-    forgeReturn: 'shop', forgeCost: 0, notice: '', log: [], logCounter: 0,
-  };
-  STARTING_DICE.forEach(type => addOwned(state, type));
-  startBattle(state, 0);
-  state.phase = 'character';
-  return state;
+function applyPoison(state, id, targetId, amount) {
+  if (amount <= 0) return;
+  const target = state.combatants[targetId];
+  target.poison = bounded(target.poison + amount);
+  emit(state, 'POISON_APPLIED', id, { targetId, amount }, `${target.name} receives ${amount} poison.`);
 }
-
-function jarManaCost(state) {
-  return state.selected.reduce((total, id) => total + (findDie(state, id) ? definition(findDie(state, id)).manaCost : 0), 0);
+function consumeAttackAttempt(actor) {
+  if (actor.power.charges > 0 && --actor.power.charges === 0) actor.power.amount = 0;
+  actor.weaken = 0;
 }
-function findRoll(state, id) {
-  return state.rolls[id] === undefined ? null : state.rolls[id];
+function consumeStatuses(actor, exchangeId) {
+  for (const status of actor.statEffects) if (status.startsAfterExchange < exchangeId) status.uses--;
+  actor.statEffects = actor.statEffects.filter(status => status.uses > 0);
 }
-// Raw faces stay in state.rolls. Bonuses are computed, never baked into rerolls.
-function adjustedRoll(state, dieId) {
-  const die = findDie(state, dieId), raw = findRoll(state, dieId);
-  return !die || raw === null ? 0 : Math.max(0, raw + attributeBonus(state, definition(die).attribute));
-}
-function rollBreakdown(state, dieId) {
-  const die = findDie(state, dieId), raw = findRoll(state, dieId);
-  if (!die || raw === null) return null;
-  const def = definition(die), attribute = def.attribute;
-  const adjusted = adjustedRoll(state, dieId);
-  let additive = 0, multiplier = 1;
-  if (!isModifier(die)) {
-    for (const [id, target] of Object.entries(state.links)) {
-      const modifier = findDie(state, id);
-      if (target !== dieId || !modifier || !state.selected.includes(id) || findRoll(state, id) === null) continue;
-      if (definition(modifier).family === 'add') additive += adjustedRoll(state, id);
-      if (definition(modifier).family === 'multiply') multiplier *= multiplierFromRoll(adjustedRoll(state, id));
+function executePrimary(state, id, targetId, result, defense) {
+  const actor = state.combatants[id], target = state.combatants[targetId];
+  const protection = defense && ((defense.kind === 'block' && result.tags.includes('blockable')) || (defense.kind === 'ward' && result.tags.includes('wardable'))) ? defense.effect : 0;
+  const strength = Math.max(0, result.effect - protection);
+  switch (result.kind) {
+    case 'attack':
+    case 'counter': {
+      const damage = applyDamage(state, id, targetId, result.effect, result.damageType, protection);
+      if (damage > 0) applyPoison(state, id, targetId, result.poison);
+      break;
     }
+    case 'recover': restoreMana(state, id, result.effect); break;
+    case 'breath': restoreMana(state, id, Math.floor(result.effect / 2)); break;
+    case 'heal': {
+      const amount = Math.min(actor.maxHp - actor.hp, result.effect);
+      actor.hp += amount;
+      emit(state, 'HEALED', id, { amount }, `${actor.name} restores ${amount} HP.`); break;
+    }
+    case 'poison': applyPoison(state, id, targetId, strength); break;
+    case 'sunder': {
+      const amount = Math.min(target.armor, strength);
+      target.armor -= amount;
+      emit(state, 'ARMOR_REMOVED', id, { targetId, amount }, `${actor.name} removes ${amount} armor from ${target.name}.`); break;
+    }
+    case 'weaken':
+      target.weaken = bounded(target.weaken + strength);
+      emit(state, 'WEAKEN_APPLIED', id, { targetId, amount: strength }, `${target.name} loses up to ${strength} damage on its next attack attempt.`); break;
+    case 'rally':
+      actor.power = { amount: Math.ceil(result.effect / 2), charges: 2 };
+      emit(state, 'POWER_APPLIED', id, { ...actor.power }, `${actor.name}: next 2 attack attempts gain ${actor.power.amount} damage.`); break;
+    case 'penalty':
+      if (strength > 0) {
+        target.statEffects.push({ id: `${state.combat.exchangeId}:${id}:${result.penaltyAttribute}`, attribute: result.penaltyAttribute, amount: -strength, uses: 1, startsAfterExchange: state.combat.exchangeId, source: result.name });
+        emit(state, 'ATTRIBUTE_PENALTY', id, { targetId, attribute: result.penaltyAttribute, amount: strength }, `${target.name}: −${strength} ${result.penaltyAttribute} for its next rolled exchange.`);
+      }
+      break;
+    case 'stagger': {
+      const succeeds = strength >= target.poise && !target.pendingSkip && !target.resolveProtection;
+      if (succeeds) target.pendingSkip = true;
+      const reason = strength < target.poise ? 'below Poise' : target.resolveProtection ? 'Resolve protects' : !succeeds ? 'skip already pending' : 'next main action will be skipped';
+      emit(state, succeeds ? 'SKIP_SCHEDULED' : 'STAGGER_RESISTED', id, { targetId, stagger: strength, poise: target.poise, reason }, `${result.name}: ${strength} stagger vs ${target.poise} Poise — ${reason}.`);
+      break;
+    }
+    default: throw new Error(`Unsupported primary effect: ${result.kind}`);
   }
-  const uncapped = def.family === 'multiply' ? multiplierFromRoll(adjusted) : (adjusted + additive) * multiplier;
-  const final = Math.min(def.outputCap ?? 999, uncapped);
-  return { raw, attribute, permanent: state.hero.attributes[attribute],
-    temporary: temporaryAttributeBonus(state, attribute), adjusted, additive, multiplier, final, capped: final !== uncapped };
 }
-function modifiedValue(state, dieId) { return rollBreakdown(state, dieId)?.final ?? 0; }
-function pendingModifiers(state) {
-  return state.selected.filter(id => isModifier(findDie(state,id)) && !state.links[id]);
-}
-function canCommit(state) {
-  return state.phase === 'cast' && pendingModifiers(state).length === 0;
-}
-function hurtEnemy(state, amount) {
-  // Armor is permanent until sundered and reduces every physical hit before block.
-  const armored = Math.min(state.enemy.armor, amount);
-  const incoming = amount - armored;
-  const soaked = Math.min(state.enemy.block, incoming);
-  state.enemy.block -= soaked;
-  state.enemy.hp = Math.max(0, state.enemy.hp - (incoming - soaked));
-  return { armored, soaked, damage: incoming - soaked };
-}
-function hurtHero(state, amount, damageType = 'physical') {
-  const resisted = Math.min(amount, state.hero.resistances[damageType] || 0);
-  amount -= resisted;
-  const blocked = Math.min(state.hero.block, amount);
-  state.hero.block -= blocked;
-  const damage = Math.max(0, amount - blocked);
-  state.hero.hp = Math.max(0, state.hero.hp - damage);
-  return { resisted, blocked, damage };
-}
-function victory(state, rng) {
-  const gold = ENCOUNTERS[state.encounter].gold;
-  state.gold += gold;
-  state.selected = [];
-  state.rolls = {};
-  state.links = {};
-  state.order = [];
-  state.activeDie = null;
-  state.lastJarCost = 0;
-  addLog(state, `Victory! ${state.enemy.name} is defeated.`, 'good');
-  if (state.encounter === ENCOUNTERS.length - 1) {
-    state.phase = 'won';
+/** Resolve once using locked values, never recalculating an opponent's locked roll. */
+function resolveExchange(state) {
+  const e = state.combat.exchange;
+  const actor = state.combatants[e.actorId], defender = state.combatants[e.defenderId];
+  const action = e.locked[e.actorId], reaction = e.locked[e.defenderId] || null;
+  const dodged = reaction?.kind === 'dodge' && reaction.effect >= action.accuracy;
+  const parried = reaction?.kind === 'parry' && reaction.effect >= action.parryDifficulty;
+  if (action.kind === 'attack') consumeAttackAttempt(actor);
+  if (dodged || parried) {
+    emit(state, parried ? 'ACTION_INTERRUPTED' : 'ATTACK_AVOIDED', e.defenderId,
+      { maneuverId: action.maneuverId, defense: reaction.effect, difficulty: parried ? action.parryDifficulty : action.accuracy },
+      `${defender.name} ${parried ? 'parries' : 'dodges'} ${action.name}: ${reaction.effect} meets ${parried ? action.parryDifficulty : action.accuracy}.`);
   } else {
-    state.phase = 'levelup';
-    state.level += 1;
-    state.hero.attributePoints = 1;
-    state.allocationBase = { ...state.hero.attributes };
-    state.hero.statEffects = [];
-    state.rewardOffers = pickOffers(rng);
-    state.shopOffers = pickOffers(rng);
-    state.shopSold = [];
-    addLog(state, `You found ${gold} gold and a chance to grow stronger.`, 'good');
+    if (['dodge','parry'].includes(reaction?.kind)) emit(state, 'AVOIDANCE_FAILED', e.defenderId, {}, `${reaction.name} fails to meet the difficulty.`);
+    executePrimary(state, e.actorId, e.defenderId, action, reaction);
   }
+  // A stagger schedules a future main skip, not the already committed reaction.
+  if (actor.hp > 0 && defender.hp > 0 && ['counter','breath'].includes(reaction?.kind)) {
+    if (reaction.kind === 'counter') consumeAttackAttempt(defender);
+    executePrimary(state, e.defenderId, e.actorId, reaction, null);
+  }
+  consumeStatuses(actor, e.id);
+  if (e.reaction) consumeStatuses(defender, e.id);
+  emit(state, 'EXCHANGE_RESOLVED', e.actorId, { exchangeId: e.id }, 'Exchange resolved. Equipment and mana remain shared for this round.');
 }
-function nextTurn(state) {
-  state.turn += 1;
-  state.hero.statEffects = state.hero.statEffects.filter(e => e.expiresAfterTurn >= state.turn);
-  state.hero.focusRemaining = Math.max(0, state.hero.focusRemaining - 1);
-  state.phase = 'select';
-  state.selected = [];
-  state.rolls = {};
-  state.links = {};
-  state.order = [];
-  state.activeDie = null;
-  state.lastJarCost = 0;
-  state.dice.forEach(d => { d.remaining = Math.max(0, d.remaining - 1); });
-  state.hero.mana = Math.min(state.hero.maxMana, state.hero.mana + state.hero.manaRegen);
-  state.hero.freeRecollections = FREE_RECOLLECTIONS;
-  // Enemy poison is applied before an enemy attacks; hero poison ticks on the next turn.
-  if (state.hero.poison > 0) {
-    const poison = Math.max(0, state.hero.poison - state.hero.resistances.poison);
-    state.hero.hp = Math.max(0, state.hero.hp - poison);
-    state.hero.poison -= 1;
-    addLog(state, `Poison deals ${poison} damage to you.`, 'bad');
+function tickPoison(state) {
+  const ticks = Object.entries(state.combatants).map(([id, c]) => ({ id, stacks: c.poison, damage: Math.max(0, c.poison - c.resistances.poison) }));
+  for (const tick of ticks) {
+    const c = state.combatants[tick.id];
+    c.hp = Math.max(0, c.hp - tick.damage);
+    c.poison = Math.max(0, tick.stacks - 1);
+    if (tick.stacks) emit(state, 'POISON_TICK', tick.id, tick, `${c.name} takes ${tick.damage} poison damage; ${c.poison} stacks remain.`);
   }
-  state.hero.block = 0;
-  if (state.hero.hp === 0) { state.phase = 'lost'; addLog(state, 'Your journey ends here.', 'bad'); }
 }
 
-function commitTurn(state, rng) {
-  // Dice resolve in player-chosen order. Modifiers only contribute to their target.
-  for (const id of state.order) {
-    const die = findDie(state, id);
-    const type = definition(die);
-    const value = modifiedValue(state, id);
-    if (type.family === 'attack') {
-      const bonus = state.hero.strengthCharges > 0 ? state.hero.strength : 0;
-      const result = hurtEnemy(state, Math.min(type.outputCap ?? 999, value + bonus));
-      if (state.hero.strengthCharges > 0 && --state.hero.strengthCharges === 0) state.hero.strength = 0;
-      addLog(state, `${type.name} hits for ${result.damage}${result.armored ? ` (${result.armored} armor)` : ''}${result.soaked ? ` (${result.soaked} blocked)` : ''}.`, 'good');
-    } else if (type.family === 'block') {
-      state.hero.block += value;
-      addLog(state, `${type.name} grants ${value} block.`, 'good');
-    } else if (type.family === 'poison') {
-      state.enemy.poison += value;
-      addLog(state, `${type.name} applies ${value} poison.`, 'good');
-    } else if (type.family === 'weaken') {
-      state.enemy.weak += value;
-      addLog(state, `${type.name} weakens the next attack by ${value}.`, 'good');
-    } else if (type.family === 'strength') {
-      state.hero.strength = Math.ceil(value / 2);
-      state.hero.strengthCharges = 2;
-      addLog(state, `${type.name} empowers your next two attacks (+${state.hero.strength}).`, 'good');
-    } else if (type.family === 'sunder') {
-      const removed = Math.min(state.enemy.armor, value);
-      state.enemy.armor -= removed;
-      addLog(state, `${type.name} strips ${removed} armor.`, 'good');
-    } else if (type.family === 'stagger') {
-      state.enemy.stagger += value;
-      addLog(state, `${type.name} applies ${value} stagger.`, 'good');
-    } else if (type.family === 'mana') {
-      const restored = Math.min(state.hero.maxMana - state.hero.mana, value);
-      state.hero.mana += restored;
-      addLog(state, `${type.name} restores ${restored} mana.`, 'good');
-    } else if (type.family === 'heal') {
-      const healed = Math.min(state.hero.maxHp - state.hero.hp, value);
-      state.hero.hp += healed;
-      addLog(state, `${type.name} restores ${healed} HP.`, 'good');
-    }
-    if (state.enemy.hp <= 0) break;
-  }
-  // All rolled dice enter cooldown, even when the enemy dies during resolution.
-  for (const id of state.selected) {
-    const die = findDie(state, id);
-    die.remaining = definition(die).cooldown + 1;
-  }
-  if (state.enemy.hp <= 0) { victory(state, rng); return; }
-  // Enemy poison bypasses block and acts before the telegraphed move.
-  if (state.enemy.poison > 0) {
-    const damage = state.enemy.poison;
-    state.enemy.hp = Math.max(0, state.enemy.hp - damage);
-    state.enemy.poison = Math.max(0, damage - 1);
-    addLog(state, `Poison deals ${damage} to ${state.enemy.name}.`, 'good');
-    if (state.enemy.hp <= 0) { victory(state, rng); return; }
-  }
-  // Shield is retained through one player attack phase, then expires.
-  state.enemy.block = 0;
-  const move = nextIntent(state);
-  const interrupted = !!(move.interruptAt && state.enemy.stagger >= move.interruptAt);
-  if (interrupted) {
-    addLog(state, `${state.enemy.name}'s ${move.name} was interrupted!`, 'good');
+return Object.freeze({ calculateBundle, estimateBundle, damageBreakdown, applyDamage, resolveExchange, tickPoison });
+})();
+
+// === src/combat.js ===
+const module5 = (() => {
+const { MANEUVERS, FREE_RECOLLECTIONS, REROLL_COST, NUDGE_COST, FOCUS_COST, FOCUS_BONUS, FOCUS_RECOVERY, ATTRIBUTES } = module0;
+const { bundleCost, bundleEntries, validateBundle, itemById, itemDefinition, modifierManeuver, compatibleModifier, compatibleReaction, itemReason } = module1;
+const { calculateBundle, resolveExchange, tickPoison } = module4;
+const { emit } = module3;
+const COMBAT_COMMANDS = ['SELECT_MANEUVER','TOGGLE_MODIFIER','DECLARE_ACTION','DECLARE_REACTION','PASS_REACTION','PASS_TURN','REROLL','NUDGE','FOCUS','LOCK_RESULT','ACK_EXCHANGE'];
+function otherId(id) { return id === 'hero' ? 'enemy' : 'hero'; }
+function activeId(state) { return state.combat.turnOrder[state.combat.activeTurnIndex]; }
+function decisionActor(state) {
+  if (state.phase !== 'battle') return null;
+  const c = state.combat;
+  if (['action','manipulate_actor'].includes(c.stage)) return activeId(state);
+  if (['reaction','manipulate_defender'].includes(c.stage)) return otherId(activeId(state));
+  return c.stage === 'summary' ? 'hero' : null;
+}
+function combatCommand(state, type, extra = {}) {
+  return { type, actorId: decisionActor(state), expectedRevision: state.revision, exchangeId: state.combat.exchangeId, ...extra };
+}
+function terminalOutcome(state) {
+  const h = state.combatants.hero.hp, e = state.combatants.enemy.hp;
+  return h <= 0 && e <= 0 ? 'draw' : h <= 0 ? 'defeat' : e <= 0 ? 'victory' : null;
+}
+function emptyDraft() { return { itemId: '', maneuverId: '', modifierIds: [] }; }
+function beginTurn(state) {
+  const c = state.combat, id = activeId(state), actor = state.combatants[id];
+  c.exchangeId++;
+  c.exchange = null; c.draft = emptyDraft(); c.summaryForcedSkip = false;
+  c.summaryStart = state.eventCounter;
+  if (actor.pendingSkip) {
+    actor.pendingSkip = false; actor.mainActionAvailable = false; actor.resolveProtection = true;
+    c.stage = 'summary'; c.summaryForcedSkip = true;
+    emit(state, 'MAIN_ACTION_SKIPPED', id, {}, `${actor.name} loses this main action and gains Resolve until completing a later main turn.`);
   } else {
-    let inflicted = 0;
-    if (move.attack) {
-      const attack = Math.max(0, move.attack - state.enemy.weak);
-      const { damage, resisted } = hurtHero(state, attack, move.damageType || 'physical');
-      if (resisted) addLog(state, `Resisted ${resisted} ${move.damageType || 'physical'} damage.`, 'good');
-      inflicted = damage;
-      state.enemy.weak = 0;
-    }
-    if (move.guard) state.enemy.block += move.guard;
-    if (move.poison) state.hero.poison += move.poison;
-    if (move.statPenalty) {
-      const { attribute, amount } = move.statPenalty;
-      state.hero.statEffects.push({ attribute, amount: -amount, expiresAfterTurn: state.turn + 1, source: move.name });
-      addLog(state, `${move.name}: -${amount} ${ATTRIBUTES[attribute].name} on your next turn.`, 'bad');
-    }
-    const outcomes = [move.attack ? `${inflicted} damage dealt` : null, move.guard ? `${move.guard} block gained` : null, move.poison ? `${move.poison} poison applied` : null].filter(Boolean).join(', ');
-    addLog(state, `${state.enemy.name} uses ${move.name}: ${outcomes}.`, 'bad');
-  }
-  // Stagger is tactical: it resolves against the current intent, not future turns.
-  state.enemy.stagger = 0;
-  state.enemy.moveIndex = (state.enemy.moveIndex + 1) % ENCOUNTERS[state.encounter].moves.length;
-  if (state.hero.hp <= 0) {
-    state.phase = 'lost';
-    addLog(state, 'Your journey ends here.', 'bad');
-  } else {
-    nextTurn(state);
+    c.stage = 'action';
+    emit(state, 'TURN_STARTED', id, {}, `${actor.name} chooses a main action.`);
   }
 }
-
-function validateDice(state, id, phase) {
-  return state.phase === phase && findDie(state,id) && (phase === 'select' ? findDie(state,id).remaining === 0 : state.rolls[id] !== undefined);
+function beginRound(state, first = false) {
+  const c = state.combat;
+  c.activeTurnIndex = 0;
+  for (const actor of Object.values(state.combatants)) {
+    actor.mainActionAvailable = true; actor.reactionAvailable = true; actor.freeRecollections = FREE_RECOLLECTIONS;
+    if (!first) actor.mana = Math.min(actor.maxMana, actor.mana + actor.manaRegen);
+  }
+  emit(state, 'ROUND_STARTED', null, { round: c.roundNumber }, `Round ${c.roundNumber}: actions, reactions and Recollection refreshed${first ? '' : '; mana regenerated'}.`);
+  beginTurn(state);
 }
-
-function reduceGame(original, action, rng = Math.random) {
-  if (action.type === 'NEW_GAME') return newGame();
-  const state = clone(original);
-  state.notice = '';
-  const id = action.id;
-  switch (action.type) {
-    case 'ALLOCATE_ATTRIBUTE': {
-      if (!['character', 'levelup'].includes(state.phase)) return reject(original, 'Attributes can only be changed between battles.');
-      const { attribute, delta } = action;
-      if (!Object.hasOwn(ATTRIBUTES, attribute) || ![1, -1].includes(delta)) return reject(original, 'Choose a valid attribute and adjustment.');
-      const value = state.hero.attributes[attribute], cap = state.phase === 'character' ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
-      if (delta === 1 && (state.hero.attributePoints < 1 || value >= cap)) return reject(original, 'No points available, or attribute is at its cap.');
-      if (delta === -1 && value <= state.allocationBase[attribute]) return reject(original, 'Only newly allocated points can be refunded.');
-      state.hero.attributes[attribute] += delta;
-      state.hero.attributePoints -= delta;
-      if (state.hero.attributes[attribute] < 2) delete state.hero.talents[attribute];
-      syncDerivedStats(state.hero);
-      return state;
+function initializeCombat(state) {
+  state.phase = 'battle';
+  state.combat = { roundNumber: 1, turnOrder: ['hero','enemy'], activeTurnIndex: 0, stage: 'action', exchangeId: 0,
+    exchange: null, draft: emptyDraft(), summaryStart: state.eventCounter, summaryForcedSkip: false };
+  for (const actor of Object.values(state.combatants)) {
+    actor.mana = actor.maxMana; actor.poison = 0; actor.weaken = 0; actor.power = { amount: 0, charges: 0 };
+    actor.statEffects = []; actor.pendingSkip = false; actor.resolveProtection = false; actor.focusReadyRound = 1;
+    actor.items.forEach(item => { item.readyRound = 1; item.lastUsedRound = 0; });
+  }
+  beginRound(state, true);
+}
+function commitBundle(state, id, bundle, timing) {
+  const actor = state.combatants[id], cost = bundleCost(actor, bundle), c = state.combat;
+  actor.mana -= cost;
+  if (timing === 'action') actor.mainActionAvailable = false;
+  else actor.reactionAvailable = false;
+  for (const { item, maneuverId } of bundleEntries(actor, bundle)) {
+    item.readyRound = c.roundNumber + MANEUVERS[maneuverId].recoveryRounds + 1;
+    item.lastUsedRound = c.roundNumber;
+    if (item.charges !== null) item.charges--;
+  }
+  emit(state, timing === 'action' ? 'ACTION_DECLARED' : 'REACTION_DECLARED', id,
+    { ...structuredClone(bundle), cost }, `${actor.name} commits ${MANEUVERS[bundle.maneuverId].name}${bundle.modifierIds.length ? ` with ${bundle.modifierIds.length} support item(s)` : ''} for ${cost} mana.`);
+}
+function drawFace(item, rng) {
+  const n = rng();
+  if (!Number.isFinite(n) || n < 0 || n >= 1) throw new Error('RNG must return a finite number in [0, 1).');
+  return item.faces[Math.floor(n * item.faces.length)];
+}
+function reveal(state, rng) {
+  const e = state.combat.exchange;
+  for (const [id, bundle] of [[e.actorId, e.action], [e.defenderId, e.reaction]]) {
+    if (!bundle) continue;
+    for (const { item } of bundleEntries(state.combatants[id], bundle)) {
+      const raw = drawFace(item, rng); e.raw[id][item.id] = raw;
+      emit(state, 'DIE_ROLLED', id, { itemId: item.id, raw }, `${state.combatants[id].name}: ${itemDefinition(item).name} rolls ${raw}.`);
     }
-    case 'CHOOSE_TALENT': {
-      if (!['character', 'levelup'].includes(state.phase) || !Object.hasOwn(TALENTS, action.talent)) return original;
-      const talent = TALENTS[action.talent];
-      if (state.hero.attributes[talent.attribute] < 2) return reject(original, 'This talent requires 2 permanent attribute points.');
-      if (state.allocationBase[talent.attribute] >= 2) return reject(original, 'An established talent cannot be changed during this run.');
-      state.hero.talents[talent.attribute] = action.talent;
-      syncDerivedStats(state.hero);
-      return state;
+  }
+  state.combat.stage = 'manipulate_actor';
+}
+function legalManeuvers(state, id, timing) {
+  const c = state.combat, actor = state.combatants[id];
+  const incoming = c.exchange ? MANEUVERS[c.exchange.action.maneuverId] : null;
+  return actor.items.filter(item => actor.equippedItemIds.includes(item.id)).flatMap(item => itemDefinition(item).maneuvers
+    .filter(mid => MANEUVERS[mid].timing === timing)
+    .map(maneuverId => {
+      const m = MANEUVERS[maneuverId];
+      let reason = itemReason(actor, item, c.roundNumber);
+      if (!reason && timing === 'reaction' && !compatibleReaction(m, incoming)) reason = 'Not eligible against this maneuver.';
+      if (!reason && m.manaCost > actor.mana) reason = 'Not enough mana.';
+      return { itemId: item.id, maneuverId, reason };
+    }));
+}
+/** Mutates only a cloned draft. Throws before returning on invalid commands; caller discards draft. */
+function applyCombatCommand(state, command, rng) {
+  const c = state.combat, id = command.actorId, actor = state.combatants[id];
+  if (command.exchangeId !== c.exchangeId || id !== decisionActor(state)) throw new Error('Stale exchange or wrong combatant.');
+  const timing = c.stage === 'action' ? 'action' : c.stage === 'reaction' ? 'reaction' : null;
+  const incoming = c.exchange ? MANEUVERS[c.exchange.action.maneuverId] : null;
+  const manipulation = ['manipulate_actor','manipulate_defender'].includes(c.stage);
+  switch (command.type) {
+    case 'SELECT_MANEUVER': {
+      if (!timing) throw new Error('Selections are locked after commitment.');
+      const draft = { itemId: command.itemId, maneuverId: command.maneuverId, modifierIds: [] };
+      const reason = validateBundle(actor, draft, timing, c.roundNumber, incoming);
+      if (reason) throw new Error(reason);
+      c.draft = draft; break;
     }
-    case 'CONFIRM_ATTRIBUTES': {
-      if (!canConfirmAttributes(state)) return reject(original, 'Spend your attribute points and choose any unlocked talents.');
-      if (state.phase === 'character') startBattle(state, 0);
-      else state.phase = 'reward';
-      addLog(state, `Level ${state.level}: your attributes are set.`, 'good');
-      return state;
+    case 'TOGGLE_MODIFIER': {
+      if (!timing || !c.draft.itemId) throw new Error('Select a primary maneuver first.');
+      const ids = c.draft.modifierIds;
+      const next = { ...c.draft, modifierIds: ids.includes(command.itemId) ? ids.filter(i => i !== command.itemId) : [...ids, command.itemId] };
+      const reason = validateBundle(actor, next, timing, c.roundNumber, incoming);
+      if (reason) throw new Error(reason);
+      c.draft = next; break;
+    }
+    case 'DECLARE_ACTION':
+    case 'DECLARE_REACTION': {
+      const requested = command.type === 'DECLARE_ACTION' ? 'action' : 'reaction';
+      if (timing !== requested || !(requested === 'action' ? actor.mainActionAvailable : actor.reactionAvailable)) throw new Error('No allowance for that declaration.');
+      const reason = validateBundle(actor, c.draft, requested, c.roundNumber, incoming);
+      if (reason) throw new Error(reason);
+      const bundle = structuredClone(c.draft);
+      commitBundle(state, id, bundle, requested);
+      c.draft = emptyDraft();
+      if (requested === 'action') {
+        c.exchange = { id: c.exchangeId, actorId: id, defenderId: otherId(id), action: bundle, reaction: null,
+          raw: { hero: {}, enemy: {} }, locked: {}, focus: { hero: null, enemy: null }, manipulations: { hero: 0, enemy: 0 } };
+        c.stage = 'reaction';
+      } else { c.exchange.reaction = bundle; reveal(state, rng); }
+      break;
+    }
+    case 'PASS_REACTION':
+      if (c.stage !== 'reaction') throw new Error('Not a reaction window.');
+      actor.reactionAvailable = false; c.draft = emptyDraft();
+      emit(state, 'REACTION_PASSED', id, {}, `${actor.name} declines to react.`);
+      reveal(state, rng); break;
+    case 'PASS_TURN':
+      if (c.stage !== 'action' || !actor.mainActionAvailable) throw new Error('Not your main turn.');
+      actor.mainActionAvailable = false; c.draft = emptyDraft(); c.stage = 'summary';
+      emit(state, 'MAIN_ACTION_PASSED', id, {}, `${actor.name} passes its main action.`); break;
+    case 'REROLL':
+    case 'NUDGE': {
+      if (!manipulation) throw new Error('No manipulation window.');
+      const e = c.exchange, raw = e.raw[id];
+      if (!Object.hasOwn(raw, command.itemId)) throw new Error('Only manipulate your own rolled items.');
+      const item = itemById(actor, command.itemId);
+      const cost = command.type === 'NUDGE' ? NUDGE_COST : actor.freeRecollections > 0 ? 0 : REROLL_COST;
+      if (actor.mana < cost) throw new Error('Not enough mana.');
+      if (command.type === 'NUDGE' && raw[item.id] >= Math.max(...item.faces)) throw new Error('Already at the highest engraved face.');
+      if (command.type === 'REROLL') {
+        raw[item.id] = drawFace(item, rng);
+        if (actor.freeRecollections > 0) actor.freeRecollections--;
+      } else raw[item.id]++;
+      actor.mana -= cost; e.manipulations[id]++;
+      emit(state, 'ROLL_MANIPULATED', id, { itemId: item.id, kind: command.type, cost, raw: raw[item.id] }, `${actor.name} ${command.type === 'REROLL' ? 'rerolls' : 'nudges'} ${itemDefinition(item).name}: face ${raw[item.id]} (${cost} mana).`); break;
     }
     case 'FOCUS': {
-      if (!Object.hasOwn(ATTRIBUTES, action.attribute)) return original;
-      if (!canFocus(state)) return reject(original, 'Focus costs 2 mana and must be off cooldown.');
-      // Reservations cannot be invalidated by paying for an ability before rolling.
-      if (state.phase === 'select' && state.hero.mana - jarManaCost(state) < FOCUS_COST) return reject(original, 'Remove dice from the jar to reserve 2 mana for Focus.');
-      state.hero.mana -= FOCUS_COST;
-      state.hero.focusRemaining = FOCUS_COOLDOWN + 1;
-      state.hero.statEffects.push({ attribute: action.attribute, amount: FOCUS_BONUS, expiresAfterTurn: state.turn, source: 'Focus' });
-      addLog(state, `Focus: +${FOCUS_BONUS} ${ATTRIBUTES[action.attribute].name} for this turn only.`, 'good');
-      return state;
+      if (!manipulation || !Object.hasOwn(ATTRIBUTES, command.attribute)) throw new Error('Choose an attribute during your manipulation window.');
+      if (actor.mana < FOCUS_COST || actor.focusReadyRound > c.roundNumber) throw new Error('Focus is unavailable or too expensive.');
+      actor.mana -= FOCUS_COST; actor.focusReadyRound = c.roundNumber + FOCUS_RECOVERY + 1;
+      c.exchange.focus[id] = { attribute: command.attribute, amount: FOCUS_BONUS };
+      emit(state, 'FOCUS_USED', id, { attribute: command.attribute }, `${actor.name} focuses ${command.attribute}: +${FOCUS_BONUS} for this exchange only.`); break;
     }
-    case 'TOGGLE_DIE': {
-      if (!validateDice(state,id,'select')) return reject(original, 'That die is still recovering.');
-      if (state.selected.includes(id)) state.selected = state.selected.filter(item => item !== id);
-      else if (state.selected.length < MAX_JAR) {
-        const cost = definition(findDie(state, id)).manaCost;
-        if (jarManaCost(state) + cost > state.hero.mana) return reject(original, `Not enough mana for ${definition(findDie(state, id)).name}; remove a die or save mana.`);
-        state.selected.push(id);
+    case 'LOCK_RESULT': {
+      if (!manipulation) throw new Error('No result to lock.');
+      const e = c.exchange, bundle = id === e.actorId ? e.action : e.reaction;
+      e.locked[id] = calculateBundle(actor, bundle, e.raw[id], e.id, e.focus[id]);
+      emit(state, 'RESULT_LOCKED', id, {}, `${actor.name} locks its result.`);
+      if (c.stage === 'manipulate_actor' && e.reaction) c.stage = 'manipulate_defender';
+      else { resolveExchange(state); c.stage = 'summary'; }
+      break;
+    }
+    case 'ACK_EXCHANGE': {
+      if (c.stage !== 'summary') throw new Error('No completed exchange to advance.');
+      const finished = state.combatants[activeId(state)];
+      if (!c.summaryForcedSkip) finished.resolveProtection = false;
+      if (++c.activeTurnIndex < c.turnOrder.length) beginTurn(state);
+      else {
+        tickPoison(state);
+        emit(state, 'ROUND_ENDED', null, {}, `Round ${c.roundNumber} ends.`);
+        if (!terminalOutcome(state)) { c.roundNumber++; beginRound(state); }
+        else c.stage = 'terminal';
       }
-      else return reject(original, `Your jar can only hold ${MAX_JAR} dice.`);
-      return state;
+      break;
     }
-    case 'ROLL': {
-      if (state.phase !== 'select' || state.selected.length === 0) return reject(original, 'Choose at least one ready die.');
-      if (!state.selected.some(item => !isModifier(findDie(state, item)))) return reject(original, 'Include at least one effect die so modifiers have a target.');
-      const castCost = jarManaCost(state);
-      if (castCost > state.hero.mana) return reject(original, 'Not enough mana to roll the chosen dice.');
-      state.hero.mana -= castCost;
-      state.lastJarCost = castCost;
-      state.rolls = {};
-      state.selected.forEach(item => { state.rolls[item] = rollValue(findDie(state,item), rng); });
-      state.links = {};
-      state.order = state.selected.filter(item => !isModifier(findDie(state,item)));
-      state.activeDie = null;
-      state.phase = 'cast';
-      addLog(state, `Turn ${state.turn}: you spent ${castCost} mana to roll ${state.selected.length} dice.`, 'story');
-      return state;
-    }
-    case 'SELECT_ROLL': {
-      if (!validateDice(state,id,'cast')) return original;
-      state.activeDie = state.activeDie === id ? null : id;
-      return state;
-    }
-    case 'ATTACH': {
-      if (state.phase !== 'cast') return original;
-      const mod = findDie(state,action.modId);
-      const target = findDie(state,action.targetId);
-      if (!mod || !target || !state.selected.includes(mod.id) || !state.selected.includes(target.id)) return reject(original,'Choose two rolled dice.');
-      if (!isModifier(mod) || isModifier(target)) return reject(original,'Modifiers can only attach to effect dice.');
-      if (mod.id === target.id) return reject(original,'A die cannot modify itself.');
-      state.links[mod.id] = target.id;
-      state.activeDie = null;
-      return state;
-    }
-    case 'DETACH': {
-      if (state.phase !== 'cast' || !state.links[id]) return original;
-      delete state.links[id];
-      state.activeDie = id;
-      return state;
-    }
-    case 'REROLL': {
-      if (!validateDice(state,id,'cast')) return original;
-      const cost = state.hero.freeRecollections > 0 ? 0 : REROLL_COST;
-      if (state.hero.mana < cost) return reject(original,'Not enough mana to reroll.');
-      state.hero.mana -= cost;
-      if (cost === 0) state.hero.freeRecollections--;
-      state.rolls[id] = rollValue(findDie(state,id),rng);
-      addLog(state, `Rerolled ${definition(findDie(state,id)).name}${cost ? ` for ${cost} mana` : ' with free Recollection'}.`, 'neutral');
-      return state;
-    }
-    case 'NUDGE': {
-      if (!validateDice(state,id,'cast')) return original;
-      if (state.hero.mana < NUDGE_COST) return reject(original,'Not enough mana to nudge.');
-      const die = findDie(state,id);
-      if (state.rolls[id] >= Math.max(...die.faces)) return reject(original,'That die is already at its highest face.');
-      state.rolls[id] += 1;
-      state.hero.mana -= NUDGE_COST;
-      addLog(state, `Nudged ${definition(die).name} up by 1 for ${NUDGE_COST} mana.`, 'neutral');
-      return state;
-    }
-    case 'REORDER': {
-      if (state.phase !== 'cast' || !state.order.includes(id)) return original;
-      const index = state.order.indexOf(id);
-      if (![1, -1].includes(action.step)) return original;
-      const targetIndex = index + action.step;
-      if (targetIndex < 0 || targetIndex >= state.order.length) return original;
-      [state.order[index],state.order[targetIndex]] = [state.order[targetIndex],state.order[index]];
-      return state;
-    }
-    case 'COMMIT': {
-      if (!canCommit(state)) return reject(original,'Attach all modifier dice before casting.');
-      commitTurn(state,rng);
-      return state;
-    }
-    case 'CLAIM_DIE': {
-      if (state.phase !== 'reward' || !state.rewardOffers.includes(action.dieType)) return original;
-      addOwned(state,action.dieType);
-      state.phase = 'shop';
-      addLog(state, `Acquired ${DICE[action.dieType].name}.`, 'good');
-      return state;
-    }
-    case 'REST': {
-      if (state.phase !== 'reward') return original;
-      const healed = Math.min(14, state.hero.maxHp - state.hero.hp);
-      state.hero.hp += healed;
-      state.phase = 'shop';
-      addLog(state, `Restored ${healed} HP by the fire.`, 'good');
-      return state;
-    }
-    case 'FORGE_START': {
-      if (state.phase !== 'reward' && state.phase !== 'shop') return original;
-      if (state.phase === 'shop' && state.gold < SHOP_FORGE_COST) return reject(original,'Not enough gold to forge.');
-      state.forgeReturn = 'shop';
-      state.forgeCost = state.phase === 'shop' ? SHOP_FORGE_COST : 0;
-      state.phase = 'forge';
-      return state;
-    }
-    case 'FORGE_CANCEL': {
-      if (state.phase !== 'forge') return original;
-      state.phase = state.forgeCost === 0 ? 'reward' : 'shop';
-      return state;
-    }
-    case 'UPGRADE_FACE': {
-      if (state.phase !== 'forge') return original;
-      const die = findDie(state, id);
-      const index = action.faceIndex;
-      if (!die || !Number.isInteger(index) || index < 0 || index >= die.faces.length) return original;
-      if (die.faces[index] >= 12) return reject(original,'That face has reached the maximum value of 12.');
-      if (state.gold < state.forgeCost) return reject(original,'Not enough gold.');
-      die.faces[index]++;
-      state.gold -= state.forgeCost;
-      state.phase = 'shop';
-      addLog(state, `Forged ${definition(die).name}: face ${index + 1} improved to ${die.faces[index]}.`, 'good');
-      return state;
-    }
-    case 'SHOP_BUY_DIE': {
-      if (state.phase !== 'shop' || !state.shopOffers.includes(action.dieType) || state.shopSold.includes(action.dieType)) return original;
-      if (state.gold < SHOP_DIE_COST) return reject(original,'Not enough gold.');
-      state.gold -= SHOP_DIE_COST;
-      state.shopSold.push(action.dieType);
-      addOwned(state,action.dieType);
-      addLog(state, `Purchased ${DICE[action.dieType].name}.`, 'good');
-      return state;
-    }
-    case 'SHOP_HEAL': {
-      if (state.phase !== 'shop') return original;
-      if (state.hero.hp === state.hero.maxHp) return reject(original,'You are already at full health.');
-      if (state.gold < SHOP_HEAL_COST) return reject(original,'Not enough gold.');
-      state.gold -= SHOP_HEAL_COST;
-      const healed = Math.min(12,state.hero.maxHp - state.hero.hp);
-      state.hero.hp += healed;
-      addLog(state, `Bought a restorative draught (+${healed} HP).`, 'good');
-      return state;
-    }
-    case 'NEXT_ENCOUNTER': {
-      if (state.phase !== 'shop' || state.encounter >= ENCOUNTERS.length - 1) return original;
-      startBattle(state,state.encounter + 1);
-      return state;
-    }
-    default: return original;
+    default: throw new Error('Unknown combat command.');
   }
 }
 
-function diceById(state) { return Object.fromEntries(state.dice.map(d => [d.id,d])); }
-function dieStateInfo(state, die) {
-  const type = definition(die);
-  const avg = die.faces.reduce((a,b)=>a+b,0)/die.faces.length;
-  return { ...type, ...FAMILY[type.family], average: avg, isModifier: isModifier(die) };
+return Object.freeze({ COMBAT_COMMANDS, otherId, activeId, decisionActor, combatCommand, terminalOutcome, initializeCombat, legalManeuvers, applyCombatCommand });
+})();
+
+// === src/game.js ===
+const module6 = (() => {
+const { ATTRIBUTES, TALENTS, ENCOUNTERS, EQUIPMENT, STARTING_ITEMS, REWARD_POOL, BASE_HP, MAX_MANA, STARTING_ATTRIBUTE_POINTS, STARTING_ATTRIBUTE_CAP, ATTRIBUTE_CAP, SHOP_ITEM_COST, SHOP_FORGE_COST, SHOP_HEAL_COST, SHOP_REFILL_COST, LOADOUT_CAP, MANA_REGEN, HP_PER_VITALITY } = module0;
+const { emptyAttributes, syncDerivedStats, canConfirmAttributes } = module2;
+const { makeItem, itemById, itemDefinition, validateLoadout } = module1;
+const { COMBAT_COMMANDS, initializeCombat, applyCombatCommand, terminalOutcome } = module5;
+const { emit } = module3;
+function makeCombatant(id, name, options = {}) {
+  const baseHp = options.baseHp ?? BASE_HP, baseMana = options.baseMana ?? MAX_MANA;
+  const actor = { id, name, baseHp, baseMana, attributes: { ...emptyAttributes(), ...options.attributes }, talents: {},
+    hp: baseHp, maxHp: baseHp, mana: baseMana, maxMana: baseMana, manaRegen: MANA_REGEN,
+    resistances: { physical: 0, poison: 0, arcane: 0 }, armor: options.armor || 0, poise: options.poise || 7,
+    items: [], equippedItemIds: [], attributePoints: 0, poison: 0, weaken: 0, power: { amount: 0, charges: 0 },
+    statEffects: [], pendingSkip: false, resolveProtection: false, focusReadyRound: 1,
+    mainActionAvailable: true, reactionAvailable: true, freeRecollections: 1, policy: options.policy || 'balanced' };
+  syncDerivedStats(actor);
+  return actor;
+}
+function createEnemy(index) {
+  const def = ENCOUNTERS[index];
+  const enemy = makeCombatant('enemy', def.name, { ...def, baseHp: def.hp - (def.attributes.vitality || 0) * HP_PER_VITALITY });
+  enemy.items = def.items.map((type, i) => makeItem(type, `enemy-${index}-${i + 1}`));
+  enemy.equippedItemIds = enemy.items.map(item => item.id);
+  return enemy;
+}
+function newGame() {
+  const hero = makeCombatant('hero', 'The Wanderer');
+  hero.attributePoints = STARTING_ATTRIBUTE_POINTS;
+  hero.items = STARTING_ITEMS.map((type, i) => makeItem(type, `item-${i + 1}`));
+  hero.equippedItemIds = hero.items.slice(0, LOADOUT_CAP).map(item => item.id);
+  return { schemaVersion: 4, revision: 0, phase: 'character', encounter: 0, level: 1, nextId: hero.items.length + 1,
+    combatants: { hero, enemy: createEnemy(0) }, combat: null, allocationBase: emptyAttributes(),
+    gold: 0, rewardOffers: [], shopOffers: [], shopSold: [], forgeCost: 0, forgeReturn: 'shop',
+    outcome: null, notice: '', events: [], eventCounter: 0 };
+}
+function pickOffers(rng) {
+  const pool = [...REWARD_POOL], offers = [];
+  while (offers.length < 3 && pool.length) {
+    const n = rng();
+    if (!Number.isFinite(n) || n < 0 || n >= 1) throw new Error('RNG outside [0, 1).');
+    offers.push(pool.splice(Math.floor(n * pool.length), 1)[0]);
+  }
+  return offers;
+}
+function addOwned(state, definitionId) {
+  state.combatants.hero.items.push(makeItem(definitionId, `item-${state.nextId++}`));
+  emit(state, 'ITEM_ACQUIRED', 'hero', { definitionId }, `Acquired ${EQUIPMENT[definitionId].name}; equip it between encounters.`);
+}
+function finishBattle(state, rng) {
+  const outcome = terminalOutcome(state);
+  if (!outcome) return;
+  state.outcome = outcome;
+  if (outcome !== 'victory') {
+    state.phase = 'lost';
+    emit(state, 'RUN_ENDED', null, { outcome }, outcome === 'draw' ? 'Both combatants fall to poison. The run ends in a draw, without rewards.' : 'The Wanderer falls. Your next build begins with a new run.');
+    return;
+  }
+  const gold = ENCOUNTERS[state.encounter].gold;
+  state.gold += gold;
+  emit(state, 'VICTORY', 'hero', { gold }, `${state.combatants.enemy.name} defeated. ${gold} gold found.`);
+  if (state.encounter === ENCOUNTERS.length - 1) { state.phase = 'won'; return; }
+  state.phase = 'levelup'; state.level++;
+  state.combatants.hero.attributePoints = 1;
+  state.allocationBase = { ...state.combatants.hero.attributes };
+  state.combatants.hero.statEffects = [];
+  state.rewardOffers = pickOffers(rng); state.shopOffers = pickOffers(rng); state.shopSold = [];
+}
+const CAMPAIGN_COMMANDS = ['ALLOCATE_ATTRIBUTE','CHOOSE_TALENT','CONFIRM_ATTRIBUTES','TOGGLE_EQUIPMENT','BEGIN_BATTLE','CLAIM_ITEM','REST','FORGE_START','FORGE_CANCEL','UPGRADE_FACE','SHOP_BUY_ITEM','SHOP_HEAL','SHOP_REFILL','NEXT_ENCOUNTER'];
+/** Pure reducer: invalid commands cannot mutate resources, items or the RNG stream. */
+function reduceGame(original, action, rng = Math.random) {
+  if (!action || typeof action.type !== 'string') return original;
+  if (action.type === 'NEW_GAME') {
+    if (action.expectedRevision !== original.revision) return { ...original, notice: 'Stale request; choose again.' };
+    return { ...newGame(), revision: original.revision + 1 };
+  }
+  if (![...CAMPAIGN_COMMANDS, ...COMBAT_COMMANDS].includes(action.type)) return original;
+  if (action.expectedRevision !== original.revision) return { ...original, notice: 'Stale request; choose again.' };
+  const state = structuredClone(original), hero = state.combatants.hero;
+  state.notice = '';
+  try {
+    if (COMBAT_COMMANDS.includes(action.type)) {
+      if (state.phase !== 'battle') throw new Error('Combat is not active.');
+      applyCombatCommand(state, action, rng);
+      finishBattle(state, rng);
+    } else switch (action.type) {
+      case 'ALLOCATE_ATTRIBUTE': {
+        if (!['character','levelup'].includes(state.phase) || !Object.hasOwn(ATTRIBUTES, action.attribute) || ![1,-1].includes(action.delta)) throw new Error('Attributes can only be changed during allocation.');
+        const key = action.attribute, cap = state.phase === 'character' ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
+        if (action.delta === 1 && (hero.attributePoints < 1 || hero.attributes[key] >= cap)) throw new Error('No available point or attribute at its cap.');
+        if (action.delta === -1 && hero.attributes[key] <= state.allocationBase[key]) throw new Error('Established attributes cannot be refunded.');
+        hero.attributes[key] += action.delta; hero.attributePoints -= action.delta;
+        if (hero.attributes[key] < 2) delete hero.talents[key];
+        syncDerivedStats(hero); break;
+      }
+      case 'CHOOSE_TALENT': {
+        const talent = Object.hasOwn(TALENTS, action.talent) ? TALENTS[action.talent] : null;
+        if (!['character','levelup'].includes(state.phase) || !talent || hero.attributes[talent.attribute] < 2 || state.allocationBase[talent.attribute] >= 2) throw new Error('That talent is unavailable or locked.');
+        hero.talents[talent.attribute] = action.talent; syncDerivedStats(hero); break;
+      }
+      case 'CONFIRM_ATTRIBUTES':
+        if (!canConfirmAttributes(state)) throw new Error('Spend all points and choose your unlocked talents.');
+        state.phase = state.phase === 'character' ? 'loadout' : 'reward'; break;
+      case 'TOGGLE_EQUIPMENT': {
+        if (state.phase !== 'loadout') throw new Error('Change equipment only between battles.');
+        const item = itemById(hero, action.itemId);
+        if (!item) throw new Error('Item not owned.');
+        const ids = hero.equippedItemIds;
+        if (ids.includes(item.id)) hero.equippedItemIds = ids.filter(id => id !== item.id);
+        else if (ids.length < LOADOUT_CAP) ids.push(item.id);
+        else throw new Error('Eight items are already equipped. Unequip one first.');
+        break;
+      }
+      case 'BEGIN_BATTLE': {
+        if (state.phase !== 'loadout') throw new Error('Prepare equipment before battle.');
+        const reason = validateLoadout(hero); if (reason) throw new Error(reason);
+        state.combatants.enemy = createEnemy(state.encounter); state.outcome = null;
+        initializeCombat(state); break;
+      }
+      case 'CLAIM_ITEM':
+        if (state.phase !== 'reward' || !state.rewardOffers.includes(action.definitionId)) throw new Error('That reward is not offered.');
+        addOwned(state, action.definitionId); state.phase = 'shop'; break;
+      case 'REST':
+        if (state.phase !== 'reward') throw new Error('Rest is a victory reward.');
+        hero.hp = Math.min(hero.maxHp, hero.hp + 14); state.phase = 'shop'; break;
+      case 'FORGE_START':
+        if (!['reward','shop'].includes(state.phase)) throw new Error('Forge between encounters.');
+        state.forgeReturn = state.phase;
+        state.forgeCost = state.phase === 'shop' ? SHOP_FORGE_COST : 0;
+        if (state.gold < state.forgeCost) throw new Error('Not enough gold.');
+        state.phase = 'forge'; break;
+      case 'FORGE_CANCEL':
+        if (state.phase !== 'forge') throw new Error('Not at the forge.');
+        state.phase = state.forgeReturn; break;
+      case 'UPGRADE_FACE': {
+        if (state.phase !== 'forge') throw new Error('Not at the forge.');
+        const item = itemById(hero, action.itemId), n = action.faceIndex;
+        if (!item || !Number.isInteger(n) || n < 0 || n >= item.faces.length) throw new Error('Choose a valid item face.');
+        if (item.faces[n] >= 12 || state.gold < state.forgeCost) throw new Error('Face at its cap, or insufficient gold.');
+        item.faces[n]++; state.gold -= state.forgeCost; state.phase = 'shop';
+        emit(state, 'FACE_UPGRADED', 'hero', { itemId: item.id, faceIndex: n }, `${itemDefinition(item).name}: face ${n + 1} is now ${item.faces[n]}. All its maneuvers share that face.`); break;
+      }
+      case 'SHOP_BUY_ITEM':
+        if (state.phase !== 'shop' || !state.shopOffers.includes(action.definitionId) || state.shopSold.includes(action.definitionId) || state.gold < SHOP_ITEM_COST) throw new Error('Item unavailable or insufficient gold.');
+        state.gold -= SHOP_ITEM_COST; state.shopSold.push(action.definitionId); addOwned(state, action.definitionId); break;
+      case 'SHOP_HEAL':
+        if (state.phase !== 'shop' || state.gold < SHOP_HEAL_COST || hero.hp >= hero.maxHp) throw new Error('Healing is unavailable.');
+        state.gold -= SHOP_HEAL_COST; hero.hp = Math.min(hero.maxHp, hero.hp + 12); break;
+      case 'SHOP_REFILL': {
+        const item = itemById(hero, action.itemId), max = item && itemDefinition(item).charges;
+        if (state.phase !== 'shop' || !max || item.charges >= max || state.gold < SHOP_REFILL_COST) throw new Error('Refill is unavailable.');
+        state.gold -= SHOP_REFILL_COST; item.charges = max; break;
+      }
+      case 'NEXT_ENCOUNTER':
+        if (state.phase !== 'shop' || state.encounter >= ENCOUNTERS.length - 1) throw new Error('No next encounter.');
+        state.encounter++; state.phase = 'loadout'; break;
+      default: return original;
+    }
+    state.revision++;
+    return state;
+  } catch (error) {
+    return { ...original, notice: error.message || 'Invalid command.' };
+  }
 }
 
-// === character-ui.js ===
-const escapeCharacter = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-const signedBonus = n => `${n >= 0 ? '+' : '−'}${Math.abs(n)}`;
+return Object.freeze({ makeCombatant, newGame, reduceGame });
+})();
 
-function attributeTag(state, attribute) {
-  return `<span class="attribute-tag">${escapeCharacter(ATTRIBUTES[attribute].name)} ${signedBonus(attributeBonus(state, attribute))}</span>`;
+// === src/enemy-ai.js ===
+const module7 = (() => {
+const { MANEUVERS, FOCUS_COST, FOCUS_BONUS } = module0;
+const { bundleEntries, bundleCost, validateBundle, itemDefinition, modifierManeuver, compatibleModifier, itemReason } = module1;
+const { estimateBundle, calculateBundle, damageBreakdown } = module4;
+const { decisionActor, combatCommand, activeId, otherId } = module5;
+/** Structural information barrier: choosing a maneuver never receives raw rolls. */
+function publicDecisionView(state, id) {
+  const c = state.combat;
+  const view = { actorId: id, round: c.roundNumber, exchangeId: c.exchangeId, stage: c.stage,
+    actor: structuredClone(state.combatants[id]), opponent: structuredClone(state.combatants[otherId(id)]), incoming: null };
+  if (c.stage === 'reaction') {
+    view.incoming = { bundle: structuredClone(c.exchange.action), result: estimateBundle(view.opponent, c.exchange.action, c.exchangeId) };
+  }
+  return view;
 }
-function renderRollBreakdown(state, id) {
-  const b = rollBreakdown(state, id);
-  if (!b) return '';
-  const die = state.dice.find(d => d.id === id), def = DICE[die.type];
-  const modifier = def.family === 'add' || def.family === 'multiply';
-  return `<span class="roll-math"><span>Face ${b.raw} + ${b.permanent} ${ATTRIBUTES[b.attribute].name}${b.temporary ? ` ${signedBonus(b.temporary)} temporary` : ''} = <b>${b.adjusted}</b></span>${def.family === 'multiply' ? `<span>ceil(${b.adjusted} ÷ 2), bounded ×1–×3 → <b>×${b.final}</b></span>` : !modifier && (b.additive || b.multiplier !== 1) ? `<span>(${b.adjusted} + ${b.additive}) × ${b.multiplier} → <b>${b.final}</b></span>` : ''}${b.capped ? `<span>Output capped at ${def.outputCap}</span>` : ''}</span>`;
+function legalBundles(view, timing) {
+  const a = view.actor, incoming = view.incoming ? MANEUVERS[view.incoming.bundle.maneuverId] : null;
+  const supports = a.items.filter(i => modifierManeuver(i) && !itemReason(a, i, view.round));
+  const result = [];
+  for (const item of a.items) for (const mid of itemDefinition(item).maneuvers) {
+    const m = MANEUVERS[mid]; if (m.timing !== timing) continue;
+    const base = { itemId: item.id, maneuverId: mid, modifierIds: [] };
+    const possible = supports.filter(i => i.id !== item.id && compatibleModifier(m, MANEUVERS[modifierManeuver(i)]));
+    const subsets = [[], ...possible.map(i => [i.id])];
+    if (timing === 'action') for (let i = 0; i < possible.length; i++) for (let j = i + 1; j < possible.length; j++) subsets.push([possible[i].id, possible[j].id]);
+    for (const ids of subsets) {
+      const bundle = { ...base, modifierIds: ids };
+      if (!validateBundle(a, bundle, timing, view.round, incoming)) result.push(bundle);
+    }
+  }
+  return result;
 }
-function talentChoices(state) {
-  return ['vitality', 'spirit'].filter(attribute => state.hero.attributes[attribute] >= 2).map(attribute => {
-    const locked = state.allocationBase[attribute] >= 2;
-    return `<section class="talent-group" aria-label="${ATTRIBUTES[attribute].name} talent"><h3>${ATTRIBUTES[attribute].name} talent <small>${locked ? 'LOCKED FOR THIS RUN' : 'CHOOSE ONE'}</small></h3><div class="talent-options">${Object.entries(TALENTS).filter(([, t]) => t.attribute === attribute).map(([id, t]) => `<button class="talent-choice ${state.hero.talents[attribute] === id ? 'chosen' : ''}" type="button" data-action="choose-talent" data-talent="${id}" aria-pressed="${state.hero.talents[attribute] === id}" ${locked ? 'disabled' : ''}><strong>${t.name}</strong><span>${t.description}</span></button>`).join('')}</div></section>`;
-  }).join('');
+function expectedDamage(target, result) { return damageBreakdown(target, result.effect, result.damageType).damage; }
+function actionScore(view, bundle, policy) {
+  const r = estimateBundle(view.actor, bundle, view.exchangeId), a = view.actor, o = view.opponent;
+  const cost = bundleCost(a, bundle);
+  let score = -100;
+  if (r.kind === 'attack') {
+    const damage = expectedDamage(o,r);
+    let likelyPrevented = 0;
+    if (o.reactionAvailable) for (const gear of o.items) {
+      if (itemReason(o,gear,view.round)) continue;
+      for (const mid of itemDefinition(gear).maneuvers) {
+        const m = MANEUVERS[mid];
+        if (m.timing !== 'reaction' || m.manaCost > o.mana) continue;
+        const b = {itemId:gear.id,maneuverId:mid,modifierIds:[]};
+        const value = estimateBundle(o,b,view.exchangeId).effect;
+        if ((m.kind === 'block' && r.tags.includes('blockable')) || (m.kind === 'ward' && r.tags.includes('wardable'))) likelyPrevented = Math.max(likelyPrevented,Math.min(damage,value) * .75);
+        if (m.kind === 'dodge' && r.tags.includes('dodgeable')) likelyPrevented = Math.max(likelyPrevented,damage * avoidChance(o,b,view.exchangeId,r.accuracy) * .8);
+      }
+    }
+    const net = Math.max(0,damage-likelyPrevented);
+    score = Math.min(o.hp, net) + (net >= o.hp ? 6 : 0) + Math.min(r.poison * 1.8, 10) + .4;
+  }
+  if (r.kind === 'poison') score = Math.min(r.effect * 2, o.hp) / (1 + o.poison * .25) + (policy === 'mage' ? 1 : 0);
+  if (r.kind === 'recover') score = Math.min(a.maxMana - a.mana, r.effect) * (a.mana <= 2 ? 2.3 : .6);
+  if (r.kind === 'heal') score = Math.min(a.maxHp - a.hp, r.effect) * (a.hp < 15 ? 1.9 : .65);
+  if (r.kind === 'sunder') score = Math.min(o.armor, r.effect) * 3;
+  if (r.kind === 'stagger') {
+    let block = 0;
+    if (o.reactionAvailable) for (const gear of o.items) {
+      if (itemReason(o,gear,view.round)) continue;
+      if (itemDefinition(gear).maneuvers.includes('block') && o.mana >= MANEUVERS.block.manaCost) block = Math.max(block, estimateBundle(o,{itemId:gear.id,maneuverId:'block',modifierIds:[]},view.exchangeId).effect);
+    }
+    const chance = avoidChance(a,bundle,view.exchangeId,o.poise+block);
+    score = o.pendingSkip || o.resolveProtection ? -30 : chance * (policy === 'sentinel' ? 6 : 5) * Math.min(1,o.hp/15);
+  }
+  if (r.kind === 'rally') score = a.power.charges ? -10 : Math.ceil(r.effect / 2) * 1.4;
+  if (r.kind === 'weaken') score = Math.min(5, r.effect) * .75 - o.weaken;
+  if (r.kind === 'penalty') score = o.statEffects.length ? -10 : r.effect * 1.3;
+  if (bundle.modifierIds.some(id => modifierManeuver(a.items.find(i => i.id === id)) === 'aim')) {
+    const dodgeReady = o.items.some(i => !itemReason(o,i,view.round) && itemDefinition(i).maneuvers.includes('dodge'));
+    if (dodgeReady) score += Math.min(4, r.accuracy - MANEUVERS[bundle.maneuverId].accuracy);
+  }
+  // The policy values reserve mana and equipment instead of blindly spending all resources.
+  return score - cost * .8 - MANEUVERS[bundle.maneuverId].recoveryRounds * .2;
 }
+function avoidChance(actor, bundle, exchangeId, difficulty) {
+  const entries = bundleEntries(actor, bundle); let wins = 0, total = 0;
+  const visit = (index, raw) => {
+    if (index === entries.length) { total++; if (calculateBundle(actor,bundle,raw,exchangeId).effect >= difficulty) wins++; return; }
+    const item = entries[index].item;
+    for (const face of item.faces) visit(index + 1, { ...raw, [item.id]: face });
+  };
+  visit(0, {}); return total ? wins / total : 0;
+}
+function chooseAction(view, policy = view.actor.policy) {
+  let best = null, score = -Infinity;
+  for (const bundle of legalBundles(view,'action')) {
+    const s = actionScore(view,bundle,policy);
+    if (s > score) { score = s; best = bundle; }
+  }
+  return best;
+}
+function chooseReaction(view, policy = view.actor.policy) {
+  const incoming = view.incoming.result, a = view.actor;
+  const hpThreat = incoming.kind === 'attack' ? expectedDamage(a,incoming) : 0;
+  const threat = hpThreat || (incoming.kind === 'poison' ? incoming.effect * 1.5 : incoming.kind === 'stagger' && incoming.effect >= a.poise && !a.resolveProtection ? 6 : incoming.effect * .6);
+  let best = null, score = .1;
+  for (const bundle of legalBundles(view,'reaction')) {
+    const r = estimateBundle(a,bundle,view.exchangeId), cost = bundleCost(a,bundle); let s = -100;
+    if (r.kind === 'block' || r.kind === 'ward') s = Math.min(threat,r.effect) * (hpThreat >= a.hp ? 2 : 1) + (policy === 'sentinel' && r.kind === 'block' ? .4 : 0);
+    if (r.kind === 'dodge' || r.kind === 'parry') s = threat * avoidChance(a,bundle,view.exchangeId,r.kind === 'dodge' ? incoming.accuracy : incoming.parryDifficulty) + (policy === 'duelist' ? .4 : 0);
+    if (r.kind === 'counter') s = hpThreat >= a.hp ? -30 : Math.min(view.opponent.hp, expectedDamage(view.opponent,r)) * .85;
+    if (r.kind === 'breath') s = hpThreat >= a.hp ? -30 : Math.min(a.maxMana - a.mana, Math.floor(r.effect / 2)) * (a.mana < 3 ? 1.7 : .8);
+    s -= cost * .8 + (a.mainActionAvailable && a.mana - cost < 1 ? 1 : 0);
+    if (s > score) { score = s; best = bundle; }
+  }
+  return best;
+}
+/** AI receives revealed numbers only in its legal manipulation window. */
+function manipulate(state, id) {
+  const c = state.combat, e = c.exchange, a = state.combatants[id];
+  const bundle = id === e.actorId ? e.action : e.reaction, raw = e.raw[id];
+  const own = calculateBundle(a,bundle,raw,e.id,e.focus[id]);
+  const other = e.locked[otherId(id)];
+  const threshold = own.kind === 'dodge' ? other?.accuracy : own.kind === 'parry' ? other?.parryDifficulty : null;
+  if (threshold && own.effect < threshold && !e.focus[id] && a.mana >= FOCUS_COST && a.focusReadyRound <= c.roundNumber) {
+    const focused = calculateBundle(a,bundle,raw,e.id,{attribute:MANEUVERS[bundle.maneuverId].attribute, amount:FOCUS_BONUS});
+    if (focused.effect >= threshold) return { type: 'FOCUS', attribute: MANEUVERS[bundle.maneuverId].attribute };
+  }
+  const weak = bundleEntries(a,bundle).map(({item}) => ({item, below: item.faces.reduce((x,y)=>x+y,0)/item.faces.length - raw[item.id]})).sort((x,y)=>y.below-x.below)[0];
+  if (weak?.below > 0 && e.manipulations[id] < 2 && (a.freeRecollections > 0 || (a.mana >= 2 && threshold && own.effect < threshold))) return { type:'REROLL', itemId:weak.item.id };
+  if (threshold && own.effect < threshold && a.mana >= 2 && raw[bundle.itemId] < Math.max(...a.items.find(i=>i.id===bundle.itemId).faces)) {
+    const nudged = calculateBundle(a,bundle,{...raw,[bundle.itemId]:raw[bundle.itemId]+1},e.id,e.focus[id]);
+    if (nudged.effect >= threshold) return {type:'NUDGE',itemId:bundle.itemId};
+  }
+  return { type:'LOCK_RESULT' };
+}
+/** One command at a time, tagged with current revision. The same reducer checks all AI choices. */
+function nextAICommand(state, id = 'enemy') {
+  if (decisionActor(state) !== id) return null;
+  const c = state.combat;
+  if (c.stage === 'summary') return id === 'hero' ? combatCommand(state,'ACK_EXCHANGE') : null;
+  if (['manipulate_actor','manipulate_defender'].includes(c.stage)) return combatCommand(state,'LOCK_RESULT',manipulate(state,id));
+  const view = publicDecisionView(state,id), reaction = c.stage === 'reaction';
+  const best = reaction ? chooseReaction(view) : chooseAction(view);
+  if (!best) return combatCommand(state,reaction ? 'PASS_REACTION' : 'PASS_TURN');
+  if (c.draft.itemId !== best.itemId || c.draft.maneuverId !== best.maneuverId) return combatCommand(state,'SELECT_MANEUVER',{itemId:best.itemId,maneuverId:best.maneuverId});
+  const remove = c.draft.modifierIds.find(id=>!best.modifierIds.includes(id));
+  const add = best.modifierIds.find(id=>!c.draft.modifierIds.includes(id));
+  if (remove || add) return combatCommand(state,'TOGGLE_MODIFIER',{itemId:remove || add});
+  return combatCommand(state,reaction ? 'DECLARE_REACTION' : 'DECLARE_ACTION');
+}
+
+return Object.freeze({ publicDecisionView, legalBundles, chooseAction, chooseReaction, nextAICommand });
+})();
+
+// === src/ui-utils.js ===
+const module8 = (() => {
+
+function esc(value) { return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function buttonData(state, action, data = {}) {
+  return Object.entries({ action, revision: state.revision, exchange: state.combat?.exchangeId || 0, ...data })
+    .map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ');
+}
+function heading(marker, title, text) {
+  return `<div class="section-heading"><div class="section-heading__copy"><span class="eyebrow accent-eyebrow">${esc(marker)}</span><h1>${title}</h1><p>${esc(text)}</p></div></div>`;
+}
+function faces(item) { return `<div class="mini-faces" aria-label="Faces ${item.faces.join(', ')}">${item.faces.map(n=>`<span>${n}</span>`).join('')}</div>`; }
+
+return Object.freeze({ esc, buttonData, heading, faces });
+})();
+
+// === src/character-ui.js ===
+const module9 = (() => {
+const { ATTRIBUTES, TALENTS, MANEUVERS, STARTING_ATTRIBUTE_CAP, ATTRIBUTE_CAP, FOCUS_COST } = module0;
+const { canConfirmAttributes, temporaryAttributeBonus } = module2;
+const { decisionActor } = module5;
+const { esc, buttonData, heading } = module8;
 function renderCharacterPanel(state) {
-  const creating = state.phase === 'character', cap = creating ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
-  const hero = state.hero;
+  const h = state.combatants.hero, creating = state.phase === 'character', cap = creating ? STARTING_ATTRIBUTE_CAP : ATTRIBUTE_CAP;
   return `<section class="character-builder" aria-label="Character attributes">
-    <div class="section-heading"><div class="section-heading__copy"><span class="eyebrow accent-eyebrow">${creating ? '00 / BUILD YOUR WANDERER' : `VICTORY / LEVEL ${state.level}`}</span><h1>${creating ? 'Give your dice <em>character.</em>' : 'Grow into your <em>power.</em>'}</h1><p>${creating ? 'Spend three points. Every die uses one attribute as a roll bonus. Start with up to two points per attribute; grow to four during the run.' : 'You earned one attribute point. Invest it before choosing your free reward. Earlier investments cannot be refunded.'}</p></div><div class="phase-meta"><span class="phase-meta__big" aria-live="polite">${hero.attributePoints} POINT${hero.attributePoints === 1 ? '' : 'S'} LEFT</span><span>LEVEL ${state.level}</span></div></div>
-    <div class="character-derived"><span>♥ <b>${hero.maxHp}</b> max HP</span><span>✦ <b>${hero.maxMana}</b> max mana</span><span>↻ <b>${hero.manaRegen}</b> mana / turn</span></div>
-    <div class="attribute-grid">${Object.entries(ATTRIBUTES).map(([key, a]) => {
-      const examples = Object.values(DICE).filter(d => d.attribute === key).map(d => d.name);
-      const value = hero.attributes[key];
-      return `<article class="attribute-card"><div class="attribute-card-heading"><span class="attribute-emblem" aria-hidden="true">${a.icon}</span><h2>${a.name}</h2><b class="attribute-score">+${value}</b></div><p>${a.description}</p><small class="attribute-examples">${examples.join(' · ')}</small><div class="attribute-controls"><button class="ghost-button" type="button" data-action="allocate-attribute" data-attribute="${key}" data-delta="-1" aria-label="Remove ${a.name} point" ${value <= state.allocationBase[key] ? 'disabled' : ''}>−</button><span>${value} / ${cap}</span><button class="ghost-button" type="button" data-action="allocate-attribute" data-attribute="${key}" data-delta="1" aria-label="Add ${a.name} point" ${hero.attributePoints < 1 || value >= cap ? 'disabled' : ''}>+</button></div></article>`;
-    }).join('')}</div>
-    <p class="attribute-note">At 2 Vitality or Spirit, choose one talent. Temporary bonuses never change maximum HP, mana, or talent eligibility.</p>
-    ${talentChoices(state)}
-    <div class="cast-footer"><div class="cast-footer__note"><strong>Face + attribute, then attachments.</strong><span>Rerolls change the face only. Additions apply before multipliers.</span></div><button class="primary-button" type="button" data-action="confirm-attributes" ${canConfirmAttributes(state) ? '' : 'disabled'}>${creating ? 'BEGIN ADVENTURE' : 'CHOOSE YOUR REWARD'} <span>➜</span></button></div>
+    ${heading(creating ? '00 / CHARACTER' : `VICTORY / LEVEL ${state.level}`, creating ? 'Give your equipment <em>character.</em>' : 'Grow into your <em>power.</em>', creating ? 'Allocate three points. Your attributes improve the dice rolled by your equipment.' : 'Invest your new attribute point before choosing a reward. Previous investments stay locked.')}
+    <div class="character-derived"><strong class="points-left" aria-live="polite">${h.attributePoints} POINTS LEFT</strong><span>♥ ${h.maxHp} max HP</span><span>✦ ${h.maxMana} max mana</span><span>↻ ${h.manaRegen} mana / round</span></div>
+    <div class="attribute-grid">${Object.entries(ATTRIBUTES).map(([id,a])=>`<article class="attribute-card"><div class="attribute-card-heading"><span class="attribute-emblem">${a.icon}</span><h2>${a.name}</h2><b class="attribute-score">+${h.attributes[id]}</b></div><p>${a.description}</p><small class="attribute-examples">${[...new Set(Object.values(MANEUVERS).filter(m=>m.attribute===id).map(m=>m.name))].join(' · ')}</small><div class="attribute-controls"><button class="ghost-button" ${buttonData(state,'allocate',{attribute:id,delta:-1})} aria-label="Remove ${a.name} point" ${h.attributes[id]<=state.allocationBase[id]?'disabled':''}>−</button><span>${h.attributes[id]} / ${cap}</span><button class="ghost-button" ${buttonData(state,'allocate',{attribute:id,delta:1})} aria-label="Add ${a.name} point" ${!h.attributePoints||h.attributes[id]>=cap?'disabled':''}>+</button></div></article>`).join('')}</div>
+    ${['vitality','spirit'].filter(a=>h.attributes[a]>=2).map(a=>`<section class="talent-group"><h3>${ATTRIBUTES[a].name} talent <small>${state.allocationBase[a]>=2?'LOCKED':'CHOOSE ONE'}</small></h3><div class="talent-options">${Object.entries(TALENTS).filter(([,t])=>t.attribute===a).map(([id,t])=>`<button class="talent-choice ${h.talents[a]===id?'chosen':''}" ${buttonData(state,'talent',{talent:id})} aria-pressed="${h.talents[a]===id}" ${state.allocationBase[a]>=2?'disabled':''}><strong>${t.name}</strong><span>${t.description}</span></button>`).join('')}</div></section>`).join('')}
+    <div class="cast-footer"><p class="muted">Vitality and Spirit unlock a talent at two points.</p><button class="primary-button" ${buttonData(state,'confirm-attributes')} ${canConfirmAttributes(state)?'':'disabled'}>${creating?'CHOOSE EQUIPMENT':'CHOOSE YOUR REWARD'} <span>→</span></button></div>
   </section>`;
 }
 function renderStatsSidebar(state) {
-  const h = state.hero, inCombat = ['select', 'cast'].includes(state.phase);
-  const canUse = canFocus(state) && (state.phase !== 'select' || h.mana - jarManaCost(state) >= FOCUS_COST);
-  return `<section class="sidebar-card character-sheet"><div class="panel-label">✧ CHARACTER <span class="panel-trailing">LEVEL ${state.level}</span></div><div class="attribute-list">${Object.entries(ATTRIBUTES).map(([key, a]) => {
-    const temporary = temporaryAttributeBonus(state, key);
-    return `<div class="attribute-line"><span>${a.icon} ${a.name}</span><strong>${signedBonus(h.attributes[key])}${temporary ? `<small class="${temporary > 0 ? 'positive-stat' : 'negative-stat'}"> ${signedBonus(temporary)}</small>` : ''}</strong>${inCombat ? `<button type="button" class="focus-button" data-action="focus" data-attribute="${key}" ${canUse ? '' : 'disabled'} aria-label="Focus ${a.name} for 2 mana" title="+2 ${a.name} this turn. Costs 2 mana; skips 2 future turns.">Focus</button>` : ''}</div>`;
-  }).join('')}</div>${inCombat ? `<p class="focus-note">Focus: +2 to one attribute this turn · 2 mana.<br>${h.focusRemaining ? `Recovering · ${Math.min(h.focusRemaining, 2)} future turn(s) remaining.` : 'Ready · use before or after rolling.'}</p>` : ''}
-  <div class="derived-list"><span>Mana regeneration <b>${h.manaRegen} / turn</b></span>${Object.entries(h.resistances).map(([type, value]) => `<span>${type[0].toUpperCase() + type.slice(1)} resistance <b>${value}</b></span>`).join('')}</div>
-  ${Object.values(h.talents).length ? `<div class="character-talents">${Object.values(h.talents).map(id => `<span title="${escapeCharacter(TALENTS[id].description)}">✦ ${TALENTS[id].name}</span>`).join('')}</div>` : ''}
-  ${h.statEffects.length ? `<div class="stat-effects">${h.statEffects.map(e => `<p class="${e.amount > 0 ? 'positive-stat' : 'negative-stat'}">${signedBonus(e.amount)} ${ATTRIBUTES[e.attribute].name} · ${escapeCharacter(e.source)}<small>Through turn ${e.expiresAfterTurn}</small></p>`).join('')}</div>` : ''}</section>`;
+  const h = state.combatants.hero, c = state.combat;
+  const manipulating = state.phase==='battle' && ['manipulate_actor','manipulate_defender'].includes(c.stage) && decisionActor(state)==='hero';
+  const focus = c?.exchange?.focus.hero;
+  const available = manipulating && h.focusReadyRound<=c.roundNumber && h.mana>=FOCUS_COST;
+  return `<section class="sidebar-card character-sheet"><div class="panel-label">✧ CHARACTER <span class="panel-trailing">LV ${state.level}</span></div><div class="attribute-list">${Object.entries(ATTRIBUTES).map(([id,a])=>{
+    const temp = state.phase==='battle' ? temporaryAttributeBonus(h,id,c.exchangeId,focus) : 0;
+    return `<div class="attribute-line"><span>${a.icon} ${a.name}</span><strong>+${h.attributes[id]}${temp?` (${temp>0?'+':''}${temp})`:''}</strong><button class="focus-button" ${buttonData(state,'focus',{attribute:id})} aria-label="Focus ${a.name}" ${available?'':'disabled'}>Focus</button></div>`;
+  }).join('')}</div><p class="focus-note">Focus: 2 mana → +2 to one attribute for this exchange. ${state.phase==='battle'&&h.focusReadyRound>c.roundNumber?`Ready round ${h.focusReadyRound}.`:'Use in your manipulation window; skips 2 recovery rounds.'}</p>
+    <div class="derived-list"><span>Mana recovery <b>${h.manaRegen} / round</b></span><span>Physical / arcane resist <b>${h.resistances.physical} / ${h.resistances.arcane}</b></span><span>Poison resistance <b>${h.resistances.poison}</b></span><span>Gold <b>◈ ${state.gold}</b></span></div>
+    <div class="character-talents">${Object.values(h.talents).map(id=>`<span>${TALENTS[id].name}</span>`).join('')}</div>
+    ${h.statEffects.length?`<div class="stat-effects">${h.statEffects.map(e=>`<p class="negative-stat">${e.amount} ${esc(ATTRIBUTES[e.attribute].name)}<small>Next eligible rolled exchange; does not alter resource capacity.</small></p>`).join('')}</div>`:''}</section>`;
 }
 
+return Object.freeze({ renderCharacterPanel, renderStatsSidebar });
+})();
 
-// === main.js ===
+// === src/loadout-ui.js ===
+const module10 = (() => {
+const { EQUIPMENT, MANEUVERS, ATTRIBUTES, LOADOUT_CAP, ENCOUNTERS, SHOP_ITEM_COST, SHOP_FORGE_COST, SHOP_HEAL_COST, SHOP_REFILL_COST } = module0;
+const { itemDefinition, validateLoadout } = module1;
+const { esc, buttonData, heading, faces } = module8;
+function itemCard(item, extra = '') {
+  const d = itemDefinition(item);
+  return `<article class="gear-card"><div class="gear-top"><span class="gear-icon">${d.icon}</span><span class="eyebrow">${esc(d.category)}</span>${item.charges!==null?`<span class="charge-label">${item.charges}/${d.charges} charges</span>`:''}</div><h3>${d.name}</h3>${faces(item)}<div class="gear-moves">${d.maneuvers.map(mid=>{
+    const m=MANEUVERS[mid];return `<div><strong>${m.name} <small>${m.timing}</small></strong><span>${ATTRIBUTES[m.attribute].name} · ${m.manaCost} mana · ${m.recoveryRounds} extra recovery${m.accuracy?` · Accuracy ${m.accuracy}`:''}</span><p>${m.description}</p></div>`;
+  }).join('')}</div>${d.maneuvers.length>1?'<p class="shared-warning">These maneuvers share one item and recovery timer.</p>':''}${extra}</article>`;
+}
+function renderLoadout(state) {
+  const h=state.combatants.hero, equipped=h.equippedItemIds, reason=validateLoadout(h), encounter=ENCOUNTERS[state.encounter];
+  const section=(items)=>`<div class="gear-grid">${items.map(item=>{
+    const selected=equipped.includes(item.id);
+    return itemCard(item,`<button class="${selected?'ghost-button':'primary-button'} equip-button" ${buttonData(state,'equip',{'item-id':item.id})} aria-pressed="${selected}" ${!selected&&equipped.length>=LOADOUT_CAP?'disabled':''}>${selected?'UNEQUIP':'EQUIP'} ${esc(itemDefinition(item).name)}</button>`);
+  }).join('')}</div>`;
+  return `${heading('01 / EQUIPMENT', 'Pack for the <em>next fight.</em>', 'Equip up to eight items. Keep a Focus Crystal and a repeatable offensive weapon or spell. Swap only between encounters.')}
+    <div class="loadout-banner"><div><strong>${equipped.length} / ${LOADOUT_CAP} equipped</strong><p>${encounter.name}: ${encounter.tendency}</p>${reason?`<p class="warning">${esc(reason)}</p>`:''}</div><button class="primary-button" ${buttonData(state,'begin-battle')} ${reason?'disabled':''}>ENTER BATTLE <span>→</span></button></div>
+    <h2 class="subheading">Equipped <small>available during combat</small></h2>${section(h.items.filter(i=>equipped.includes(i.id)))}
+    <h2 class="subheading">Backpack <small>unequip an item to make room</small></h2>${section(h.items.filter(i=>!equipped.includes(i.id)))}`;
+}
+function offerCard(state, type, shop) {
+  const d=EQUIPMENT[type], sold=state.shopSold.includes(type), item={definitionId:type,faces:d.faces,charges:d.charges??null};
+  return itemCard(item,`<button class="primary-button equip-button" ${buttonData(state,shop?'buy':'claim',{'definition-id':type})} ${shop&&(sold||state.gold<SHOP_ITEM_COST)?'disabled':''}>${shop?(sold?'SOLD':`BUY · ${SHOP_ITEM_COST} GOLD`):'TAKE EQUIPMENT'}</button>`);
+}
+function renderRewards(state) {
+  return `${heading('VICTORY / REWARD','Choose your <em>reward.</em>','Take equipment, recover health, or improve one face. New equipment goes into your backpack.')}
+    <div class="gear-grid">${state.rewardOffers.map(type=>offerCard(state,type,false)).join('')}</div>
+    <div class="reward-extras"><button class="ghost-button" ${buttonData(state,'rest')}>REST · restore up to 14 HP</button><button class="ghost-button" ${buttonData(state,'forge-start')}>FORGE · improve one face free</button></div>`;
+}
+function renderShop(state) {
+  const h=state.combatants.hero;
+  return `${heading('BETWEEN ENCOUNTERS / SHOP','Provision your <em>journey.</em>',`You have ${state.gold} gold. Potion and venom charges do not reset between fights.`)}
+    <div class="gear-grid">${state.shopOffers.map(type=>offerCard(state,type,true)).join('')}</div><div class="shop-services">
+    <button class="ghost-button" ${buttonData(state,'shop-heal')} ${state.gold<SHOP_HEAL_COST||h.hp===h.maxHp?'disabled':''}>HEAL 12 HP · ${SHOP_HEAL_COST} gold</button>
+    <button class="ghost-button" ${buttonData(state,'forge-start')} ${state.gold<SHOP_FORGE_COST?'disabled':''}>FORGE A FACE · ${SHOP_FORGE_COST} gold</button>
+    ${h.items.filter(i=>i.charges!==null).map(i=>`<button class="ghost-button" ${buttonData(state,'refill',{'item-id':i.id})} ${i.charges>=itemDefinition(i).charges||state.gold<SHOP_REFILL_COST?'disabled':''}>REFILL ${itemDefinition(i).name} (${i.charges}/${itemDefinition(i).charges}) · ${SHOP_REFILL_COST} gold</button>`).join('')}</div>
+    <div class="cast-footer"><p class="muted">Your stats, upgraded faces, remaining HP and charges carry forward.</p><button class="primary-button" ${buttonData(state,'next-encounter')}>PREPARE NEXT ENCOUNTER <span>→</span></button></div>`;
+}
+function renderForge(state) {
+  return `${heading('EQUIPMENT FORGE','Engrave your <em>next advantage.</em>',`Improve one face for ${state.forgeCost} gold. All maneuvers on that physical item share its faces. Maximum face value: 12.`)}
+    <div class="forge-inventory">${state.combatants.hero.items.map(item=>`<div class="forge-row"><div class="forge-ident"><span class="forge-symbol">${itemDefinition(item).icon}</span><div><strong>${itemDefinition(item).name}</strong><span>${itemDefinition(item).maneuvers.map(id=>MANEUVERS[id].name).join(' / ')}</span></div></div><div class="forge-faces">${item.faces.map((face,index)=>`<button ${buttonData(state,'upgrade-face',{'item-id':item.id,'face-index':index})} aria-label="Upgrade face ${index+1} of ${itemDefinition(item).name}" ${face>=12?'disabled':''}><span>${face}</span><small>+1</small></button>`).join('')}</div></div>`).join('')}</div><button class="ghost-button" ${buttonData(state,'forge-cancel')}>← BACK WITHOUT UPGRADING</button>`;
+}
+
+return Object.freeze({ itemCard, renderLoadout, renderRewards, renderShop, renderForge });
+})();
+
+// === src/battle-ui.js ===
+const module11 = (() => {
+const { ATTRIBUTES, MANEUVERS, EQUIPMENT, ENCOUNTERS, ACTION_SUPPORTS, REACTION_SUPPORTS } = module0;
+const { itemById, itemDefinition, modifierManeuver, bundleCost, validateBundle, itemReason, compatibleModifier } = module1;
+const { estimateBundle, calculateBundle } = module4;
+const { activeId, decisionActor, legalManeuvers } = module5;
+const { esc, buttonData, heading, faces } = module8;
+const pct=(v,max)=>Math.max(0,Math.min(100,100*v/max));
+function renderArena(state) {
+  const c=state.combat, battle=state.phase==='battle';
+  const card=(id)=>{
+    const a=state.combatants[id];
+    return `<div class="combatant ${id}-combatant"><div class="combatant__icon ${id==='hero'?'hero-avatar':'enemy-avatar'}" aria-hidden="true">${id==='hero'?'✧':ENCOUNTERS[state.encounter].icon}</div><div class="combatant__stats"><span class="eyebrow">${id==='hero'?'THE WANDERER':ENCOUNTERS[state.encounter].subtitle}</span><div class="combatant__line"><h2>${a.name}</h2><span class="stat-number">${a.hp}<small>/${a.maxHp} HP</small></span></div><div class="statbar ${id==='hero'?'hp':'enemy-hp'}"><div style="width:${pct(a.hp,a.maxHp)}%"></div></div><div class="status-line"><span class="status-chip mana-chip">✦ ${a.mana}/${a.maxMana} mana</span><span class="status-chip">Poise ${a.poise}</span>${a.armor?`<span class="status-chip">Armor ${a.armor}</span>`:''}${a.poison?`<span class="status-chip poison-chip">Poison ${a.poison}</span>`:''}${a.pendingSkip?'<span class="status-chip poison-chip">Main skip pending</span>':''}${a.resolveProtection?'<span class="status-chip power-chip">Resolve</span>':''}${battle?`<span class="status-chip">Reaction ${a.reactionAvailable?'ready':'spent'}</span>`:''}</div></div></div>`;
+  };
+  return `<section class="arena" aria-label="Combatants">${card('hero')}<div class="arena-center"><span class="arcane-mark">✳</span><span class="encounter-number">${state.encounter+1} / 4</span><span class="arena-dash">${battle?`ROUND ${c.roundNumber}`:'CHAMBER'}</span></div>${card('enemy')}</section>`;
+}
+function rangeText(state,id,bundle) {
+  if (!bundle) return '';
+  const actor=state.combatants[id], e=state.combat.exchangeId;
+  const min=estimateBundle(actor,bundle,e,null,'min'), max=estimateBundle(actor,bundle,e,null,'max');
+  return `<span>${min.effect}–${max.effect} ${esc(min.kind==='attack'?'damage':min.kind)}${max.accuracy?` · Accuracy ${min.accuracy===max.accuracy?min.accuracy:`${min.accuracy}–${max.accuracy}`}`:''}${max.poison?` · Poison payload ${min.poison}–${max.poison}`:''}${max.parryDifficulty?` · Parry ${max.parryDifficulty}`:''}</span>`;
+}
+function bundleName(state,id,bundle) {
+  if (!bundle) return 'No reaction';
+  return [MANEUVERS[bundle.maneuverId].name,...bundle.modifierIds.map(mid=>itemDefinition(itemById(state.combatants[id],mid)).name)].join(' + ');
+}
+function draftPanel(state) {
+  const c=state.combat, h=state.combatants.hero, reacting=c.stage==='reaction';
+  const timing=reacting?'reaction':'action', d=c.draft, primary=MANEUVERS[d.maneuverId];
+  const cost=bundleCost(h,d.itemId?d:null), reason=validateBundle(h,d,timing,c.roundNumber,reacting?MANEUVERS[c.exchange.action.maneuverId]:null);
+  const candidates=legalManeuvers(state,'hero',timing);
+  const groups=h.items.filter(item=>h.equippedItemIds.includes(item.id)&&itemDefinition(item).maneuvers.some(mid=>MANEUVERS[mid].timing===timing));
+  return `${heading(reacting?'REACT / ENEMY MAIN TURN':'ACT / YOUR MAIN TURN',reacting?'Choose your <em>response.</em>':'Construct a <em>maneuver.</em>',reacting?'Commit a reaction before either side rolls. Blocking, evading, retaliating and recovering are different choices.':'Choose one action and up to two compatible supports. Keep mana and equipment for the enemy’s turn.')}
+    ${reacting?`<section class="incoming-panel" data-dice-count="${1+c.exchange.action.modifierIds.length}" aria-label="Incoming maneuver"><span class="eyebrow">DECLARED · NOT YET ROLLED</span><h2>${bundleName(state,'enemy',c.exchange.action)}</h2><p>${MANEUVERS[c.exchange.action.maneuverId].description}</p><div class="range-line">${rangeText(state,'enemy',c.exchange.action)}</div><p class="muted">${MANEUVERS[c.exchange.action.maneuverId].damageType||'Non-HP effect'} · ${MANEUVERS[c.exchange.action.maneuverId].tags.join(' · ')||'Recovery / support'}</p></section>`:''}
+    <section class="maneuver-jar" aria-label="Maneuver jar"><div><span class="eyebrow">${reacting?'REACTION':'ACTION'} JAR</span><h2>${primary?primary.name:'Select a primary maneuver'}</h2><div class="range-line">${primary?rangeText(state,'hero',d):'One equipment die defines the maneuver.'}</div><p class="jar-support-names">${d.modifierIds.map(id=>itemDefinition(itemById(h,id)).name).join(' + ')||'No supporting equipment selected'}</p></div><div class="jar-budget-v4"><strong>${cost} / ${h.mana} mana reserved</strong><span>${h.mana-cost} left for manipulation${!reacting?' and defense':''}</span><span>${d.modifierIds.length} / ${reacting?REACTION_SUPPORTS:ACTION_SUPPORTS} support slots</span></div><div class="jar-buttons"><button class="primary-button" ${buttonData(state,'declare')} ${reason?'disabled':''}>COMMIT ${reacting?'REACTION':'ACTION'} →</button><button class="ghost-button" ${buttonData(state,reacting?'pass-reaction':'pass-turn')}>${reacting?'PASS REACTION':'PASS MAIN TURN'}</button></div></section>
+    <h2 class="subheading">${reacting?'Reactive equipment':'Main actions'} <small>one physical item, one use per round</small></h2><div class="gear-grid">${groups.map(item=>{
+      const def=itemDefinition(item), chosen=d.itemId===item.id;
+      return `<article class="gear-card ${chosen?'chosen':''}"><div class="gear-top"><span class="gear-icon">${def.icon}</span><span class="eyebrow">${def.name}</span>${item.charges!==null?`<span class="charge-label">${item.charges} charges</span>`:''}</div>${faces(item)}<div class="maneuver-options">${candidates.filter(x=>x.itemId===item.id).map(x=>{
+        const m=MANEUVERS[x.maneuverId]; return `<button class="maneuver-choice ${d.itemId===item.id&&d.maneuverId===x.maneuverId?'selected':''}" ${buttonData(state,'maneuver',{'item-id':item.id,'maneuver-id':x.maneuverId})} ${x.reason?'disabled':''} aria-pressed="${d.itemId===item.id&&d.maneuverId===x.maneuverId}"><strong>${m.name} <span>✦ ${m.manaCost}</span></strong><small>${ATTRIBUTES[m.attribute].name} +${h.attributes[m.attribute]} · ${m.recoveryRounds} extra recovery${m.accuracy?` · Accuracy ${m.accuracy}`:''}</small><p>${m.description}</p>${x.reason?`<span class="unavailable-reason">${esc(x.reason)}</span>`:''}</button>`;
+      }).join('')}</div>${def.maneuvers.length>1?'<p class="shared-warning">All maneuvers share this item’s availability.</p>':''}</article>`;
+    }).join('')}</div>
+    <h2 class="subheading">Supporting equipment <small>attachments lock at commitment</small></h2><div class="support-grid">${h.items.filter(i=>h.equippedItemIds.includes(i.id)&&modifierManeuver(i)).map(item=>{
+      const def=itemDefinition(item), mid=modifierManeuver(item), m=MANEUVERS[mid], selected=d.modifierIds.includes(item.id);
+      const next={...d,modifierIds:selected?d.modifierIds.filter(id=>id!==item.id):[...d.modifierIds,item.id]};
+      const invalid=selected?'':!primary?'Select a primary first.':validateBundle(h,next,timing,c.roundNumber,reacting?MANEUVERS[c.exchange.action.maneuverId]:null);
+      return `<button class="support-card ${selected?'chosen':''}" ${buttonData(state,'support',{'item-id':item.id})} aria-pressed="${selected}" ${invalid?'disabled':''}><span class="gear-icon">${def.icon}</span><strong>${def.name} · ${m.manaCost} mana</strong><small>${ATTRIBUTES[m.attribute].name} +${h.attributes[m.attribute]}${item.charges!==null?` · ${item.charges} charges`:''}</small><p>${m.description}</p>${invalid?`<span class="unavailable-reason">${esc(invalid)}</span>`:''}</button>`;
+    }).join('')}</div>`;
+}
+function resultPanel(state, id) {
+  const c=state.combat,e=c.exchange,a=state.combatants[id],bundle=id===e.actorId?e.action:e.reaction;
+  if (!bundle) return `<section class="roll-side"><span class="eyebrow">${a.name}</span><h2>No reaction</h2><p>Relies on passive defenses.</p></section>`;
+  const locked=e.locked[id], result=locked||calculateBundle(a,bundle,e.raw[id],e.id,e.focus[id]);
+  const own=decisionActor(state)==='hero'&&id==='hero'&&!locked;
+  return `<section class="roll-side" aria-label="${id} roll"><div class="roll-side-head"><span class="eyebrow">${a.name} · ${id===e.actorId?'ACTING':'DEFENDING'}</span><span class="lock-tag">${locked?'LOCKED':decisionActor(state)===id?'CAN MANIPULATE':'WAITING FOR ACTOR'}</span></div><h2>${result.name}</h2><div class="effect-total"><b>${result.kind==='breath'?Math.floor(result.effect/2):result.effect}</b><span>${result.kind==='attack'||result.kind==='counter'?`${result.damageType} damage`:result.kind==='breath'?'mana recovered (half strength)':result.kind}${result.accuracy?` · Accuracy ${result.accuracy}`:''}${result.poison?` · ${result.poison} poison on wound`:''}</span></div><p class="roll-formula">(${result.breakdown[0].adjusted} + ${result.add}) × ${result.multiplier}${result.power?` + ${result.power} power`:''}${result.weakened?` − ${result.weakened} weakened`:''} = ${result.effect}${result.capped?' (capped)':''}${result.kind==='breath'?`; floor(${result.effect} ÷ 2) = ${Math.floor(result.effect/2)} mana`:''}</p>
+    <div class="exchange-dice">${result.breakdown.map(b=>{
+      const item=itemById(a,b.itemId),m=MANEUVERS[b.maneuverId],cost=a.freeRecollections?0:1;
+      return `<div class="exchange-die"><div class="raw-face">${b.raw}</div><div class="die-math"><strong>${itemDefinition(item).name}</strong><span>Face ${b.raw} + ${b.permanent} ${ATTRIBUTES[b.attribute].name}${b.temporary?` ${b.temporary>0?'+':''}${b.temporary} temporary`:''} = ${b.adjusted}</span>${m.kind==='multiply'?`<small>Multiplier ×${b.contribution} (bounded ×1–×3)</small>`:''}${own?`<div class="inline-tools"><button class="ghost-button" ${buttonData(state,'reroll',{'item-id':b.itemId})} aria-label="Reroll ${itemDefinition(item).name}" ${a.mana<cost?'disabled':''}>↻ ${cost?'1 MANA':'FREE'}</button><button class="ghost-button" ${buttonData(state,'nudge',{'item-id':b.itemId})} aria-label="Nudge ${itemDefinition(item).name}" ${a.mana<2||b.raw>=Math.max(...item.faces)?'disabled':''}>+1 · 2 MANA</button></div>`:''}</div></div>`;
+    }).join('')}</div></section>`;
+}
+function manipulationPanel(state) {
+  const c=state.combat,e=c.exchange;
+  return `${heading('REVEALED / POST-ROLL CONTROL','Bend the <em>result.</em>',`${c.stage==='manipulate_actor'?'The acting side locks first. The defender still has its manipulation window.':'The acting side is locked. Your reaction has the final manipulation window.'} Recollection is shared across this entire round.`)}
+    <div class="exchange-grid">${resultPanel(state,e.actorId)}${resultPanel(state,e.defenderId)}</div>
+    <div class="cast-footer"><p class="muted">${state.combatants.hero.freeRecollections?'One free reroll remains this round.':'Free reroll spent. Additional rerolls cost 1 mana.'} Focus is available in your character panel.</p><button class="primary-button" ${buttonData(state,'lock')}>LOCK MY RESULT <span>→</span></button></div>`;
+}
+function summaryPanel(state) {
+  const c=state.combat,events=state.events.filter(e=>e.id>c.summaryStart),e=c.exchange;
+  return `${heading('EXCHANGE / COMPLETE','The outcome is <em>settled.</em>', c.summaryForcedSkip?'A forced skip grants Resolve protection. Reactions and resource recovery still follow the normal round rules.':'Continue to the next main turn. Mana and free rerolls refresh only at the next round’s start.')}
+    ${e?`<div class="summary-duel"><span>${bundleName(state,e.actorId,e.action)}</span><span>against</span><span>${bundleName(state,e.defenderId,e.reaction)}</span></div>`:''}
+    <div class="exchange-outcome" role="status">${events.filter(e=>!['DIE_ROLLED','RESULT_LOCKED','TURN_STARTED'].includes(e.type)).map(e=>`<p data-event="${e.type}">${esc(e.text)}</p>`).join('')}</div>
+    <button class="primary-button" ${buttonData(state,'continue')}>CONTINUE <span>→</span></button>`;
+}
+function renderBattle(state) {
+  if (state.combat.stage==='summary') return summaryPanel(state);
+  if (['action','reaction'].includes(state.combat.stage)) return draftPanel(state);
+  return manipulationPanel(state);
+}
+function renderEnemyEquipment(state) {
+  if (state.phase!=='battle') return '';
+  const e=state.combatants.enemy,c=state.combat;
+  return `<section class="sidebar-card"><div class="panel-label">OPPONENT’S EQUIPMENT</div><p class="focus-note">${ENCOUNTERS[state.encounter].tendency}</p><div class="enemy-equipment">${e.items.filter(i=>e.equippedItemIds.includes(i.id)).map(i=>`<div><strong>${itemDefinition(i).icon} ${itemDefinition(i).name}</strong><small>${itemReason(e,i,c.roundNumber)||'Ready'}${i.charges!==null?` · ${i.charges} charges`:''}</small></div>`).join('')}</div></section>`;
+}
+
+return Object.freeze({ renderArena, renderBattle, renderEnemyEquipment });
+})();
+
+// === src/main.js ===
+const module12 = (() => {
+const { VERSION } = module0;
+const { validateDefinitions } = module1;
+const { newGame, reduceGame } = module6;
+const { decisionActor } = module5;
+const { nextAICommand } = module7;
+const { renderCharacterPanel, renderStatsSidebar } = module9;
+const { renderLoadout, renderRewards, renderShop, renderForge } = module10;
+const { renderArena, renderBattle, renderEnemyEquipment } = module11;
+const { esc, buttonData, heading } = module8;
 let game = newGame();
 const root = document.querySelector('#app');
 const modal = document.querySelector('#how-to-play');
-const icon = { heart: '♥', magic: '✦', gold: '◈', clock: '◷', arrow: '→' };
-const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'": '&#39;' }[ch]));
-const percent = (v, max) => `${Math.max(0,Math.min(100,100*v/max))}%`;
-const dieById = id => game.dice.find(d => d.id === id);
-const isCast = () => game.phase === 'cast';
-const selectedDie = () => dieById(game.activeDie);
-const info = die => dieStateInfo(game,die);
-const stat = (label,value,kind='') => `<span class="status-chip ${kind}"><span class="status-chip__symbol">${esc(value)}</span>${esc(label)}</span>`;
-
-function bar(value,max,kind){return `<div class="statbar ${kind}"><div style="width:${percent(value,max)}"></div></div>`;}
-function printIntent(move) {
-  return [move.attack ? `<span class="intent-element attack-intent">⚔ ${move.attack} ${move.damageType || 'physical'} attack</span>` : '',move.guard ? `<span class="intent-element">⬡ ${move.guard} block</span>` : '',move.poison ? `<span class="intent-element poison-intent">☣ ${move.poison} poison</span>` : '',move.interruptAt ? `<span class="intent-element interrupt-intent">⚡ Interrupt with ${move.interruptAt} stagger</span>` : '', move.statPenalty ? `<span class="intent-element poison-intent">−${move.statPenalty.amount} ${ATTRIBUTES[move.statPenalty.attribute].name} next turn</span>` : ''].filter(Boolean).join('');
-}
-function resourceCards() {
-  const h=game.hero, e=game.enemy, en=ENCOUNTERS[game.encounter];
-  const move=nextIntent(game);
-  const isBetween = ['character','levelup','reward','shop','forge','won'].includes(game.phase);
-  return `<section class="arena" aria-label="Combatants and encounter status">
-    <div class="combatant hero-combatant">
-      <div class="combatant__icon hero-avatar" aria-hidden="true">✧</div>
-      <div class="combatant__stats">
-        <span class="eyebrow">THE PLAYER <span class="eyebrow-sep">/</span> RUN 01</span>
-        <div class="combatant__line"><h2>The Wanderer</h2><span class="stat-number"><span class="red-heart">${icon.heart}</span> ${h.hp}<small>/${h.maxHp}</small></span></div>
-        ${bar(h.hp,h.maxHp,'hp')}
-        <div class="status-line">${stat('Mana',`${h.mana}/${h.maxMana}`,'mana-chip')}${h.freeRecollections ? stat('Free reroll', h.freeRecollections, 'mana-chip') : ''}${h.block ? stat('Block',h.block,'block-chip') : ''}${h.poison ? stat('Poison',h.poison,'poison-chip') : ''}${h.strengthCharges ? stat(`Power · ${h.strengthCharges} hits`,`+${h.strength}`,'power-chip') : ''}</div>
-      </div>
-    </div>
-    <div class="arena-center"><span class="arcane-mark">✳</span><span class="encounter-number">${game.encounter+1} / ${ENCOUNTERS.length}</span><span class="arena-dash">ENCOUNTER</span></div>
-    <div class="combatant enemy-combatant">
-      <div class="combatant__icon enemy-avatar" aria-hidden="true">${en.icon}</div>
-      <div class="combatant__stats">
-        <span class="eyebrow">${esc(en.subtitle)}</span>
-        <div class="combatant__line"><h2>${esc(en.name)}</h2><span class="stat-number"><span class="red-heart">${icon.heart}</span> ${e.hp}<small>/${e.maxHp}</small></span></div>
-        ${bar(e.hp,e.maxHp,'enemy-hp')}
-        <div class="status-line">${e.armor ? stat('Armor / hit',e.armor,'armor-chip') : ''}${e.block ? stat('Block',e.block,'block-chip') : ''}${e.poison ? stat('Poison',e.poison,'poison-chip') : ''}${e.weak ? stat('Weakened',e.weak,'poison-chip') : ''}${move?.interruptAt ? stat('Stagger',`${e.stagger}/${move.interruptAt}`,'stagger-chip') : ''}${!e.armor && !e.block && !e.poison && !e.weak && !move?.interruptAt ? '<span class="quiet-status">No active effects</span>' : ''}</div>
-      </div>
-    </div>
-    ${!isBetween && move ? `<div class="intent-strip"><span class="intent-caption">⌁ ENEMY INTENT</span><strong>${esc(move.name)}</strong><div class="intent-effects">${printIntent(move)}</div>${en.mechanic ? `<small class="encounter-rule">${esc(en.mechanic)}</small>` : ''}</div>` : ''}
-  </section>`;
-}
-function phaseHeader(marker,title,copy,extra='') {
-  return `<div class="section-heading"><div class="section-heading__copy"><span class="eyebrow accent-eyebrow">${esc(marker)}</span><h1>${title}</h1><p>${copy}</p></div>${extra}</div>`;
-}
-function faceElement(value, die, compact=false) {
-  return `<div class="dice-face ${compact?'compact-face':''} ${FAMILY[definition(die).family].accent}" aria-label="Rolled ${esc(value)}"><span class="dice-glyph">${esc(definition(die).icon)}</span><span class="dice-value">${esc(value)}</span><span class="face-spark spark-one"></span><span class="face-spark spark-two"></span></div>`;
-}
-function dieCard(die, opts={}) {
-  const d=definition(die),data=info(die), selected=game.selected.includes(die.id), unavailable=die.remaining>0;
-  const unaffordable = !selected && !unavailable && jarManaCost(game) + d.manaCost > game.hero.mana;
-  const label=selected ? 'Remove from jar' : 'Add to jar';
-  return `<button class="inventory-die ${data.accent} ${selected?'chosen':''} ${unavailable?'cooling':''} ${unaffordable?'unaffordable':''}" data-action="toggle-die" data-id="${esc(die.id)}" type="button" aria-pressed="${selected}" ${unavailable?'disabled':''} aria-label="${esc(label)}: ${esc(d.name)}${unavailable?', cooldown '+die.remaining:''}, costs ${d.manaCost} mana">
-    <div class="die-top"><span class="die-symbol">${esc(d.icon)}</span><span class="die-top-right">${unavailable?`${icon.clock} ${die.remaining} TURN${die.remaining!==1?'S':''}`:selected?'✓ IN JAR':`D6 · CD ${d.cooldown}`}</span></div>
-    <div class="die-identity"><h3>${esc(d.name)}</h3><span class="family-tag">${esc(data.label)}</span></div>
-    ${attributeTag(game, d.attribute)}
-    <div class="die-detail">${esc(d.description)}</div>
-    <div class="mini-faces" aria-label="Die faces: ${die.faces.join(', ')}">${die.faces.map(n=>`<span>${n}</span>`).join('')}</div>
-    <div class="inventory-die__foot"><span>${unavailable?'RECOVERING':selected?'REMOVE FROM JAR':unaffordable?'TOO EXPENSIVE':'SELECT DIE'}</span><span class="die-mana-cost">✦ ${d.manaCost} MANA</span></div>
-  </button>`;
-}
-function jarSlot(id, index) {
-  if (!id) return `<div class="jar-slot jar-slot--empty"><span class="jar-slot__index">0${index+1}</span><span class="jar-slot__plus">+</span><span class="jar-slot__caption">EMPTY</span></div>`;
-  const die=dieById(id);const f=definition(die);return `<div class="jar-slot ${FAMILY[f.family].accent}"><span class="jar-slot__index">0${index+1}</span><span class="jar-slot__glyph">${esc(f.icon)}</span><span class="jar-slot__name">${esc(f.name)}</span><span class="jar-slot__cost">✦ ${f.manaCost}</span><button class="jar-slot__remove" data-action="toggle-die" data-id="${esc(id)}" type="button" aria-label="Remove ${esc(f.name)} from jar">×</button></div>`;
-}
-function selectionPanel() {
-  const eligible=game.dice.filter(d=>d.remaining===0).length;
-  const cost=jarManaCost(game), manaLeft=game.hero.mana-cost;
-  const canRoll=game.selected.some(id=>!isModifier(dieById(id))) && cost<=game.hero.mana;
-  return `${phaseHeader('01 / PREPARE THE JAR','Choose your <em>dice.</em>','Each die costs mana to roll. Spend big now, or save mana for manipulating your results and preparing future turns.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>${eligible} dice ready</span></div>`)}
-  <div class="jar-panel">
-    <div class="panel-label"><span class="dot-ornament">✧</span> YOUR JAR <span class="subtle-inline">${game.selected.length} / ${MAX_JAR} SLOTS FILLED</span></div>
-    <div class="jar-slots">${Array.from({length:MAX_JAR},(_,i)=>jarSlot(game.selected[i],i)).join('')}</div>
-    <div class="jar-budget" aria-live="polite"><div class="jar-budget__numbers"><strong>✦ ${cost} / ${game.hero.mana} mana to roll</strong><span>${manaLeft} left to manipulate · +${game.hero.manaRegen} next turn</span></div><div class="jar-budget__track" aria-hidden="true">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="${i<cost?'reserved':i<game.hero.mana?'unspent':''}"></span>`).join('')}</div></div>
-    <div class="jar-actions"><div class="jar-helper"><span class="helper-sigil">◈</span> Your first Recollection is free each turn. Extra rerolls cost mana, and dice used enter cooldown.</div><button class="primary-button" type="button" data-action="roll" ${canRoll?'':'disabled'}>ROLL THE JAR <span>➜</span></button></div>
-  </div>
-  <div class="collection-heading"><div><span class="eyebrow">YOUR COLLECTION</span><h2>The dice satchel <small>${game.dice.length} dice</small></h2></div><span class="collection-helper">CLICK A DIE TO ${game.selected.length?'ADD OR REMOVE':'SELECT'}</span></div>
-  <div class="dice-inventory">${[...game.dice].sort((a,b)=>a.remaining-b.remaining).map(d=>dieCard(d)).join('')}</div>`;
-}
-function effectText(die, value) {
-  const t=definition(die).family;
-  if (t==='attack') return `${value} DAMAGE`;
-  if (t==='block') return `${value} BLOCK`;
-  if (t==='poison') return `${value} POISON`;
-  if (t==='weaken') return `−${value} NEXT ATTACK`;
-  if (t==='strength') return `+${Math.ceil(value/2)} POWER / 2 HITS`;
-  if (t==='sunder') return `REMOVE UP TO ${value} ARMOR`;
-  if (t==='stagger') return `${value} STAGGER`;
-  if (t==='mana') return `+${value} MANA (CAP ${game.hero.maxMana})`;
-  if (t==='heal') return `+${value} HP`;
-  return '';
-}
-function attachedFor(id) {return Object.entries(game.links).filter(([,target])=>target===id).map(([modifier])=>modifier);}
-function rollTile(id,index) {
-  const die=dieById(id),d=definition(die),inf=info(die),value=game.rolls[id],mod=inf.isModifier;
-  const active=game.activeDie===id, attachedTo=game.links[id];
-  const currentModifier=selectedDie() && isModifier(selectedDie()) ? game.activeDie : null;
-  const canTarget=!mod && currentModifier && currentModifier !== id;
-  const attached=attachedFor(id);
-  return `<article class="rolled-die ${inf.accent} ${active?'active-roll':''} ${canTarget?'drop-target':''} ${attachedTo?'linked-die':''}" ${mod?`draggable="true" data-mod-id="${esc(id)}"`:`data-target-id="${esc(id)}"`}>
-    <button class="roll-target" data-action="select-roll" data-id="${esc(id)}" type="button" aria-pressed="${active}" aria-label="${esc(d.name)} rolled ${esc(value)}${canTarget ? '; attach selected modifier here' : ''}">
-      <span class="rolled-die__top"><span class="rolled-die__seq">${String(index+1).padStart(2,'0')}</span><span class="rolled-die__family">${esc(inf.label)}</span></span>
-      ${faceElement(value,die)}
-      <strong class="rolled-die__name">${esc(d.name)}</strong>
-      <span class="rolled-die__result">${mod ? d.family==='add'?`ADDS +${modifiedValue(game,id)}`:`MULTIPLIES ×${modifiedValue(game,id)}`:effectText(die,modifiedValue(game,id))}</span>
-      ${renderRollBreakdown(game, id)}
-    </button>
-    <div class="roll-attachments">${mod ? (attachedTo ? `<span class="attached-label">↳ ${esc(definition(dieById(attachedTo)).name)}</span>` : '<span class="unattached-label">○ NEEDS A TARGET</span>') : (attached.length ? attached.map(mid=>`<button class="attachment-chip" type="button" data-action="detach" data-id="${esc(mid)}" title="Detach modifier">${esc(rolledLabel(dieById(mid),adjustedRoll(game,mid)))} <span>×</span></button>`).join('') : '<span class="no-attachment">DROP MODIFIER HERE</span>')}</div>
-  </article>`;
-}
-function rollTools() {
-  const d=selectedDie(),value=d?game.rolls[d.id]:null;
-  const canNudge=!!d && value<Math.max(...d.faces) && game.hero.mana>=NUDGE_COST;
-  const rerollCost=game.hero.freeRecollections>0?0:REROLL_COST;
-  return `<section class="control-panel">
-    <div class="panel-label"><span class="dot-ornament">✧</span> ARCANE CONTROL <span class="panel-trailing">${game.hero.mana}/${game.hero.maxMana} MANA</span></div>
-    <div class="mana-meter">${Array.from({length:game.hero.maxMana},(_,i)=>`<span class="mana-crystal ${i<game.hero.mana?'filled':''}" aria-hidden="true">◆</span>`).join('')}</div>
-    ${d ? `<div class="selected-roll-name"><span class="eyebrow">SELECTED DIE</span><h3>${esc(definition(d).name)}</h3>${renderRollBreakdown(game, d.id)}<p>Raw face <strong>${value}</strong>. ${isModifier(d)?'Click any non-purple die to attach this modifier.':'Manipulate this die before casting.'}</p></div>
-    <div class="tool-actions"><button class="tool-button" data-action="reroll" data-id="${esc(d.id)}" type="button" ${game.hero.mana<rerollCost?'disabled':''}><span>↻</span><span>Recollection<small>${rerollCost?'ADDITIONAL REROLL':'FIRST REROLL FREE'}</small></span><b>${rerollCost?`${rerollCost} ✦`:'FREE'}</b></button>
-    <button class="tool-button" data-action="nudge" data-id="${esc(d.id)}" type="button" ${!canNudge?'disabled':''}><span>↑</span><span>Nudge +1<small>CHANGE THE RESULT</small></span><b>2 ✦</b></button></div>
-    ${game.links[d.id]?`<button class="text-button" data-action="detach" data-id="${esc(d.id)}" type="button">⤫ Detach from ${esc(definition(dieById(game.links[d.id])).name)}</button>`:''}` : `<div class="no-selected"><div class="no-selected__icon">✧</div><h3>Take control of fate.</h3><p>Tap a rolled die to reroll or nudge it. Select a purple modifier, then tap an effect die to attach.</p></div>`}
-    <div class="control-note"><span>⟡</span><p>Jar cost: <b>${game.lastJarCost} mana</b>. Recover <b>${game.hero.manaRegen} mana</b> each turn; unused mana carries over (max ${game.hero.maxMana}). Mana dice restore resources when the cast resolves. Attachments are free.</p></div>
-  </section>`;
-}
-function resolutionTrack() {
-  return `<section class="resolution-panel"><div class="panel-label"><span class="dot-ornament">✧</span> ACTIVATION ORDER <span class="panel-trailing">LEFT ${icon.arrow} RIGHT</span></div>
-    <p class="resolution-hint">Reorder effects to time buffs before attacks. Modifiers activate with their attached die.</p>
-    <div class="resolution-track">${game.order.map((id,index)=>{
-      const die=dieById(id),d=definition(die),attached=attachedFor(id);
-      return `<div class="resolve-step ${FAMILY[d.family].accent}"><div class="step-order">0${index+1}</div><span class="step-icon">${esc(d.icon)}</span><div class="step-copy"><strong>${esc(d.name)}</strong><small>${esc(effectText(die,modifiedValue(game,id)))}</small>${attached.length?`<span class="step-mods">${attached.map(m=>esc(rolledLabel(dieById(m),adjustedRoll(game,m)))).join(' · ')}</span>`:''}</div><div class="step-buttons"><button data-action="reorder" data-id="${esc(id)}" data-step="-1" type="button" ${index===0?'disabled':''} aria-label="Move ${esc(d.name)} earlier">←</button><button data-action="reorder" data-id="${esc(id)}" data-step="1" type="button" ${index===game.order.length-1?'disabled':''} aria-label="Move ${esc(d.name)} later">→</button></div></div>`;
-    }).join('')}</div></section>`;
-}
-function castPanel() {
-  const unattached=pendingModifiers(game).length;
-  return `${phaseHeader('02 / BEND THE OUTCOME','Make the roll <em>matter.</em>','Your jar has already consumed its mana. Use free Recollection or spend remaining mana to refine your results, then arrange attachments and resolve.',`<div class="phase-meta"><span class="phase-meta__big">TURN ${game.turn}</span><span>ROLL COMPLETE</span></div>`)}
-  <div class="rolled-header"><span class="eyebrow">DICE ON THE TABLE</span><span class="roll-hint">${unattached ? `${unattached} MODIFIER${unattached>1?'S':''} UNATTACHED`: '✓ ALL MODIFIERS CONNECTED'}</span></div>
-  <div class="rolled-grid">${game.selected.map(rollTile).join('')}</div>
-  <div class="control-grid">${rollTools()}${resolutionTrack()}</div>
-  <div class="cast-footer"><div class="cast-footer__note">${unattached?'<strong>✧ Attach all purple dice to continue.</strong><span>Tap modifier → tap target. You can also drag them.</span>':'<strong>✦ Your combo is ready.</strong><span>Committing resolves your effects, then the enemy acts.</span>'}</div><button class="primary-button" type="button" data-action="commit" ${canCommit(game)?'':'disabled'}>COMMIT THE CAST <span>➜</span></button></div>`;
-}
-function offerCard(type,purchase=false,sold=false) {
-  const d=DICE[type],f=FAMILY[d.family];
-  return `<div class="offer-card ${f.accent}"><div class="offer-visual"><div class="offer-die-face"><span>${esc(d.icon)}</span></div><span class="family-tag">${esc(f.label)}</span></div><div class="offer-body"><h3>${esc(d.name)}</h3>${attributeTag(game, d.attribute)}<p>${esc(d.description)}</p><div class="offer-meta"><span>6 SIDES</span><span>COOLDOWN ${d.cooldown}</span><span>✦ ${d.manaCost} MANA</span></div></div>
-    <button type="button" class="offer-buy" data-action="${purchase?'shop-buy-die':'claim-die'}" data-die-type="${esc(type)}" ${sold||purchase&&game.gold<SHOP_DIE_COST?'disabled':''}>${sold?'SOLD':purchase?`BUY FOR ${SHOP_DIE_COST} ◈`:'CLAIM DIE  →'}</button></div>`;
-}
-function rewardPanel(){return `${phaseHeader('03 / VICTORY REWARD','Claim your <em>fortune.</em>','One battle behind you. Choose a free die, improve a face, or rest before visiting the traveling merchant.',`<div class="phase-meta"><span class="phase-meta__big">+${ENCOUNTERS[game.encounter].gold} GOLD</span><span>ENCOUNTER CLEARED</span></div>`)}
-  <div class="reward-splash"><div class="reward-splash__sigil">✦</div><div><span class="eyebrow accent-eyebrow">VICTORY</span><h2>The jar sings with possibility.</h2><p>Take one reward. Additional dice and upgrades await in the shop.</p></div></div>
-  <div class="collection-heading"><div><span class="eyebrow">FREE REWARD</span><h2>Choose a new die</h2></div><span class="collection-helper">PICK ONE OF THREE</span></div>
-  <div class="offers-grid">${game.rewardOffers.map(type=>offerCard(type)).join('')}</div>
-  <div class="reward-extras"><button type="button" data-action="forge-start" class="extra-card"><span class="extra-card__icon">⚒</span><span><strong>Forge a face</strong><small>Improve any one face on a die you own.</small></span><b>FREE →</b></button><button type="button" data-action="rest" class="extra-card"><span class="extra-card__icon">♥</span><span><strong>Rest by the fire</strong><small>Recover up to 14 HP before the next fight.</small></span><b>FREE →</b></button></div>`;}
-function shopPanel(){return `${phaseHeader('04 / THE TRAVELING MERCHANT','A deal with <em>fate.</em>','Spend your winnings on dice, healing, or a stronger face. All purchases are optional.',`<div class="phase-meta"><span class="phase-meta__big gold-text">◈ ${game.gold} GOLD</span><span>SHOP INVENTORY</span></div>`)}
-  <div class="collection-heading"><div><span class="eyebrow">MERCHANT INVENTORY</span><h2>Dice for sale</h2></div><span class="collection-helper">${SHOP_DIE_COST} GOLD EACH</span></div>
-  <div class="offers-grid">${game.shopOffers.map(t=>offerCard(t,true,game.shopSold.includes(t))).join('')}</div>
-  <div class="reward-extras"><button type="button" data-action="forge-start" class="extra-card" ${game.gold<SHOP_FORGE_COST?'disabled':''}><span class="extra-card__icon">⚒</span><span><strong>Upgrade a face</strong><small>Increase one face by +1 (up to 12).</small></span><b>${SHOP_FORGE_COST} ◈</b></button><button type="button" data-action="shop-heal" class="extra-card" ${game.gold<SHOP_HEAL_COST||game.hero.hp===game.hero.maxHp?'disabled':''}><span class="extra-card__icon">♥</span><span><strong>Restorative draught</strong><small>Recover up to 12 HP.</small></span><b>${SHOP_HEAL_COST} ◈</b></button></div>
-  <div class="cast-footer"><div class="cast-footer__note"><strong>✧ Ready for the next room?</strong><span>Unused gold and your upgraded dice carry forward.</span></div><button class="primary-button" data-action="next-encounter" type="button">NEXT ENCOUNTER <span>➜</span></button></div>`;}
-function forgePanel(){return `${phaseHeader('04 / THE DICE FORGE','Shape your <em>fortune.</em>','Choose a die, then select the exact face you want to increase by one. Each of its six faces is equally likely to be rolled.',`<div class="phase-meta"><span class="phase-meta__big">${game.forgeCost?`${game.forgeCost} GOLD`:'FREE REWARD'}</span><button data-action="forge-cancel" type="button" class="ghost-button">← BACK</button></div>`)}
-  <div class="forge-guide"><span>⚒</span><div><strong>Engraving alters probability, not die size.</strong><p>Upgrade a weak face to improve consistency, or push a high face higher for a bigger jackpot. All dice remain six-sided in the prototype.</p></div></div>
-  <div class="forge-inventory">${game.dice.map(d=>{const t=definition(d),f=FAMILY[t.family];return `<div class="forge-row ${f.accent}"><div class="forge-ident"><span class="forge-symbol">${esc(t.icon)}</span><div><strong>${esc(t.name)}</strong><span>CD ${t.cooldown} · D6 · AVG ${(d.faces.reduce((a,b)=>a+b)/6).toFixed(1)}</span></div></div><div class="forge-faces">${d.faces.map((v,i)=>`<button type="button" data-action="upgrade-face" data-id="${esc(d.id)}" data-face-index="${i}" ${v>=12?'disabled':''} aria-label="Upgrade face ${i+1} of ${esc(t.name)}, currently ${v}"><span>${v}</span><small>+1</small></button>`).join('')}</div></div>`;}).join('')}</div>`;}
-function finalPanel(won) {return `<div class="final-screen"><div class="final-emblem">${won?'✦':'✕'}</div><span class="eyebrow accent-eyebrow">${won?'THE FINAL CHAMBER CONQUERED':'YOUR JOURNEY ENDS'}</span><h1>${won?'Fate has been <em>rewritten.</em>':'The jar has <em>fallen silent.</em>'}</h1><p>${won?'You defeated all four guardians. Your strategy, your dice, your victory.':'The next attempt begins with a fresh jar. Experiment with different combinations and save mana for key turns.'}</p><div class="final-numbers"><span><b>${game.encounter+ (won?1:0)}${won?'':' / '+ENCOUNTERS.length}</b> Chambers cleared</span><span><b>${game.dice.length}</b> Dice collected</span><span><b>${game.gold}</b> Gold remaining</span></div><button class="primary-button" data-action="new-run" type="button">BEGIN A NEW RUN <span>➜</span></button></div>`;}
-function sidebar() {
-  const active=['select','cast'].includes(game.phase);
-  const ready=game.dice.filter(d=>d.remaining===0).length;
-  return `<aside class="sidebar">${renderStatsSidebar(game)}<section class="sidebar-card run-stats"><div class="panel-label"><span class="dot-ornament">✧</span> RUN DETAILS</div><div class="run-stats__grid"><div><span>CHAMBER</span><b>${String(game.encounter+1).padStart(2,'0')} <small>/ ${ENCOUNTERS.length}</small></b></div><div><span>CURRENT TURN</span><b>${game.turn}</b></div><div><span>GOLD</span><b class="gold-text">◈ ${game.gold}</b></div><div><span>OWNED DICE</span><b>${game.dice.length}</b></div></div>
-    <div class="divider"></div><div class="sidebar-subtitle">COOLDOWN STATUS</div><div class="cooldown-count"><span><i class="count-ready"></i> ${ready} ready</span><span><i class="count-wait"></i> ${game.dice.length-ready} recovering</span></div></section>
-    <section class="sidebar-card log-card"><div class="panel-label"><span class="dot-ornament">✧</span> CHRONICLE <span class="panel-trailing">LIVE</span></div><div class="log-feed" aria-label="Battle log" aria-live="polite">${game.log.slice(0,9).map(l=>`<div class="log-line ${l.type}"><span>›</span>${esc(l.message)}</div>`).join('')}</div></section>
-    ${active ? `<section class="hint-card"><span class="hint-card__icon">✦</span><span class="eyebrow">THE ART OF THE JAR</span><h3>${game.phase==='select'?'Choose with intention.':'Attach. Arrange. Commit.'}</h3><p>${game.phase==='select'?'Loading dice costs mana. Cheap dice leave more energy to manipulate the roll; save expensive combinations for dangerous turns.':'Additive modifiers apply first, then multipliers. A buff die activates only when its place in the order is reached.'}</p><button type="button" data-action="help">READ THE FIELD GUIDE →</button></section>`:''}</aside>`;
+function renderTerminal(state) {
+  const won=state.phase==='won';
+  return `${heading(won?'CAMPAIGN COMPLETE':'RUN COMPLETE',won?'Fate has been <em>rewritten.</em>':state.outcome==='draw'?'Both combatants <em>fall.</em>':'The jar falls <em>silent.</em>',won?'You defeated all four opponents with equipment, attributes and reactions.':state.outcome==='draw'?'Simultaneous poison ended this run in a draw, without rewards.':'Try a different loadout, save mana for defense, and choose when to recover.')}<div class="exchange-outcome">${state.events.slice(-6).map(e=>`<p>${esc(e.text)}</p>`).join('')}</div><button class="primary-button" ${buttonData(state,'new-run')}>BEGIN A NEW RUN →</button>`;
 }
 function render() {
-  let main;
-  switch(game.phase) {
-    case 'character':
-    case 'levelup': main=renderCharacterPanel(game);break;
-    case 'select': main=selectionPanel();break;
-    case 'cast': main=castPanel();break;
-    case 'reward': main=rewardPanel();break;
-    case 'shop': main=shopPanel();break;
-    case 'forge': main=forgePanel();break;
-    case 'won': main=finalPanel(true);break;
-    case 'lost': main=finalPanel(false);break;
-    default: main='';
+  const panels = { character:renderCharacterPanel, levelup:renderCharacterPanel, loadout:renderLoadout, battle:renderBattle,
+    reward:renderRewards, shop:renderShop, forge:renderForge, won:renderTerminal, lost:renderTerminal };
+  const main = panels[game.phase]?.(game);
+  if (!main) throw new Error(`Unknown campaign phase: ${game.phase}`);
+  root.innerHTML = `${game.phase!=='character'?renderArena(game):''}<div class="workbench v04"><div class="workbench-main">${main}</div><aside class="sidebar">${renderStatsSidebar(game)}${renderEnemyEquipment(game)}
+    <section class="sidebar-card log-card"><div class="panel-label">CHRONICLE <span class="panel-trailing">v${VERSION}</span></div><div class="log-feed" aria-label="Battle log">${game.events.slice(-12).reverse().map(e=>`<div class="log-line"><span>›</span>${esc(e.text)}</div>`).join('')||'<p class="muted">Choose your character and equipment to begin.</p>'}</div></section></aside></div>${game.notice?`<div class="toast" role="status">${esc(game.notice)}</div>`:''}`;
+}
+/** Automatic enemy decisions are synchronous, bounded, and never skip a human window. */
+function advanceEnemy() {
+  for (let steps=0; decisionActor(game)==='enemy'; steps++) {
+    if (steps>=40) throw new Error('Enemy decision limit reached; no human choice was skipped.');
+    const command=nextAICommand(game);
+    if (!command) throw new Error('Enemy has no legal decision.');
+    const next=reduceGame(game,command);
+    if (next.revision===game.revision) throw new Error(next.notice || 'Enemy command was rejected.');
+    game=next;
   }
-  root.innerHTML=`${resourceCards()}<div class="workbench"><div class="workbench-main">${main}</div>${sidebar()}</div>${game.notice?`<div class="toast" role="status">✧ ${esc(game.notice)}</div>`:''}`;
 }
 function update(action) {
-  const previous = document.activeElement;
-  const focusData = previous?.dataset?.action ? { ...previous.dataset } : null;
-  game=reduceGame(game,action);render();
-  if (focusData && root.querySelectorAll) {
-    const target = [...root.querySelectorAll('[data-action]')].find(el => !el.disabled && Object.entries(focusData).every(([k,v]) => el.dataset[k] === v));
-    target?.focus({ preventScroll: true });
+  const focused = document.activeElement?.dataset?.action ? { ...document.activeElement.dataset } : null;
+  game=reduceGame(game,action);
+  try { advanceEnemy(); } catch(error) { game={...game,notice:`Combat stopped: ${error.message} Use New Run to reset.`}; }
+  render();
+  if (focused) {
+    const entries=Object.entries(focused).filter(([key])=>!['revision','exchange'].includes(key));
+    const target=[...root.querySelectorAll('[data-action]')].find(el=>!el.disabled&&entries.every(([k,v])=>el.dataset[k]===v));
+    target?.focus({preventScroll:true});
   }
 }
-
 document.addEventListener('click',event=>{
-  const el=event.target.closest('[data-action]'); if(!el || el.disabled) return;
-  const action=el.dataset.action;
-  const id=el.dataset.id;
-  if(action==='help'){modal.showModal();return;}
-  if(action==='close-help'){modal.close();return;}
-  if(action==='new-run') { if(['character','select','cast','levelup','reward','shop','forge'].includes(game.phase) && !window.confirm('Start over? Current run progress will be lost.')) return;update({type:'NEW_GAME'});return; }
-  const acts={ 'allocate-attribute':()=>({type:'ALLOCATE_ATTRIBUTE',attribute:el.dataset.attribute,delta:Number(el.dataset.delta)}), 'choose-talent':()=>({type:'CHOOSE_TALENT',talent:el.dataset.talent}), 'confirm-attributes':()=>({type:'CONFIRM_ATTRIBUTES'}), 'focus':()=>({type:'FOCUS',attribute:el.dataset.attribute}), 'toggle-die':()=>({type:'TOGGLE_DIE',id}), 'roll':()=>({type:'ROLL'}), 'reroll':()=>({type:'REROLL',id}), 'nudge':()=>({type:'NUDGE',id}), 'detach':()=>({type:'DETACH',id}), 'commit':()=>({type:'COMMIT'}), 'reorder':()=>({type:'REORDER',id,step:Number(el.dataset.step)}), 'claim-die':()=>({type:'CLAIM_DIE',dieType:el.dataset.dieType}), 'rest':()=>({type:'REST'}), 'forge-start':()=>({type:'FORGE_START'}), 'forge-cancel':()=>({type:'FORGE_CANCEL'}), 'upgrade-face':()=>({type:'UPGRADE_FACE',id,faceIndex:Number(el.dataset.faceIndex)}), 'shop-buy-die':()=>({type:'SHOP_BUY_DIE',dieType:el.dataset.dieType}), 'shop-heal':()=>({type:'SHOP_HEAL'}), 'next-encounter':()=>({type:'NEXT_ENCOUNTER'}) };
-  if(action==='select-roll'){
-    const active=selectedDie();
-    const target=dieById(id);
-    if (active && isModifier(active) && target && !isModifier(target) && active.id!==id) update({type:'ATTACH',modId:active.id,targetId:id});
-    else update({type:'SELECT_ROLL',id});
-  } else if(acts[action]) update(acts[action]());
+  const el=event.target.closest('[data-action]');
+  if (!el || el.disabled || event.detail>1) return;
+  const d=el.dataset, action=d.action;
+  if (action==='help') { modal.showModal(); return; }
+  if (action==='close-help') { modal.close(); return; }
+  if (action==='new-run') {
+    if (!['character','won','lost'].includes(game.phase)&&!window.confirm('Start over? Current run progress will be lost.')) return;
+    update({type:'NEW_GAME',expectedRevision:game.revision}); return;
+  }
+  const types={allocate:'ALLOCATE_ATTRIBUTE',talent:'CHOOSE_TALENT','confirm-attributes':'CONFIRM_ATTRIBUTES',equip:'TOGGLE_EQUIPMENT','begin-battle':'BEGIN_BATTLE',claim:'CLAIM_ITEM',rest:'REST','forge-start':'FORGE_START','forge-cancel':'FORGE_CANCEL','upgrade-face':'UPGRADE_FACE',buy:'SHOP_BUY_ITEM','shop-heal':'SHOP_HEAL',refill:'SHOP_REFILL','next-encounter':'NEXT_ENCOUNTER',maneuver:'SELECT_MANEUVER',support:'TOGGLE_MODIFIER','pass-reaction':'PASS_REACTION','pass-turn':'PASS_TURN',reroll:'REROLL',nudge:'NUDGE',focus:'FOCUS',lock:'LOCK_RESULT',continue:'ACK_EXCHANGE'};
+  const type=action==='declare'?(game.combat.stage==='reaction'?'DECLARE_REACTION':'DECLARE_ACTION'):types[action];
+  if (!type) return;
+  update({ type, actorId:'hero', expectedRevision:Number(d.revision), exchangeId:Number(d.exchange),
+    itemId:d.itemId, maneuverId:d.maneuverId, attribute:d.attribute, talent:d.talent,
+    delta:Number(d.delta), faceIndex:Number(d.faceIndex), definitionId:d.definitionId });
 });
-let draggedMod = null;
-root.addEventListener('dragstart', event => {
-  const tile=event.target.closest('[data-mod-id]');
-  if(!isCast()||!tile) return;
-  draggedMod=tile.dataset.modId;
-  event.dataTransfer.effectAllowed='move';
-  event.dataTransfer.setData('text/plain',draggedMod);
-});
-root.addEventListener('dragover',event=>{
-  const tile=event.target.closest('[data-target-id]');
-  if(!tile || !draggedMod || !isCast())return;
-  event.preventDefault();event.dataTransfer.dropEffect='link';tile.classList.add('drop-hover');
-});
-root.addEventListener('dragleave',event=>{
-  const tile=event.target.closest('[data-target-id]');
-  if(tile)tile.classList.remove('drop-hover');
-});
-root.addEventListener('drop',event=>{
-  const tile=event.target.closest('[data-target-id]');
-  if(!tile || !isCast())return;
-  event.preventDefault();tile.classList.remove('drop-hover');
-  const modId=draggedMod || event.dataTransfer.getData('text/plain');draggedMod=null;
-  if(modId)update({type:'ATTACH',modId,targetId:tile.dataset.targetId});
-});
-root.addEventListener('dragend',()=>{draggedMod=null;});
-render();
+try { validateDefinitions(); render(); }
+catch(error) { root.innerHTML=`<section class="exchange-outcome" role="alert"><h1>Unable to start Jarbound</h1><p>${esc(error.message)}</p><p>Use the complete generated index.html from the v0.4 download.</p></section>`; throw error; }
+
+return Object.freeze({  });
+})();
 })();
 </script>
 </body>

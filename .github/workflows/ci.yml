@@ -22,6 +22,13 @@ jobs:
           node-version: '22'
       - name: Run checks
         run: npm run check
+      - name: Seeded combat probes
+        run: npm run simulate -- --strict
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simulation-evidence
+          path: test-results/simulation-results.json
       - name: Check whether GitHub Pages is enabled
         id: pages
         if: github.event_name != 'pull_request'
@@ -40,9 +47,30 @@ jobs:
             echo "GitHub Pages is not enabled (HTTP ${status}); skipping deploy until repository Settings > Pages is configured."
           fi
 
+  browser:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install test-only browser tools
+        run: |
+          python -m pip install -r requirements-browser.txt
+          python -m playwright install --with-deps chromium
+      - name: Test actual direct-open offline game
+        run: python tests/browser-smoke.py --require-file
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: test-results/
+
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.test.outputs.pages_enabled == 'true'
-    needs: test
+    needs: [test, browser]
     runs-on: ubuntu-latest
     permissions:
       contents: read
